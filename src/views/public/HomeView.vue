@@ -2,13 +2,15 @@
   <div>
     <nav class="nav">
       <div class="nav__inner">
-        <div class="logo">
-          <img width="22" class="_mr-2" src="../../assets/svg/cube.svg"/>
-          <span class="logo__text logo__accent flex">
+        <a href="/">
+          <div class="logo">
+            <img width="22" class="_mr-2" src="../../assets/svg/cube.svg"/>
+            <span class="logo__text logo__accent flex">
             UML
             <span class="text_black">Designer</span>
           </span>
-        </div>
+          </div>
+        </a>
         <div class="nav__menu">
           <a href="" class="nav__menu__link">Tutoriels</a>
           <a href="" target="_blank" rel="noreferrer noopener" class="nav__menu__link">Blog</a>
@@ -33,11 +35,11 @@
             Commencer
           </div>
         </router-link>
-        <a href="">
+        <router-link :to="{name: 'Demo'}">
           <div class="hero__cta hero__cta_white" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rem:" data-state="closed">
             Voir la démo
           </div>
-        </a>
+        </router-link>
         <p class="hero__details">
           Notre outil de synthèse texte-diagramme se base sur les technologies de l'
           <span><a href="https://fr.wikipedia.org/wiki/Intelligence_artificielle" target="_blank">IA</a></span>
@@ -223,7 +225,11 @@
             <a class="footer__stress" href="https://www.linkedin.com/in/g%C3%A9n%C3%A9reux-akotenou-8b00901b4/" target="_blank" rel="noreferrer noopener">Généreux Akotenou</a>
             <span class="red">❤️</span>
           </p>
-          <p class="footer__text"><b>#</b>MEMOIRE, <b>#</b>IFRI, <b>#</b>MIFY</p>
+          <p class="footer__text">
+            <span class="hometool__soon umld-ml-0">MEMOIRE</span>
+            <span class="hometool__soon">IFRI</span>
+            <span class="hometool__soon">MIFY</span>
+          </p>
         </div>
         <div class="footer__right">
           <div class="footer__menu">

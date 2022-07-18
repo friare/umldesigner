@@ -23932,7 +23932,9 @@ svg {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+.umld-ml-0{
+    margin-left: 0 !important;
+}
 .fe-activity:before {
     content: "\e900";
 }
@@ -74149,3 +74151,5 @@ textarea.form-control {
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
 }
+
+
