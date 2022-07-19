@@ -52,7 +52,7 @@
                   <span class="custom-control-label">Accepter les <a class="text-primary" href="terms.html">conditions et politiques</a></span>
                 </label>
                 <div class="container-login100-form-btn">
-                  <router-link :to="{name: 'Register'}" class="login100-form-btn btn-primary">M'inscrire</router-link>
+                  <router-link :to="{name: 'Default'}" class="login100-form-btn btn-primary">M'inscrire</router-link>
                 </div>
                 <div class="text-center pt-3">
                   <p class="text-dark mb-0">J'ai déjà un compte

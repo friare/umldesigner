@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'Landing',
-    component: () => Landing
+    component: Landing
   },
   {
     path: '/projet-demo',

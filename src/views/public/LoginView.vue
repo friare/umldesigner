@@ -52,7 +52,7 @@
                           </p>
                         </div>
                         <div class="container-login100-form-btn">
-                          <router-link :to="{name: 'ForgetPassword'}" class="login100-form-btn btn-primary hero__cta">Se connecter</router-link>
+                          <router-link :to="{name: 'Default'}" class="login100-form-btn btn-primary hero__cta">Se connecter</router-link>
                         </div>
                         <div class="text-center pt-5">
                           <p class="text-dark mb-0">Vous êtes nouveau?

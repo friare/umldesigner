@@ -68,7 +68,6 @@
 
             //Interaction is possible (editable)
             this.umlDiagram.interaction(true);
-
         },
         refreshDraw () {
             this.umlDiagram.setUpdateHeightCanvas(true)
@@ -139,20 +138,9 @@
           document.getElementById(this.diagramType).style.scale=(this.scale/100)
         }
     },
-    created() {
-      var scripts = [
-        "/utils/jsUML2/script/UDCore.js",
-        "/utils/jsUML2/script/UDModules.js"
-      ];
-      scripts.forEach(script => {
-        let tag = document.createElement("script");
-        tag.setAttribute("src", script);
-        document.head.appendChild(tag);
-      });
-      let lnk = document.createElement('link');
-      lnk.setAttribute('href', '/utils/jsUML2/css/UDStyle.css');
-      document.head.appendChild(lnk);
-    }
+    beforeCreate () {
+      //
+    },
   }
 </script>
 
