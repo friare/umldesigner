@@ -58,7 +58,7 @@ header{
   top: 0;
   left: 0;
   right: 0; */
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 .space-between{
   display: flex;
@@ -414,4 +414,30 @@ button{
 }
 .ml2{
   margin-left: .3em;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 190px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 9999 !important;
+}
+.dropdown-content a {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+button{
+  border-radius: 15em !important;
+}
+.no-mw{
+  margin-left: .5em;
 }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./jsUML2.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script>
+        window.onload = function(){
+            var classDiagram = new UMLClassDiagram({id: 'classDiagram', width: window.screen.width-30, height: window.screen.height });
+            // Adding classes...
+            var vehicleClass = new UMLClass({ x:100, y:50 });
+            var carClass = new UMLClass({ x:30, y:200 });
+            var boatClass = new UMLClass({ x:150, y:200 });
+            var sailorClass = new UMLClass({ x:400, y:200 });
+
+            classDiagram.addElement(vehicleClass);
+            classDiagram.addElement(carClass);
+            classDiagram.addElement(boatClass);
+            classDiagram.addElement(sailorClass);
+
+
+
+            //Defining vehicleClass
+            vehicleClass.setName("Vehicle");
+            vehicleClass.addAttribute( 'owner' );
+            vehicleClass.addAttribute( 'capacity' );
+            vehicleClass.addOperation( 'getOwner()' );
+            vehicleClass.addOperation( 'getCapacity()' );
+
+            //Defining carClass
+            carClass.setName("Car");
+            carClass.addAttribute( 'num_doors' );
+            carClass.addOperation( 'getNumDoors()' );
+
+            //Defining boatClass
+            boatClass.setName("Boat");
+            boatClass.addAttribute( 'mast' );
+            boatClass.addOperation( 'getMast()' );
+
+            //Defining sailorClass
+            sailorClass.setName("Sailor");
+            sailorClass.addAttribute( 'name' );
+            sailorClass.addOperation( 'getName()' );
+
+            // Adding generalizations...
+            var generalizationSet = new UMLGeneralizationSet();
+            var generalizationSet2 = new UMLGeneralizationSet();
+
+            generalizationSet.setElements(carClass,vehicleClass);
+            generalizationSet2.setElements(boatClass,vehicleClass);
+            //generalizationSet.addElement(boatClass);
+            classDiagram.addElement(generalizationSet);
+            classDiagram.addElement(generalizationSet2);
+            // Adding other relations
+            var directedAssociation = new UMLAssociation({a:boatClass , b: sailorClass});
+
+            directedAssociation.setRoleB( "Work on");
+            directedAssociation.setComponentMultiplicityB('*');
+            directedAssociation.setComponentMultiplicityA('1.1');
+            directedAssociation.setDirection('b');
+
+            classDiagram.addElement(directedAssociation);
+
+            //Draw the diagram
+            classDiagram.draw();
+
+            //Interaction is possible (editable)
+            classDiagram.interaction(true);
+        }
+    </script>
+    <title>jsUML2</title>
+</head>
+<body>
+    <div id="classDiagram"></div>
+</body>
+</html>

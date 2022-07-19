@@ -6,7 +6,7 @@
         <div class="left-menu">
           <!-- LOGO -->
           <div class="umld-logo">
-            <a href="/">
+            <a href="">
               <div class="logo">
                 <svg width="25" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 445.555 445.555" style="enable-background:new 0 0 445.555 445.555;" xml:space="preserve">
                   <defs>
@@ -37,11 +37,14 @@
           <div class="title2">Tableau de board</div>
           <div class="tool-section">
             <ul id="nav-tools">
-              <li @click="goToPage('homeView')" :class="(activeMenu == 'home') ? 'active' : ''">
-                <div>
-                  <i class="fa fa-home"></i> Acceuil
-                </div>
-              </li>
+              <router-link :to="{name: 'Default'}">
+                <li :class="(activeMenu == 'home') ? 'active' : ''">
+                  <div>
+                    <i class="fa fa-home"></i> Acceuil
+                  </div>
+                </li>
+              </router-link>
+
               <li id="collapsible-container">
                 <div @click="toogleProjectList" id="collapsible">
                   <i class="fa fa-folder"> </i>
@@ -53,21 +56,23 @@
                     <i class="fa fa-arrow-right"></i>
                     Défaut
                   </li>
-                  <li @click="loadProject('opc-modeling')" :class="(currentProject == 'opc-modeling') ? 'selected' : ''">
-                    <i class="fa fa-arrow-right"></i>
-                    OPC modeling
-                  </li>
                 </ul>
               </li>
-              <li @click="goToPage('projetsView')" :class="(activeMenu == '_project') ? 'active' : ''">
-                <i class="fa fa-bell"></i> &nbsp;Alertes
-              </li>
-              <li @click="goToPage('projetsView')" :class="(activeMenu == '_project') ? 'active' : ''">
-                <i class="fa fa-user"></i> &nbsp;Profil
-              </li>
-              <li @click="goToPage('projetsView')" :class="(activeMenu == '_project') ? 'active' : ''">
-                <i class="fa fa-cogs"></i> Paramètres
-              </li>
+              <router-link :to="{name: 'Alert'}">
+                <li :class="(activeMenu == 'alert') ? 'active' : ''">
+                  <i class="fa fa-bell"></i> &nbsp;Alertes
+                </li>
+              </router-link>
+              <router-link :to="{name: 'Profile', params: {user: 'Généreux-akotenou'}}">
+                <li :class="(activeMenu == 'profile') ? 'active' : ''">
+                  <i class="fa fa-user"></i> &nbsp;Profil
+                </li>
+              </router-link>
+              <router-link :to="{name: 'Setting'}">
+                <li :class="(activeMenu == 'setting') ? 'active' : ''">
+                  <i class="fa fa-cogs"></i> Paramètres
+                </li>
+              </router-link>
             </ul>
           </div>
 
@@ -79,18 +84,18 @@
           <!-- ITEM 3 -->
           <div class="title2"><b>A propos</b></div>
           <ul id="tool2-section" class="tool2-section mt-2">
-            <a href="/blog" @click.prevent="goToPage('blog')" :class="(activeMenu == 'blog') ? 'activeLink' : ''">
-              <li><i class="fa fa-blog"></i> Blog</li>
-            </a>
-            <a href="/tutoriels" @click.prevent="goToPage('tutoriels')" :class="(activeMenu == 'tutorial') ? 'activeLink' : ''">
+<!--            <a href="/blog" @click.prevent="goToPage('blog')" :class="(activeMenu == 'blog') ? 'activeLink' : ''">-->
+<!--              <li><i class="fa fa-blog"></i> Blog</li>-->
+<!--            </a>-->
+            <a href="/tutoriels" :class="(activeMenu == 'tutorial') ? 'activeLink' : ''">
               <li><i class="fa fa-video"></i> Tutoriels</li>
             </a>
-            <a href="/support" @click.prevent="" :class="(activeMenu == 'support') ? 'activeLink' : ''">
+            <a href="https://github.com/Genereux-akotenou" target="_blank">
               <li><i style="font-size: 1.5em" class="fa2 fa-github"></i> Contribuer
                 <sup class="small-note dev-small-note">DEVELOPPEUR</sup>
               </li>
             </a>
-            <a href="http://localhost:8000/docs" target="_blank">
+            <a href="https://api.umldesigner.app/docs" target="_blank">
               <li><i class="fa fa-book"></i> API</li>
             </a>
           </ul>
@@ -120,7 +125,23 @@
               </div>
 
               <div class="nav__menu">
-                <router-link :to="{name: 'Login'}" class="nav__menu__btn">Créer un Diagramme</router-link>
+                <div class="dropdown">
+                  <button class="nav__menu__btn dropbtn">
+                    Créer un Diagramme&nbsp;
+                    <i class="float-end fa fa-caret-down ml2"> </i>
+                  </button>
+                  <div class="dropdown-content" >
+                    <router-link :to="{name: 'Editeur', params: {name: 'umld-demo-project'}}">
+                      <i class="fa fa-project-diagram ml2"> </i> Classe
+                    </router-link>
+                    <router-link :to="{name: 'Editeur', params: {name: 'umld-démo-project'}}">
+                      <i class="fa fa-project-diagram ml2"> </i> Cas d'utilisatio
+                    </router-link>
+                    <router-link :to="{name: 'Editeur', params: {name: 'umld-démo-project'}}">
+                      <i class="fa fa-project-diagram ml2"> </i> Séquence
+                    </router-link>
+                  </div>
+                </div>
               </div>
             </div>
           </header>
@@ -128,7 +149,9 @@
           <slot name="header"></slot>
           <!--section 3-->
           <div class="contentApp">
-            <slot name="body"></slot>
+            <div class="page-content">
+              <slot name="body"></slot>
+            </div>
             <footer class="footer footer2">
               <div>
                 <p class="footer__text">Created by
@@ -195,11 +218,11 @@ export default {
       let collContainer = document.getElementById("collapsible-container");
       if (!this.highlightMenu)
         collContainer.classList.toggle("active");
-      this.showProjectList = !this.showProjectList
+      this.showProjectList = !this.showProjectList;
     },
     loadProject (projectName) {
       this.currentProject = projectName
-      this.$router.push({name: 'projetsView', params: {code: projectName}})
+      this.$router.push({name: 'projetView', params: {code: projectName}})
     },
     goToPage (link) {
       this.$router.push({name: link})
@@ -306,6 +329,9 @@ ul, li{
   height: 100%;
   padding: 1em 1.5em;
   overflow-y: scroll;
+}
+.page-content{
+  min-height: 100vh;
 }
 a:hover{
   color: #0d6efd;
