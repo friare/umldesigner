@@ -35,7 +35,7 @@
                     <path d="M450 555 c0 -24 -3 -25 -58 -25 -80 0 -90 -13 -94 -115 l-3 -80 -57 -3 -58 -3 0 36 0 35 -65 0 -65 0 0 -80 0 -80 65 0 65 0 0 35 0 35 60 0 60 0 0 -83 c0 -104 10 -117 93 -117 54 0 57 -1 57 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -23 -3 -25 -49 -25 -70 0 -81 14 -81 106 l0 74 64 0 c59 0 65 -2 68 -22 3 -21 9 -23 71 -26 l67 -3 0 61 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -25 -1 -26 -62 -23 l-63 3 -3 71 c-4 89 8 104 79 104 46 0 49 -2 49 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25z m120 -35 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z m-420 -200 l0 -60 -40 0 -40 0 0 60 0 60 40 0 40 0 0 -60z m418 3 c3 -33 3 -33 -42 -33 -46 0 -46 0 -46 36 l0 35 43 -3 c39 -3 42 -5 45 -35z m2 -203 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z"/>
                   </g>
                 </svg>
-<!--                <img width=15 src="@/assets/image/ico/icons8-diagram-64.png" alt="uml chart type icon"/> -->
+<!--                <img width=15 src="../../assets/image/ico/icons8-diagram-64.png" alt="uml chart type icon"/> -->
                 <span class="umlTypeName">SEQUENCE</span> </option>
             </select>
             <p class="selecionado_opcion"  onclick="open_select(this)" ></p>
@@ -71,32 +71,32 @@
           <div class="d-flex">
             <div class="btn-lot d-fl">
               <button class="u-btn u-btn-user no-border avatar-online">
-                <img class="u-icon" src="@/assets/image/avatars/avatar3.jpeg" alt="">
+                <img class="u-icon" src="../../assets/image/avatars/avatar3.jpeg" alt="">
               </button>
               <button class="u-btn u-btn-user no-border avatar-online">
-                <img class="u-icon" src="@/assets/image/avatars/avatar4.jpeg" alt="">
+                <img class="u-icon" src="../../assets/image/avatars/avatar4.jpeg" alt="">
               </button>
               <button class="u-btn u-btn-user no-border avatar-online">
-                <img class="u-icon" src="@/assets/image/avatars/avatar5.jpeg" alt="">
+                <img class="u-icon" src="../../assets/image/avatars/avatar5.jpeg" alt="">
               </button>
             </div>
           </div>
           <div class="d-flex">
             <div class="btn-lot">
               <button @click.stop="saveUML" download="class_uda.jpg" class="u-btn u-btn-share no-border">
-                <img class="svg u-icon" src="@/assets/image/ico/download-btn.png"/>
+                <img class="svg u-icon" src="../../assets/image/ico/download-btn.png"/>
               </button>
               <button @click.stop="shareBoxDesktop" class="u-btn u-btn-share no-border">
-                <img class="svg u-icon" src="@/assets/image/ico/share-64.png"/>
+                <img class="svg u-icon" src="../../assets/image/ico/share-64.png"/>
               </button>
               <button @click.stop="resizeDiagram" class="u-btn u-btn-share no-border">
-                <img v-show="screenView == '70%'" class="svg u-icon" src="@/assets/image/ico/fit-to-screen.png"/>
+                <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
 <!--                <svg v-show="screenView == '100%'" version="1.0" class="svg u-icon" xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">-->
 <!--                  <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">-->
 <!--                    <path d="M242 258 l-62 -63 0 38 c0 20 -4 37 -10 37 -5 0 -10 -25 -10 -55 l0 -55 -55 0 c-30 0 -55 -4 -55 -10 0 -5 17 -10 37 -10 l37 0 -64 -65 c-35 -35 -61 -68 -57 -72 4 -4 37 22 72 57 l65 64 0 -37 c0 -20 5 -37 10 -37 6 0 10 25 10 55 l0 55 55 0 c30 0 55 5 55 10 0 6 -17 10 -37 10 l-37 0 62 63 c34 34 62 66 62 70 0 17 -19 3 -78 -55z"/>-->
 <!--                  </g>-->
 <!--                </svg>-->
-                <img v-show="screenView == '100%'" class="svg u-icon" src="@/assets/image/ico/normal-to-screen.png"/>
+                <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
               </button>
             </div>
             <div class="btn-lot">
@@ -106,7 +106,7 @@
             <div class="btn-lot" style="background-color: darkorange;">
               <button @click.stop="preniumBoxDesktop" class="u-btn no-border" style="background-color: darkorange; color: white;"><i class="fa fa- u-icon"></i>PREMIUM</button>
             </div>
-            <!-- <a href="@/assets/login.html">
+            <!-- <a href="../../assets/login.html">
               <button class="u-btn u-btn-primary u-btn-transparent">SE CONNECTER</button>
             </a> -->
           </div>
@@ -115,13 +115,13 @@
           <div class="top-to-left-mobile ">
             <div class="btn-lot d-flex d-md-none">
               <button class="u-btn no-border avatar-online">
-                <img class="u-icon" src="@/assets/image/avatars/avatar3.jpeg" alt="">
+                <img class="u-icon" src="../../assets/image/avatars/avatar3.jpeg" alt="">
               </button>
               <button class="u-btn no-border avatar-online">
-                <img class="u-icon" src="@/assets/image/avatars/avatar4.jpeg" alt="">
+                <img class="u-icon" src="../../assets/image/avatars/avatar4.jpeg" alt="">
               </button>
               <button class="u-btn no-border avatar-online">
-                <img class="u-icon" src="@/assets/image/avatars/avatar5.jpeg" alt="">
+                <img class="u-icon" src="../../assets/image/avatars/avatar5.jpeg" alt="">
               </button>
             </div>
             <div class="btn-lot d-flex d-md-none">
@@ -129,14 +129,14 @@
             </div>
             <div class="btn-lot d-flex d-md-none">
               <button @click.stop="saveUML" class="u-btn no-border">
-                <img class="svg u-icon" src="@/assets/image/ico/download-btn.png"/>
+                <img class="svg u-icon" src="../../assets/image/ico/download-btn.png"/>
               </button>
               <button @click.stop="shareBoxMobile" class="u-btn no-border">
-                <img class="svg u-icon" src="@/assets/image/ico/share-64.png"/>
+                <img class="svg u-icon" src="../../assets/image/ico/share-64.png"/>
               </button>
               <button @click.stop="resizeDiagram" class="u-btn no-border">
-                <img v-show="screenView == '70%'" class="svg u-icon" src="@/assets/image/ico/fit-to-screen.png"/>
-                <img v-show="screenView == '100%'" class="svg u-icon" src="@/assets/image/ico/normal-to-screen.png"/>
+                <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
+                <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
               </button>
             </div>
             <div class="btn-lot d-flex d-md-none">
