@@ -952,18 +952,29 @@ div#ud_update_div {
   }
 }
 
-
-::-webkit-scrollbar {
+textarea::-webkit-scrollbar, #textBox::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
-::-webkit-scrollbar-track-piece  {
-  background-color: #C2D2E4;
+textarea::-webkit-scrollbar-track-piece, #textBox::-webkit-scrollbar-track-piece  {
+  background-color: #263238;
 }
-::-webkit-scrollbar-thumb:vertical {
+textarea::-webkit-scrollbar-thumb:vertical, #textBox::-webkit-scrollbar-thumb:vertical {
   height: 25px;
-  background-color: #6084AE;
+  background-color: #7e8182;
 }
+
+/*::-webkit-scrollbar {*/
+/*  width: 12px;*/
+/*  height: 12px;*/
+/*}*/
+/*::-webkit-scrollbar-track-piece  {*/
+/*  background-color: #C2D2E4;*/
+/*}*/
+/*::-webkit-scrollbar-thumb:vertical {*/
+/*  height: 25px;*/
+/*  background-color: #6084AE;*/
+/*}*/
 
 div#ud_tools_div{
   -webkit-user-select: none;  /* Chrome all / Safari all */

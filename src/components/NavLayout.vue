@@ -131,15 +131,15 @@
                     <i class="float-end fa fa-caret-down ml2"> </i>
                   </button>
                   <div class="dropdown-content" >
-                    <router-link :to="{name: 'Editeur', params: {name: 'umld-demo-project'}}">
+                    <a href="/editeur/umld-demo-project" >
                       <i class="fa fa-project-diagram ml2"> </i> Classe
-                    </router-link>
-                    <router-link :to="{name: 'Editeur', params: {name: 'umld-démo-project'}}">
-                      <i class="fa fa-project-diagram ml2"> </i> Cas d'utilisatio
-                    </router-link>
-                    <router-link :to="{name: 'Editeur', params: {name: 'umld-démo-project'}}">
+                    </a>
+                    <a href="/editeur/umld-demo-project" >
+                      <i class="fa fa-project-diagram ml2"> </i> Cas d'utilisation
+                    </a>
+                    <a href="/editeur/umld-demo-project" >
                       <i class="fa fa-project-diagram ml2"> </i> Séquence
-                    </router-link>
+                    </a>
                   </div>
                 </div>
               </div>

@@ -4,7 +4,7 @@
       <div class="edit-zone resizable-left">
         <header class="edit-header space-between darkula">
           <div class="d-flex">
-            <button class="u-btn u-btn-secondary"><i class="fa fa-home"></i></button>
+            <button class="u-btn u-btn-secondary" @click="this.$router.push({name: 'projetView', params: {code: 'default'}})"><i class="fa fa-home"></i></button>
             <div class="btn-lot d-none d-md-flex">
               <button @click.stop="orderSync" class="u-btn no-border np">
                 <i class="fa fa-sync-alt"></i>
@@ -203,15 +203,15 @@
               <!--send to specific-->
               <div class="w-100 mb-1">
                 <form class="d-flex">
-                  <div class="d-flex col-9 email_f">
+                  <div class="d-flex col-8 email_f px-0">
                     <input class="col-8" type="email" placeholder="Email"/>
-                    <select class="col-3">
+                    <select class="col-4">
                       <option id="sel_opt">👁️ &nbsp;&nbsp;Peut Lire </option>
                       <option id="sel_opt">📝️ &nbsp;&nbsp;Peut Modifier </option>
                       <option id="sel_opt">🌐️ &nbsp;&nbsp;Peut Partager </option>
                     </select>
                   </div>
-                  <button class="s_btn col-3 submit_f" type="submit">INVITER</button>
+                  <button class="s_btn col-4 submit_f s_invite" type="submit">INVITER</button>
                 </form>
               </div>
 
@@ -538,12 +538,15 @@ export default {
     this.canvasHeight = document.getElementById('gb22k').offsetHeight
   },
 
-  beforeMount() {
-
+  beforeRouteUpdate(to, from) {
+    console.log(from);
   }
 }
 </script>
 <style scoped>
+.s_invite{
+  border-radius: 0px !important;
+}
 .zoomLabel{
   font-size: .7em; user-select: none;
 }
