@@ -2,17 +2,13 @@ module.exports = {
   presets: [
     '@vue/cli-plugin-babel/preset'
   ],
-  rules: [
-    {
-      test: /\.(png|jpg|gif|svg)$/i,
-      use: [
-        {
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-          },
-        },
-      ],
-    },
+  plugins: [
+    [
+      "url-loader",
+      {
+        "extensions": ["png", "jpg", "jpeg", "gif", "svg", "pdf"],
+        "limit": 10000
+      }
+    ]
   ]
 }
