@@ -288,7 +288,7 @@ button{
   border-bottom: 1px solid #e0e0e0;
   background-color: #f5f5f5;
   list-style-type: none;
-  padding: 10px 2%;
+  padding: 5px 2% 10px;
   margin: 0px;
   transition: all 275ms ease-in-out;
   display: block;
@@ -440,4 +440,36 @@ button{
 }
 .no-mw{
   margin-left: .5em;
+}
+.width15{
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: .3em;
+}
+.cont_select_int li{
+  display: flex;
+  align-items: center;
+}
+.cont_select_int li span{
+  position: relative;
+  top: 0.3em !important;
+  left: .3em;
+}
+.cont_select_int li svg{
+  position: relative;
+  bottom: 0.5em;
+}
+.selecionado_opcion{
+  display: flex;
+  align-items: center;
+}
+.selecionado_opcion .umlTypeName{
+  position: relative;
+  top: 0em !important;
+  left: .2em !important;
+}
+.selecionado_opcion .width15{
+  position: relative;
+  top: .0em !important;
 }

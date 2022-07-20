@@ -12,16 +12,39 @@
             </div>
           </div>
           <!-- -------------------------------- -->
-          <div class="select_mate" data-mate-select="active">
+          <div class="select_mate d-none d-md-block" data-mate-select="active">
             <select class="no-select" name="" onchange="" onclick="return false;" id="">
               <option value="">Choisir le type</option>
-              <option value="1"> <img width=15 src="@/assets/image/ico/icons8-diagram-64.png" alt="uml chart type icon"/> <span class="umlTypeName">USE CASE</span> </option>
-              <option value="2"> <img width=15 src="@/assets/image/ico/icons8-diagram-64.png" alt="uml chart type icon"/> <span class="umlTypeName">CLASS</span> </option>
-              <option value="4"> <img width=15 src="@/assets/image/ico/icons8-diagram-64.png" alt="uml chart type icon"/> <span class="umlTypeName">SEQUENCE</span> </option>
+              <option value="1">
+                <svg class="width15" alt="uml chart type icon" version="1.0" xmlns="http://www.w3.org/2000/svg" width="64.000000pt" height="64.000000pt" viewBox="0 0 64.000000 64.000000" preserveAspectRatio="xMidYMid meet">
+                  <g transform="translate(0.000000,64.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                    <path d="M450 555 c0 -24 -3 -25 -58 -25 -80 0 -90 -13 -94 -115 l-3 -80 -57 -3 -58 -3 0 36 0 35 -65 0 -65 0 0 -80 0 -80 65 0 65 0 0 35 0 35 60 0 60 0 0 -83 c0 -104 10 -117 93 -117 54 0 57 -1 57 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -23 -3 -25 -49 -25 -70 0 -81 14 -81 106 l0 74 64 0 c59 0 65 -2 68 -22 3 -21 9 -23 71 -26 l67 -3 0 61 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -25 -1 -26 -62 -23 l-63 3 -3 71 c-4 89 8 104 79 104 46 0 49 -2 49 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25z m120 -35 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z m-420 -200 l0 -60 -40 0 -40 0 0 60 0 60 40 0 40 0 0 -60z m418 3 c3 -33 3 -33 -42 -33 -46 0 -46 0 -46 36 l0 35 43 -3 c39 -3 42 -5 45 -35z m2 -203 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z"/>
+                  </g>
+                </svg>
+                <span class="umlTypeName">USE CASE</span> </option>
+              <option value="2">
+                <svg class="width15" alt="uml chart type icon" version="1.0" xmlns="http://www.w3.org/2000/svg" width="64.000000pt" height="64.000000pt" viewBox="0 0 64.000000 64.000000" preserveAspectRatio="xMidYMid meet">
+                  <g transform="translate(0.000000,64.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                    <path d="M450 555 c0 -24 -3 -25 -58 -25 -80 0 -90 -13 -94 -115 l-3 -80 -57 -3 -58 -3 0 36 0 35 -65 0 -65 0 0 -80 0 -80 65 0 65 0 0 35 0 35 60 0 60 0 0 -83 c0 -104 10 -117 93 -117 54 0 57 -1 57 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -23 -3 -25 -49 -25 -70 0 -81 14 -81 106 l0 74 64 0 c59 0 65 -2 68 -22 3 -21 9 -23 71 -26 l67 -3 0 61 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -25 -1 -26 -62 -23 l-63 3 -3 71 c-4 89 8 104 79 104 46 0 49 -2 49 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25z m120 -35 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z m-420 -200 l0 -60 -40 0 -40 0 0 60 0 60 40 0 40 0 0 -60z m418 3 c3 -33 3 -33 -42 -33 -46 0 -46 0 -46 36 l0 35 43 -3 c39 -3 42 -5 45 -35z m2 -203 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z"/>
+                  </g>
+                </svg>
+                <span class="umlTypeName">CLASS</span> </option>
+              <option value="4">
+                <svg class="width15" alt="uml chart type icon" version="1.0" xmlns="http://www.w3.org/2000/svg" width="64.000000pt" height="64.000000pt" viewBox="0 0 64.000000 64.000000" preserveAspectRatio="xMidYMid meet">
+                  <g transform="translate(0.000000,64.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                    <path d="M450 555 c0 -24 -3 -25 -58 -25 -80 0 -90 -13 -94 -115 l-3 -80 -57 -3 -58 -3 0 36 0 35 -65 0 -65 0 0 -80 0 -80 65 0 65 0 0 35 0 35 60 0 60 0 0 -83 c0 -104 10 -117 93 -117 54 0 57 -1 57 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -23 -3 -25 -49 -25 -70 0 -81 14 -81 106 l0 74 64 0 c59 0 65 -2 68 -22 3 -21 9 -23 71 -26 l67 -3 0 61 0 60 -70 0 c-68 0 -70 -1 -70 -25 0 -25 -1 -26 -62 -23 l-63 3 -3 71 c-4 89 8 104 79 104 46 0 49 -2 49 -25 0 -24 2 -25 70 -25 l70 0 0 60 0 60 -70 0 c-68 0 -70 -1 -70 -25z m120 -35 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z m-420 -200 l0 -60 -40 0 -40 0 0 60 0 60 40 0 40 0 0 -60z m418 3 c3 -33 3 -33 -42 -33 -46 0 -46 0 -46 36 l0 35 43 -3 c39 -3 42 -5 45 -35z m2 -203 c0 -29 -2 -30 -45 -30 -43 0 -45 1 -45 30 0 29 2 30 45 30 43 0 45 -1 45 -30z"/>
+                  </g>
+                </svg>
+<!--                <img width=15 src="@/assets/image/ico/icons8-diagram-64.png" alt="uml chart type icon"/> -->
+                <span class="umlTypeName">SEQUENCE</span> </option>
             </select>
             <p class="selecionado_opcion"  onclick="open_select(this)" ></p>
             <span onclick="open_select(this)" class="icon_select_mate" >
-              <img width="20px" style="color: #000;" class="svg" src="@/assets/image/ico/plus.png"/>
+              <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="24.000000pt" height="24.000000pt" viewBox="0 0 24.000000 24.000000" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                  <path d="M110 160 c0 -27 -3 -30 -30 -30 -16 0 -30 -4 -30 -10 0 -5 14 -10 30 -10 27 0 30 -3 30 -30 0 -16 5 -30 10 -30 6 0 10 14 10 30 0 27 3 30 30 30 17 0 30 5 30 10 0 6 -13 10 -30 10 -27 0 -30 3 -30 30 0 17 -4 30 -10 30 -5 0 -10 -13 -10 -30z"/>
+                </g>
+              </svg>
             </span>
             <div class="cont_list_select_mate">
               <ul class="cont_select_int">  </ul>
@@ -68,6 +91,11 @@
               </button>
               <button @click.stop="resizeDiagram" class="u-btn u-btn-share no-border">
                 <img v-show="screenView == '70%'" class="svg u-icon" src="@/assets/image/ico/fit-to-screen.png"/>
+<!--                <svg v-show="screenView == '100%'" version="1.0" class="svg u-icon" xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">-->
+<!--                  <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">-->
+<!--                    <path d="M242 258 l-62 -63 0 38 c0 20 -4 37 -10 37 -5 0 -10 -25 -10 -55 l0 -55 -55 0 c-30 0 -55 -4 -55 -10 0 -5 17 -10 37 -10 l37 0 -64 -65 c-35 -35 -61 -68 -57 -72 4 -4 37 22 72 57 l65 64 0 -37 c0 -20 5 -37 10 -37 6 0 10 25 10 55 l0 55 55 0 c30 0 55 5 55 10 0 6 -17 10 -37 10 l-37 0 62 63 c34 34 62 66 62 70 0 17 -19 3 -78 -55z"/>-->
+<!--                  </g>-->
+<!--                </svg>-->
                 <img v-show="screenView == '100%'" class="svg u-icon" src="@/assets/image/ico/normal-to-screen.png"/>
               </button>
             </div>
