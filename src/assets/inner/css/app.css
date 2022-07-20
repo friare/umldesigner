@@ -225,7 +225,7 @@ button{
 /* /// END DECORATION CSS /// */
 .icon_select_mate {
    position: absolute;
-   top: 6.5px;
+   top: 4px;
    right: 2%;
    font-size: 16px;
    height: 22px;
@@ -316,7 +316,7 @@ button{
   font-size: 0.95em;
   padding-left: 0.5em;
   position: relative;
-  top: 0.15em;
+  /*top: 0.15em;*/
 }
 .select_mate option{
   padding-left: 0.5em;

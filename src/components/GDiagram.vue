@@ -58,9 +58,9 @@
         initDraw () {
             // eslint-disable-next-line no-undef
             this.umlDiagram = new UMLClassDiagram({
-                id: this.diagramType,
+              id: this.diagramType,
 
-                background: 'transparent'
+              background: 'transparent'
             });
             this.umlDiagram.setXMLString(this.xml2)
             //Draw the diagram
@@ -70,45 +70,47 @@
             this.umlDiagram.interaction(true);
         },
         refreshDraw () {
-            this.umlDiagram.setUpdateHeightCanvas(true)
-            this.umlDiagram.setUpdateWidthCanvas(true)
-            this.umlDiagram.updateHeightCanvas()
-            this.umlDiagram.updateWidthCanvas()
-            this.umlDiagram.notifyDraw()
-            // this.umlDiagram.setHeight(this.height)
-            // this.umlDiagram. notifyDraw() ()
-            // this.umlDiagram.setXMLString(this.xml2)
-            // this.umlDiagram. notifyDraw() ()
-            // this.umlDiagram.draw();
+          this.umlDiagram.setUpdateHeightCanvas(true)
+          this.umlDiagram.setUpdateWidthCanvas(true)
+          this.umlDiagram.updateHeightCanvas()
+          this.umlDiagram.updateWidthCanvas()
+          this.umlDiagram.notifyDraw()
+          // this.umlDiagram.setHeight(this.height)
+          // this.umlDiagram. notifyDraw() ()
+          // this.umlDiagram.setXMLString(this.xml2)
+          // this.umlDiagram. notifyDraw() ()
+          // this.umlDiagram.draw();
 
 
-
-            // if (this.diagramData != null) {
-            //     var nodeDataArray = this.diagramData.nodeDataArray
-            //     // var linkDataArray = this.diagramData.linkDataArray
-            //     var tables = {}
-            //     for (let i = 0; i < nodeDataArray.length; i++) {
-            //         // eslint-disable-next-line no-undef
-            //         var t = new UMLClass({ x:100*i, y:50 })
-            //         t.setName(nodeDataArray.name);
-            //         for (let j = 0; j < nodeDataArray.properties.length; j++) {
-            //             t.addAttribute( nodeDataArray.properties.name );
-            //         }
-            //         for (let j = 0; j < nodeDataArray.methods.length; j++) {
-            //             t.addOperation( nodeDataArray.methods.name+'()' );
-            //         }
-            //         tables[nodeDataArray.name] = t
-            //         this.umlDiagram.addElement(tables[nodeDataArray.name]);
-            //     }
-            //     //Draw the diagram
-            //     this.diagramData.draw();
-            //
-            //     //Interaction is possible (editable)
-            //     this.diagramData.interaction(true);
-            // }
+          // if (this.diagramData != null) {
+          //     var nodeDataArray = this.diagramData.nodeDataArray
+          //     // var linkDataArray = this.diagramData.linkDataArray
+          //     var tables = {}
+          //     for (let i = 0; i < nodeDataArray.length; i++) {
+          //         // eslint-disable-next-line no-undef
+          //         var t = new UMLClass({ x:100*i, y:50 })
+          //         t.setName(nodeDataArray.name);
+          //         for (let j = 0; j < nodeDataArray.properties.length; j++) {
+          //             t.addAttribute( nodeDataArray.properties.name );
+          //         }
+          //         for (let j = 0; j < nodeDataArray.methods.length; j++) {
+          //             t.addOperation( nodeDataArray.methods.name+'()' );
+          //         }
+          //         tables[nodeDataArray.name] = t
+          //         this.umlDiagram.addElement(tables[nodeDataArray.name]);
+          //     }
+          //     //Draw the diagram
+          //     this.diagramData.draw();
+          //
+          //     //Interaction is possible (editable)
+          //     this.diagramData.interaction(true);
+          // }
         }
     },
     mounted () {
+        // console.log('>>>')
+        // console.log(this.extFileLoaded)
+        // console.log(this.totalExtFile)
         this.initDraw()
     },
     watch: {
@@ -139,7 +141,18 @@
         }
     },
     beforeCreate () {
-      //
+      var scripts = [
+          "/utils/jsUML2/script/UDCore.js",
+          "/utils/jsUML2/script/UDModules.js"
+      ];
+      scripts.forEach(script => {
+          let tag = document.createElement("script");
+          document.head.appendChild(tag);
+          tag.addEventListener('load', () => {
+            this.extFileLoaded += 1;
+          });
+          tag.setAttribute("src", script);
+      });
     },
   }
 </script>

@@ -7,12 +7,8 @@
             <button class="u-btn u-btn-secondary"><i class="fa fa-home"></i></button>
             <div class="btn-lot d-none d-md-flex">
               <button @click.stop="orderSync" class="u-btn no-border np">
-                <!--                <i class="material-icons u-icon">undo</i>-->
                 <i class="fa fa-sync-alt"></i>
               </button>
-              <!--              <button class="u-btn no-border np">-->
-              <!--                <i class="material-icons u-icon">redo</i>-->
-              <!--              </button>-->
             </div>
           </div>
           <!-- -------------------------------- -->
@@ -43,7 +39,7 @@
           <div class="resizer"></div>
         </div>
         <div class="pb-2 app-data d-flex align-items-center justify-content-between darkula">
-          <div><a class="github" href="http://genereux-dev.me" target="_blank"><i class="fa2 fa-github u-icon"></i></a></div>
+          <div><a class="github" href="https://github.com/Genereux-akotenou" target="_blank"><i class="fa2 fa-github u-icon"></i></a></div>
           <div class="no-select">v1.0.0</div>
         </div>
       </div>
@@ -371,7 +367,7 @@ export default {
       preniumHTML: false,
       codeHTML: false,
       arrowPosition: 'center',
-      zoomScale: 100,
+      zoomScale: 90,
       syncOrder: ''
     }
   },

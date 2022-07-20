@@ -14,10 +14,10 @@
 // eslint-disable-next-line no-unused-vars
 //import { caret } from 'jquery.caret'
 // import { guestSocketAPI } from '../api/connector'
-const Typo = require('typo-js');
-var langDict = new Typo("fr_FR", false, false, {
-  dictionaryPath: "/utils/typo-js/dictionaries"
-});
+// const Typo = require('typo-js');
+// var langDict = new Typo("fr_FR", false, false, {
+//   dictionaryPath: "/utils/typo-js/dictionaries"
+// });
 
 export default {
   name: "GTextEdit",
@@ -81,9 +81,7 @@ export default {
     },
     updateBackgroundEditor () {
       let hiddenEditor = document.getElementById("hiddenEditor")
-
       let plainText = hiddenEditor.value.replace(/<div>/gi,'').replace(/<\/div>/gi,'').replace('&nbsp;', '').replace(/<[^>]*>?/gm, '').replaceAll("\n", " \n")
-      // let plainText = hiddenEditor.innerHTML.replace(/<div>/gi,'').replace('&nbsp;', '').replace(/<[^>]*>?/gm, '').replace(/<\/div>/gi," \n") //.replaceAll("\n", " \n")
       console.log("plainText")
       console.log(plainText)
       console.log("plainText")
@@ -93,18 +91,18 @@ export default {
         this.debug(wordList)
         this.debug("wordList")
         let newWordList = []
-        for (const wordListKey in wordList) {
-          if(wordList[wordListKey].trim().length != 0 && !langDict.check(wordList[wordListKey])) {
-            let startTag = "<span class='typos'>"
-            let endTag = "</span>"
-            newWordList.push(startTag + wordList[wordListKey] + endTag)
-          } else {
-            if(wordList[wordListKey].trim().length == 0)
-              newWordList.push(" ")
-            else
-              newWordList.push(wordList[wordListKey])
-          }
-        }
+        // for (const wordListKey in wordList) {
+        //   if(wordList[wordListKey].trim().length != 0 && !langDict.check(wordList[wordListKey])) {
+        //     let startTag = "<span class='typos'>"
+        //     let endTag = "</span>"
+        //     newWordList.push(startTag + wordList[wordListKey] + endTag)
+        //   } else {
+        //     if(wordList[wordListKey].trim().length == 0)
+        //       newWordList.push(" ")
+        //     else
+        //       newWordList.push(wordList[wordListKey])
+        //   }
+        // }
         this.debug(newWordList)
         let newLineSentence = newWordList.join("&nbsp;")
         newLineSentence = newLineSentence.replaceAll("\n", "<br>")
@@ -235,108 +233,17 @@ export default {
     typosTracker (event) {
       let oldPos = this.cursorPosition()
       let textBox = document.getElementById("textBox")
-      if (event.keyCode === 13) {
-        // textBox.innerHTML += "<br>"
-        // alert(oldPos)
-        // this.setCaretPosition(textBox, oldPos+4)
-      }
-      else {
-        // textBox.innerHTML = textBox.innerHTML.replace(/<div>/gi,'').replace(/<\/div>/gi,'').replace('&nbsp;', '')
-        // console.log(textBox.innerHTML)
-        // console.log($().jquery)
-        // let decalPos = 0
-        //
-        // let plainText = textBox.innerHTML.replace(/<[^>]*>?/gm, '')
-        // if (plainText.trim().length != 0) {
-        //   let wordList = plainText.split(" ")
-        //   this.debug("wordList")
-        //   this.debug(wordList)
-        //   this.debug("wordList")
-        //   let newWordList = []
-        //   for (const wordListKey in wordList) {
-        //     if(wordList[wordListKey].trim().length != 0 && !langDict.check(wordList[wordListKey])) {
-        //       let startTag = "<span class='typos'>"
-        //       let endTag = "</span>"
-        //       newWordList.push(startTag + wordList[wordListKey] + endTag)
-        //       decalPos += (startTag.length + endTag.length)
-        //       console.log(decalPos)
-        //       // newWordList.push(wordList[wordListKey])
-        //     } else {
-        //       if(wordList[wordListKey].trim().length == 0)
-        //         newWordList.push(" ")
-        //       else
-        //         newWordList.push(wordList[wordListKey])
-        //     }
-        //   }
-        //   this.debug(newWordList)
-        //   let newLineSentence = newWordList.join("&nbsp;")
-        //   textBox.innerHTML = newLineSentence
-        // }
+      if (event.keyCode != 13) {
         this.setCaretPosition(textBox, oldPos)
       }
-
-      // // old cursor pos
-      // console.log('------------')
-      // // var oldPos = $('#textBox').caret('position')
-      // var oldPos = $('#textBox').caret('position')
-      // console.log(oldPos)
-      // console.log($('#textBox').caret('offset'))
-      // console.log(this.cursorPosition())
-      // console.log('------------')
-      // //this.cursorPosition()
-      // this.debug(document.getElementById("textBox").childNodes)
-      // // SENTENCES
-      // const rootDiv = document.getElementById('textBox')
-      // let eachDivSentences = rootDiv.children;
-      // if (eachDivSentences.length == 0)
-      //   return null
-      // for (let i = 0; i < eachDivSentences.length; i++) {
-      //   //let textLine = eachDivSentences[i].innerHTML.replace(/\+/gm, '')
-      //   // let textLine = eachDivSentences[i].innerHTML.replace(/<span class='typos'[^>]*>?/gm, '')
-      //   let textLine = eachDivSentences[i].innerHTML.replace(/<[^>]*>?/gm, '')
-      //   if (textLine.trim().length != 0) {
-      //     let wordList = textLine.split(" ")
-      //     let newWordList = []
-      //     for (const wordListKey in wordList) {
-      //       this.debug(wordList[wordListKey])
-      //       this.debug('++++++++++++++++++++')
-      //       if(wordList[wordListKey].trim().length != 0 && !langDict.check(wordList[wordListKey])) {
-      //         newWordList.push("<span class='typos'>" + wordList[wordListKey] + "</span>")
-      //       } else {
-      //         newWordList.push(wordList[wordListKey])
-      //       }
-      //     }
-      //     let newLineSentence = newWordList.join(' ')
-      //     rootDiv.children[i].innerHTML = newLineSentence
-      //     // this.setCaret(i)
-      //     //$('#textBox').children().eq(i).caret('position', oldPos)
-      //     this.setCaretPosition(document.getElementById("textBox"), 50)
-      //     console.log('+++++'+i+'++++++')
-      //     // console.log($('#textBox').children().eq(i).caret('position'))
-      //     console.log($('#textBox').caret('position'))
-      //     console.log('++++++++++++')
-      //     this.debug(textLine)
-      //   }
-      // }
-      // $('#textBox').caret('position', oldPos)
-      // console.log('++++++++++++')
-      // console.log($('#textBox').caret('position'))
-      // console.log('++++++++++++')
-      this.debug('------')
     }
   },
   mounted() {
     const ele = document.getElementById('hiddenEditor')
     const ele1 = document.getElementById('textBox')
-
     ele.spellcheck = false;
     ele1.spellcheck = false;
     ele.focus();
-
-    console.log(langDict)
-    if(!langDict.check('tuyoterie')) {
-      console.log(langDict.suggest('tuyoterie'))
-    }
   },
   watch: {
     action() {
@@ -421,5 +328,42 @@ export default {
   /*}*/
   * {
     user-select: auto !important;
+  }
+
+  /*html {*/
+  /*  overflow: auto;*/
+  /*}*/
+  /*body {*/
+  /*  position: absolute;*/
+  /*  top: 20px;*/
+  /*  left: 20px;*/
+  /*  bottom: 20px;*/
+  /*  right: 20px;*/
+  /*  padding: 30px;*/
+  /*  overflow-y: scroll;*/
+  /*  overflow-x: hidden;*/
+  /*}*/
+
+  /* Let's get this party started */
+  text-area::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  /* Track */
+  text-area::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  text-area::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,0,0,0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  }
+  text-area::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(255,0,0,0.4);
   }
 </style>
