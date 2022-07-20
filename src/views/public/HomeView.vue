@@ -201,7 +201,7 @@
       </div>
 
       <div class="hero__tools text-center">
-        <p>De grand projets commencent toujours par de petit organigrammes. Alors exquisons un diagramme 😎️ ...</p>
+        <p class="mb-5">De grand projets commencent toujours par de petit organigrammes. Alors exquisons un diagramme 😎️ ...</p>
         <router-link :to="{name: 'Register'}">
           <div class="hero__cta" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rem:" data-state="closed">
             Inscription
