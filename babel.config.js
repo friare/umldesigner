@@ -4,7 +4,7 @@ module.exports = {
   ],
   plugins: [
     [
-      "url-loader",
+      "inline-import-data-uri",
       {
         "extensions": ["png", "jpg", "jpeg", "gif", "svg", "pdf"],
         "limit": 10000
