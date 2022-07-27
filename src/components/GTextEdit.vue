@@ -2,7 +2,7 @@
   <div class="editorContainer">
     <!--editor-->
     <div id="textBox" class="editable" contenteditable="true"></div>
-    <textarea wrap="hard" id="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" name="" cols="30" rows="10" spellcheck="false"></textarea>
+    <textarea wrap="hard" id="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" name="" cols="30" rows="10" spellcheck="false"Un utilisateur a un id, un email, un mot_de_passe, un nom, un prénom. Un utilisateur peut s'inscrire, se connecter, et se déconnecter. Une alerte est constituée d'un id, d'un méssage et d'une date. Un utilisateur peut avoir plusieurs alertes et une alerte est destinée a un seul utilisateur. Un utilisateur peut créer plusieurs projets. Un projet contient plusieurs diagrammes. Un diagramme est caractérisé par un id, son type, son nom, son text et une image_xml. A chaque Projet est associé des code et des collaborateurs. Un collaborateur est caractérisé par un id et son un role. Un code contient un id, un langage et du text.</textarea>
     <!--float div-->
     <div v-show="nextWord != null && startEdit" class="wordPlane" id="mainWordPlane">
       {{ this.nextWord }}
