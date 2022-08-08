@@ -1,15 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Landing from "../views/public/HomeView"
-import LoginView from "../views/public/LoginView";
-import RegisterView from "@/views/public/RegisterView";
 import Demo from "@/views/public/Demo";
-import DefaultView from "@/views/private/DefaultView";
-import TutorialView from "@/views/private/TutorialView";
-import AlertView from "@/views/private/AlertView";
-import ProfileView from "@/views/private/ProfileView";
+//import LoginView from "../views/public/LoginView";
+//import RegisterView from "@/views/public/RegisterView";
+// import DefaultView from "@/views/private/DefaultView";
+// import TutorialView from "@/views/private/TutorialView";
+// import AlertView from "@/views/private/AlertView";
+// import ProfileView from "@/views/private/ProfileView";
 import SettingsView from "@/views/private/SettingsView";
-import ProjectView from "@/views/private/ProjectView";
+// import ProjectView from "@/views/private/ProjectView";
 // import EditorView from "@/views/private/EditorView";
+
+const ifAuthentificated = (to, from, next) => {
+  if(sessionStorage.getItem('token') != null) {
+    next()
+    return
+  }
+  next('/connexion')
+}
+
+const redirectIfAuthentificated = (to, from, next) => {
+  if(sessionStorage.getItem('token') != null) {
+    next('acceuil')
+    return
+  }
+  next()
+}
 
 const routes = [
   {
@@ -25,57 +41,84 @@ const routes = [
   {
     path: '/connexion',
     name: 'Login',
-    component: LoginView
+    component: import('@/views/public/LoginView'), //LoginView
+    beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/inscription',
     name: 'Register',
-    component: RegisterView
+    component: import('@/views/public/RegisterView'), //RegisterView
+    beforeEnter: redirectIfAuthentificated,
   },
   {
-    path: '/mot-de-passe-oublie',
+    path: '/activation-de-compte/:token',
+    name: 'ActivateAccount',
+    component: import('@/components/utils/ActivateAccount'),
+    beforeEnter: redirectIfAuthentificated,
+  },
+  {
+    path: '/mot-de-passe-oublie', 
     name: 'ForgetPassword',
-    component: LoginView
+    component: import('@/components/utils/ForgetPassword'),
+    beforeEnter: redirectIfAuthentificated,
+  },
+  {
+    path: '/mot-de-passe-oublie/:token',
+    name: 'ForgetPasswordForm',
+    component: import('@/components/utils/ForgetPasswordForm'),
+    beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/acceuil',
     name: 'Default',
-    component: DefaultView
+    component: import('@/views/private/DefaultView'),
+    beforeEnter: ifAuthentificated,
   },
   {
     path: '/tutoriels',
     name: 'Tutorials',
-    component: TutorialView
+    component: import('@/views/private/TutorialView'),
+    beforeEnter: ifAuthentificated,
   },
   {
     path: '/alerts',
     name: 'Alert',
-    component: AlertView
+    component: import('@/views/private/AlertView'),
+    beforeEnter: ifAuthentificated,
   },
   {
     path: '/profil/:user',
     name: 'Profile',
-    component: ProfileView
+    component: import('@/views/private/ProfileView'),
+    beforeEnter: ifAuthentificated,
   },
   {
     path: '/parametres',
     name: 'Setting',
-    component: SettingsView
+    component: SettingsView,
+    beforeEnter: ifAuthentificated,
   },
   {
-    path: '/projet/:code',
+    path: '/projet/:code/:id',
     name: 'projetView',
-    component: ProjectView
+    component: import('@/views/private/ProjectView'),
+    beforeEnter: ifAuthentificated,
   },
   {
     path: '/editeur/:name',
     name: 'Editeur',
-    component: () => import('@/views/private/EditorView') //EditorView
+    component: () => import('@/views/private/EditorView'), //EditorView
+    beforeEnter: ifAuthentificated,
+  },
+  {
+    path: '/leave-feedback',
+    name: 'FeedBack',
+    component: () => import('@/views/public/FeedBackView')
   },
   {
     path: '/404',
     name: '404',
-    component: () => import('../views/shared/404')
+    component: () => import('@/views/shared/404')
   }
 ]
 

@@ -1,31 +1,31 @@
 <template>
   <div>
-    <nav-layout active-menu="project" project-code="defaut" :open-project-list="true" :highlightMenu="true">
+    <nav-layout @pushProjectData="loadData" active-menu="project" :project-code="this.$route.params.code" :open-project-list="true" :highlightMenu="true">
       <template #header>
         <div class="second-nav">
           <nav class="SecondNavItems-body width-full" aria-label="User profile">
-            <a @click.prevent="switchNav('overview')" href="/projets" data-tab-item="overview" :class="(activeNav == 'overview') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('overview')" href="/projets" data-tab-item="overview" :class="(activeNav == 'overview') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_1">
               <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-book SecondNavItems-octicon hide-sm">
                 <path fill-rule="evenodd" d="M0 1.75A.75.75 0 01.75 1h4.253c1.227 0 2.317.59 3 1.501A3.744 3.744 0 0111.006 1h4.245a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75h-4.507a2.25 2.25 0 00-1.591.659l-.622.621a.75.75 0 01-1.06 0l-.622-.621A2.25 2.25 0 005.258 13H.75a.75.75 0 01-.75-.75V1.75zm8.755 3a2.25 2.25 0 012.25-2.25H14.5v9h-3.757c-.71 0-1.4.201-1.992.572l.004-7.322zm-1.504 7.324l.004-5.073-.002-2.253A2.25 2.25 0 005.003 2.5H1.5v9h3.757a3.75 3.75 0 011.994.574z"></path>
               </svg>
               Aperçu
             </a>
-            <a @click.prevent="switchNav('diagrammes')" href="/projets?tab=repositories" data-tab-item="diagrammes" :class="(activeNav == 'diagrammes') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('diagrammes')" href="/projets?tab=repositories" data-tab-item="diagrammes" :class="(activeNav == 'diagrammes') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_2">
               <i class="fa fa-project-diagram"></i>
               Diagrammes
               <span title="01" data-view-component="true" class="Counter">03</span>
             </a>
-            <a @click.prevent="switchNav('codeBox')" href="/projets?tab=projects" data-tab-item="codebox" :class="(activeNav == 'codeBox') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('codeBox')" href="/projets?tab=projects" data-tab-item="codebox" :class="(activeNav == 'codeBox') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_3">
               <i class="fa fa-code"></i>
               CodeBox
               <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span>
             </a>
-            <a @click.prevent="switchNav('collaborateurs')" href="/projets?tab=packages" data-tab-item="collaborateurs" :class="(activeNav == 'collaborateurs') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('collaborateurs')" href="/projets?tab=packages" data-tab-item="collaborateurs" :class="(activeNav == 'collaborateurs') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_4">
               <i class="fa fa-users"></i>
               Collaborateurs
               <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span>
             </a>
-            <a @click.prevent="switchNav('parametres')" href="/projets?tab=stars" data-tab-item="parametres" :class="(activeNav == 'parametres') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('parametres')" href="/projets?tab=stars" data-tab-item="parametres" :class="(activeNav == 'parametres') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_5">
               <i class="fa fa-code-fork"></i>
               Parametrès
             </a>
@@ -33,7 +33,10 @@
         </div>
       </template>
       <template #body>
-        <div v-if="activeNav=='overview'" style="min-height: 100vh;">
+        <div v-if="projectData==null">
+          <pre-loader></pre-loader>
+        </div>
+        <div v-else-if="activeNav=='overview'" style="min-height: 100vh;">
           <div class="d-flex flex-wrap row">
             <div class="col-12 col-md-8 mt-2">
               <div class="card mb-2">
@@ -212,21 +215,40 @@
 </template>
 
 <script>
-import NavLayout from "@/components/NavLayout";
+import NavLayout from "@/components/NavLayout"
+import PreLoader from "@/components/shared/PreLoader"
 
 export default {
     name: 'ProjectView',
     components: {
       NavLayout,
+      PreLoader
     },
     data () {
         return {
-        activeNav: 'diagrammes'
+        activeNav: 'diagrammes',
+        projectData: null,
       }
     },
     methods: {
-        switchNav (subMenu) {
-        this.activeNav = subMenu
+      switchNav (subMenu) {
+        if(this.projectData!=null) {
+          this.activeNav = subMenu
+        } 
+      },
+      animNavTab (e) {
+        if(this.projectData==null) {
+          e.target.style.cursor='progress'
+        } 
+        else{
+          e.target.style.cursor='pointer'
+        }
+      },
+      loadData(data) {
+        setTimeout(() => {
+          this.projectData = data
+          console.log(data)
+        }, 2000);
       }
     }
 }

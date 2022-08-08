@@ -23,58 +23,63 @@
       <!-- PAGE -->
       <div class="hero">
         <div class="">
+
           <div class="container-login100">
             <div class="wrap-login100 p-6">
-              <form @submit.prevent="signup" id="registrationForm" class="login100-form validate-form">
-                <span class="login100-form-title">
-                  Inscription
+              <form  @submit.prevent="resetPassword" class="login100-form validate-form">
+                <span class="login100-form-title pb-0">
+                    Mot de passe oublié?
                 </span>
-                <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
-                  <a href="javascript:void(0)" class="input-group-text bg-white text-muted square-right">
-                    <i class="mdi mdi-account" aria-hidden="true"></i>
-                  </a>
-                  <input v-model="register_name" id="gInput1" class="input100 border-start-0 ms-0 form-control" type="text" placeholder="Nom et Prénom ">
-                </div>
-                <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
-                  <a href="javascript:void(0)" class="input-group-text bg-white text-muted square-right">
-                    <i class="zmdi zmdi-email" aria-hidden="true"></i>
-                  </a>
-                  <input v-model="register_email" id="gInput2" class="input100 border-start-0 ms-0 form-control" type="email" placeholder="Email">
+                <p style="text-align: center;"><small >Choisissez un nouveau mot de passe</small></p>
+                <div class="panel panel-primary">
+                  <div class="panel-body tabs-menu-body p-0 pt-5">
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="tab5">
+                        <!-- field1 -->
+                        <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                          <a href="javascript:void(0)" class="input-group-text bg-white text-muted square-right">
+                            <i class="zmdi zmdi-lock" aria-hidden="true"></i>
+                          </a>
+                          <input autocomplete="new-password" v-model="reset_password1" id="gInput1" class="input100 border-start-0 ms-0 form-control" type="password" placeholder="Mot de passe">
+                        </div>
+                        <span class="err1">password not match</span>
+
+                        <!-- field2 -->
+                        <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                          <a href="javascript:void(0)" class="input-group-text bg-white text-muted square-right">
+                            <i class="zmdi zmdi-lock" aria-hidden="true"></i>
+                          </a>
+                          <input autocomplete="new-password" v-model="reset_password2" id="gInput2" class="input100 border-start-0 ms-0 form-control" type="password" placeholder="Confirmer le Mot de passe">
+                        </div>
+                        <span class="err1">password not match</span>
+
+                        <div class="container-login100-form-btn">
+                          <button v-if="waitingAPIResponse" type="submit" id="gRegisterBtn" class="login100-form-btn btn-primary hero__cta">
+                            <img  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
+                          </button>
+                          <button v-else type="submit" id="gRegisterBtn" class="login100-form-btn btn-primary hero__cta">
+                            Réinitialiser
+                          </button>
+                        </div>
+                        <div class="text-center pt-5">
+                          <p class="text-dark mb-0">Vous êtes nouveau?
+                            <router-link :to="{name: 'Register'}" class="text-primary ms-1">S'inscrire</router-link>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="wrap-input100 validate-input input-group" id="Password-toggle">
-                  <a href="javascript:void(0)" class="input-group-text bg-white text-muted square-right">
-                    <i class="zmdi zmdi-lock" aria-hidden="true"></i>
-                  </a>
-                  <input v-model="register_password" id="gInput3" class="input100 border-start-0 ms-0 form-control" type="password" placeholder="Mot de passe">
-                </div>
-                <span class="err1">password not match</span>
-
-                <label class="custom-control custom-checkbox mt-4">
-                  <input type="checkbox" checked required class="">
-                  <span class="custom-control-label">Accepter les <a class="text-primary" target="blank" href="terms">conditions et politiques</a></span>
-                </label>
-                <div class="container-login100-form-btn">
-                  <button v-if="waitingAPIResponse" type="submit" id="gRegisterBtn" class="btn login100-form-btn btn-primary">
-                    <img  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
-                  </button>
-                  <button v-else type="submit" id="gRegisterBtn" class="login100-form-btn btn-primary">
-                    M'inscrire
-                  </button>
-                </div>
-                <div class="text-center pt-3">
-                  <p class="text-dark mb-0">J'ai déjà un compte
-                    <router-link :to="{name: 'Login'}" class="text-primary ms-1">Me connecter</router-link>
-                  </p>
-                </div>
               </form>
             </div>
           </div>
+          <!-- CONTAINER CLOSED -->
         </div>
       </div>
 
       <transition name="slide-fade" appear mode="out-in">
-        <alert v-if="alertMe" :status="gAlertType" :message="gAlertMessage"></alert>
+        <alert v-show="alertMe" :status="gAlertType" :message="gAlertMessage"></alert>
       </transition>
 
       <!-- FOOTER -->
@@ -111,7 +116,7 @@ import Alert from '@/components/shared/Alert.vue'
 import { guestAPI } from '@/api/axios-api.js'
 
 export default {
-  name: 'LoginView',
+  name: 'ForgetPassword',
   
   components: {
     Alert
@@ -119,13 +124,12 @@ export default {
 
   data () {
     return {
-      register_name: '',
-      register_email: '',
-      register_password: '',
+      reset_password1: '',
+      reset_password2: '',
       alertMe: false,
       gAlertMessage: '',
       gAlertType: '',
-      inputFormat: [false, false, false],
+      inputFormat: [false, false],
       waitingAPIResponse: false,
     }
   },
@@ -139,59 +143,61 @@ export default {
         this.alertMe = false
       }, time);
     },
-    checkName () {
-      if(/.+/.test(document.getElementById('gInput1').value)) {
-        document.getElementById('gInput1').style.borderColor = "#b9f5b9"
-        this.inputFormat[0] = true
-      }
-      else{
-        document.getElementById('gInput1').style.borderColor = "#ffd5d5"
-        this.inputFormat[0] = false
-      }
-    },
-    checkMail () {
-      if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(document.getElementById('gInput2').value)) {
-        document.getElementById('gInput2').style.borderColor = "#b9f5b9"
-        this.inputFormat[1] = true
-      }
-      else{
-        document.getElementById('gInput2').style.borderColor = "#ffd5d5"
-        this.inputFormat[1] = false
-      }
-    },
     checkPassLenght (id) {
       if(document.getElementById(id).value.length >= 8) {
         document.getElementById(id).style.borderColor = "#b9f5b9"
         document.getElementsByClassName('err1')[0].style.display = "none";
-        this.inputFormat[2] = true
+        this.inputFormat[0] = true
       }
       else{
         document.getElementById(id).style.borderColor = "#ffd5d5"
-        document.getElementsByClassName('err1')[0].innerHTML = 'validation: au moins 8 caractères'
-        document.getElementsByClassName('err1')[0].style.color = "red"; 
-        document.getElementsByClassName('err1')[0].style.display = "block";
-        this.inputFormat[2] = false
+        let index = 0;
+        if(id.includes('2')) {
+          index = 1;
+        }
+        document.getElementsByClassName('err1')[index].innerHTML = 'validation: au moins 8 caractères'
+        document.getElementsByClassName('err1')[index].style.color = "red"; 
+        document.getElementsByClassName('err1')[index].style.display = "block";
+        this.inputFormat[0] = false
       }
     },
-    signup () {
-      if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.register_email) || this.register_password.length < 8 || this.register_name.length < 0) {
+    matchPass (id1, id2) {
+      let err = document.getElementsByClassName('err1')
+      if(document.getElementById(id1).value != document.getElementById(id2).value) {
+        for(let i = 0; i<err.length; i++) {
+          err[1].innerHTML = 'les mots de passe ne correspondent pas';
+          err[1].style.display = "block";
+          err[1].style.color = "red";
+        }
+      }
+      else{
+        for(let i = 0; i<err.length; i++) {
+          err[i].style.display = "none";
+        }
+        this.inputFormat[1] = true  
+      }
+    },
+    resetPassword () {
+      if(!(this.inputFormat[0] && this.inputFormat[1])) {
         this.displayError(' Oups ! Veuillez remplir tous les champs correctement.', 'alert-no')
       }
       else{
         this.waitingAPIResponse = true
 
-        guestAPI.post('/auth/register', {
-          name: this.register_name,
-          email: this.register_email,
-          password: this.register_password
+        guestAPI.post('/auth/reset-password', {
+          reset_token: this.$route.params.token,
+          new_password: this.reset_password1,
         })
         .then(response => {
-          if(response.status == 201) {
-            this.displayError('Compte créé avec succès. Vérifiez votre boîte mail pour activer votre compte.', 'alert-yes', 5000)
+          if(response.status == 200) {
+            this.displayError('Super ! Mot de passe réinitialisé avec succès. Connectez maintenant.', 'alert-yes', 5000)
             this.waitingAPIResponse = false
+            setTimeout(() => {
+              this.$router.push({name: 'Login'})
+            }, 4000)
           }
           else{
-            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+            this.displayError('Oups ! something went wrong.', 'alert-no')
             this.waitingAPIResponse = false
           }
         })
@@ -204,11 +210,14 @@ export default {
             this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
           }
           this.waitingAPIResponse = false
+          setTimeout(() => {
+              this.$router.push({name: 'Login'})
+          }, 2000)
         })
       }
     },
     animSubmitBtn() {
-      if(this.inputFormat[0] && this.inputFormat[1] && this.inputFormat[2]) {
+      if(this.inputFormat[0] && this.inputFormat[1]) {
         document.getElementById('gRegisterBtn').classList.add('animate__headShake')
       }
       else{
@@ -218,18 +227,15 @@ export default {
   },
 
   watch: {
-    register_name: function() {
-      this.checkName()
+    reset_password1: function() {
+      this.checkPassLenght('gInput1')
       this.animSubmitBtn()
     },
-    register_email: function() {
-      this.checkMail()
+    reset_password2: function() {
+      this.checkPassLenght('gInput2')
+      this.matchPass('gInput1', 'gInput2')
       this.animSubmitBtn()
-    },
-    register_password: function() {
-      this.checkPassLenght('gInput3')
-      this.animSubmitBtn()
-    },
+    }
   }
 }
 </script>
@@ -267,6 +273,9 @@ export default {
     transform: translateY(20px);
   }
   .fadeY-move{
+    transition: transform 1s;
+  }
+  .fadeY{
     transition: transform 1s;
   }
   /* *** */
