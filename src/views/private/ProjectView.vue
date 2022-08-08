@@ -268,18 +268,41 @@
           </div>
         </div>
         <div v-else-if="activeNav=='parametres'" style="min-height: 100vh;">
-          <form>
+          <form >
+            <div class="d-flex align-items-center justify-content-between" style="width: 100%; padding: .5em;">
+              <h4>Détail du projet</h4>
+              <button v-if="roleAndPermission[0] == 'ADMIN' && !waitingUpdateResult" @click="updateProject" class="ft1 btn btn-darkula no-mw" style="min-width: 10em;">
+                <i class="ft2 fa fa-save"></i> METTRE A JOUR
+              </button>
+              <button v-else-if="roleAndPermission[0] == 'ADMIN' && waitingUpdateResult" class="ft1 btn btn-darkula no-mw" style="min-width: 10em;">
+                <img  width="25" src="@/assets/image/preloader/load2.gif" alt="loader"/>
+              </button>
+              <button v-else disabled class="ft1 btn btn-darkula no-mw"><i class="ft2 fa fa-save"></i> METTRE A JOUR</button>
+            </div>
             <div class="col-12 pl-0">
               <div class="form-group ">
                 <label class="control-label" for="inputPassnew">Titre</label>
                 <div class="input-group1">
-                  <input v-model="config_title" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+                  <input v-if="roleAndPermission[0] == 'ADMIN'" v-model="config_title"  id="inviteMail" class="form-control w-100" type="text" required>
+                  <input v-else v-model="config_title"  id="inviteMail" class="form-control w-100" type="text" required>
                 </div>
               </div>
               <div class="form-group ">
                 <label class="control-label" for="inputPassnew">Description</label>
                 <div class="input-group1">
-                  <textarea class="form-control questionTextArea" name="inputPassnew"></textarea>
+                  <textarea v-model="config_description" class="form-control questionTextArea textAreaConf" name="inputPassnew"></textarea>
+                </div>
+              </div>
+              <div class="form-group ">
+                <label class="control-label" for="inputPassnew">Date de création</label>
+                <div class="input-group1">
+                  <input disabled class="form-control w-100" type="text" v-model="config_date">
+                </div>
+              </div>
+              <div class="form-group ">
+                <label class="control-label" for="inputPassnew">Auteur</label>
+                <div class="input-group1">
+                  <input disabled class="form-control w-100" type="text" v-model="config_author">
                 </div>
               </div>
             </div>
@@ -345,6 +368,11 @@ export default {
         delete_user_confirm_text: null,
         deleteProjectId: null,
         deleteUserId: null,
+        config_title: "",
+        config_description: "",
+        config_date: "",
+        config_author: "",
+        waitingUpdateResult: false
       }
     },
     methods: {
@@ -373,6 +401,9 @@ export default {
             let id = this.decrypt(this.$route.params.id)
             if(data[i].id == id) {
               this.projectData = data[i]
+              this.config_title = this.projectData.title
+              this.config_description = this.projectData.description
+              this.config_date = this.projectData.date_creation
               break
             }
           }
@@ -388,6 +419,9 @@ export default {
             if(this.projectData.collaborators[i].id == this.userProfile.id) {
               this.roleAndPermission[0] = this.projectData.collaborators[i].role
               this.roleAndPermission[1] = this.projectData.collaborators[i].permission
+            }
+            if(this.projectData.collaborators[i].role == "ADMIN") {
+              this.config_author = this.projectData.collaborators[i].user_name
             }
           }
         } 
@@ -453,6 +487,32 @@ export default {
             this.alertType = "alert-no"
           })
         }
+      },
+      updateProject() {
+        if(this.config_title.length != 0 && this.config_description.length != 0) {
+          this.waitingUpdateResult = true
+          getAPI.patch('project/me/'+this.decrypt(this.$route.params.id), {
+            title: this.config_title,
+            description: this.config_description
+          })
+          .then(() => {
+            this.alertMsg = "Projet mis ajour avec succès"
+            this.alertType = "alert-yes"
+            setTimeout(() => {
+              this.waitingUpdateResult = false            
+            }, 2000)
+            this.$router.go()
+          })
+          .catch((error) => {
+            this.waitingUpdateResult = false
+            this.alertMsg = "Oups ! "+error.response.data.detail
+            this.alertType = "alert-no"
+          })
+        }
+        else{
+          this.alertMsg = "Oups ! Veuillez remplir correctement le formulaire"
+          this.alertType = "alert-no"
+        }
       }
     },
     watch: {
@@ -462,11 +522,15 @@ export default {
       projectData: function() {
         this.getRole()
       }
-    }
+    },
 }
 </script>
 
 <style scoped>
+.textAreaConf{
+  height: 15em;
+  resize: none;
+}
 .delHightligh{
     background-color: #f95f5f;
     padding: .2em;
