@@ -218,6 +218,12 @@ export default {
     highlightMenu: {
       type: Boolean,
       default: false
+    },
+    alertMsg: {
+      type: String,
+    },
+    alertType: {
+      type: String,
     }
   },
   data () {
@@ -272,7 +278,7 @@ export default {
       if(!this.waitingAPIResponse[0] && !this.waitingAPIResponse[1]) {
         this.$emit('pushProjectData', this.projectMe.concat(this.projectInvite))
         this.$emit('pushAlertData', this.appData.alerts)
-        this.$emit('pushProfileData', this.collectProfileData)
+        this.$emit('pushProfileData', this.collectProfileData())
       }
     },
     logout () {
@@ -324,17 +330,23 @@ export default {
           this.userNotifCount += 1
         }
       }
-      console.log(this.appData)
-      console.log(this.projectMe)
-      console.log(this.projectMe.length)
+      // console.log(this.appData)
+      // console.log(this.projectMe)
+      // console.log(this.projectMe.length)
       this.dataPusher()
     },
     inviteProject: function() {
       this.waitingAPIResponse[1] = false
       this.projectInvite = this.inviteProject
       this.dataPusher()
-      console.log(this.projectInvite.length)
+      // console.log(this.projectInvite.length)
     },
+    alertMsg: function() {
+      if(this.alertMsg != "") {
+        this.displayError(this.alertMsg, this.alertType)
+        this.$emit('alertShowed')
+      }
+    }
   },
   filters: {
     toSlug: function (value) {

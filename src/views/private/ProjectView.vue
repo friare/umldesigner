@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-layout @pushProjectData="loadData" active-menu="project" :project-code="this.$route.params.code" :open-project-list="true" :highlightMenu="true">
+    <nav-layout @pushProjectData="loadData" @pushProfileData="loadProfile" :alertMsg="alertMsg" :alertType="alertType" @alertShowed="alertMsg=''" active-menu="project" :project-code="this.$route.params.code" :open-project-list="true" :highlightMenu="true">
       <template #header>
         <div class="second-nav">
           <nav class="SecondNavItems-body width-full" aria-label="User profile">
@@ -8,32 +8,32 @@
               <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-book SecondNavItems-octicon hide-sm">
                 <path fill-rule="evenodd" d="M0 1.75A.75.75 0 01.75 1h4.253c1.227 0 2.317.59 3 1.501A3.744 3.744 0 0111.006 1h4.245a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75h-4.507a2.25 2.25 0 00-1.591.659l-.622.621a.75.75 0 01-1.06 0l-.622-.621A2.25 2.25 0 005.258 13H.75a.75.75 0 01-.75-.75V1.75zm8.755 3a2.25 2.25 0 012.25-2.25H14.5v9h-3.757c-.71 0-1.4.201-1.992.572l.004-7.322zm-1.504 7.324l.004-5.073-.002-2.253A2.25 2.25 0 005.003 2.5H1.5v9h3.757a3.75 3.75 0 011.994.574z"></path>
               </svg>
-              Aperçu
+              <span class="d-none d-md-block">Aperçu</span>
             </a>
             <a @mouseover="animNavTab" @click.prevent="switchNav('diagrammes')" href="/projets?tab=repositories" data-tab-item="diagrammes" :class="(activeNav == 'diagrammes') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_2">
               <i class="fa fa-project-diagram"></i>
-              Diagrammes
-              <span title="01" data-view-component="true" class="Counter">03</span>
+              <span class="">Diagrammes</span>
+              <span title="01" data-view-component="true" class="Counter">{{ (projectData != null) ? projectData.diagrams.length : '•••' }}</span>
             </a>
             <a @mouseover="animNavTab" @click.prevent="switchNav('codeBox')" href="/projets?tab=projects" data-tab-item="codebox" :class="(activeNav == 'codeBox') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_3">
               <i class="fa fa-code"></i>
-              CodeBox
+              <span class="d-none d-md-block">CodeBox</span>
               <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span>
             </a>
             <a @mouseover="animNavTab" @click.prevent="switchNav('collaborateurs')" href="/projets?tab=packages" data-tab-item="collaborateurs" :class="(activeNav == 'collaborateurs') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_4">
               <i class="fa fa-users"></i>
-              Collaborateurs
-              <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span>
+              <span class="d-none d-md-block">Collaborateurs</span>
+              <span title="0" data-view-component="true" class="Counter" hidden="hidden">{{ (projectData != null) ? projectData.collaborators.length : '•••' }}</span>
             </a>
             <a @mouseover="animNavTab" @click.prevent="switchNav('parametres')" href="/projets?tab=stars" data-tab-item="parametres" :class="(activeNav == 'parametres') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_5">
               <i class="fa fa-code-fork"></i>
-              Parametrès
+              <span class="d-none d-md-block">Paramètres</span>
             </a>
           </nav>
         </div>
       </template>
       <template #body>
-        <div v-if="projectData==null">
+        <div v-if="projectData==null || roleAndPermission[0]==null || roleAndPermission[1]==null">
           <pre-loader></pre-loader>
         </div>
         <div v-else-if="activeNav=='overview'" style="min-height: 100vh;">
@@ -84,6 +84,7 @@
         </div>
         <div v-else-if="activeNav=='diagrammes'" style="min-height: 100vh;">
           <div class="d-flex flex-wrap flex-column-reverse flex-md-row row">
+            <!-- 01 -->
             <div class="col-12 col-md-8 mt-2">
               <div class="mt-2">
                 <div class="card mb-2 d-none">
@@ -171,6 +172,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- 02 -->
             <div class="col-12 col-md-4 mt-3">
               <div class="card sticky-helper">
                 <div class="card-header">
@@ -204,33 +207,153 @@
           codeBox
         </div>
         <div v-else-if="activeNav=='collaborateurs'" style="min-height: 100vh;">
-          collaborateurs
+          <div>
+            <!-- user list -->
+            <div class="border-close" style="width: 100%; padding: .5em; background-color: #fff; text-align: right;">
+              <button v-if="roleAndPermission[0] == 'ADMIN'" @click="showModalInvite=true" class="ft1 btn btn-darkula no-mw"><i class="ft2 fa fa-plus"></i> INVITER</button>
+            </div>
+            <div>
+              <!-- USER -->
+              <div v-for="collab,j in projectData.collaborators" v-bind:key="j" class="d-flex justify-content-between align-items-center p-4 border-open"> 
+                <div class="d-flex align-items-center">
+                  <div>
+                    <i style="font-size: 2em;" class="fa fa-user"></i>
+                  </div>
+                  <div class="d-flex flex-column" style="position:relative; left: .5em;">
+                    <strong v-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name.substring(0, 4) + '••••••' }}</strong>
+                    <strong v-else-if="collab.project_id == 1 && collab.role == 'ADMIN'">{{ collab.user_name }}</strong>
+                    <strong v-else>{{ collab.user_name }}</strong>
+                    <span v-if="collab.role == 'ADMIN'" class="f6 color-fg-muted"> <sup class="small-note dev-small-note">Propriétaire</sup></span>
+                    <span v-else class="f6 color-fg-muted"> <sup class="small-note">Collaborateur</sup></span>
+                  </div>
+                </div>
+                <div>
+                  <a v-if="roleAndPermission[0] == 'ADMIN' && !collab.is_active" class="ft3">(EN ATTENT)</a>&nbsp;
+                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
+                </div>
+              </div>
+              <!-- -- -->
+            </div>
+
+            <!-- add popup -->
+            <modal waitingResult="waitingInviteResult" v-if="showModalInvite" @close="showModalInvite=false" @sendInvite="sendInvite">
+              <template #header>
+                <div>Inviter un utilisateur.</div>
+              </template>
+              <template #body>
+                <form>
+                  <div class="col-12 pl-0">
+                    <div class="form-group ">
+                      <label class="control-label" for="inputPassnew">Email</label>
+                      <div class="input-group1">
+                        <input v-model="invite_email" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+                      </div>
+                    </div>
+                    <div class="form-group ">
+                      <label class="control-label" for="inputPassnew">Permissions</label>
+                      <div class="input-group1">
+                        <select v-model="invite_permission" name="permission" id="invitePermission" required class="form-control sel w-100">
+                          <option value="" disabled>Selectionner les permissions</option>
+                          <option value="LECTURE SEULE">LECTURE SEULE</option>
+                          <option value="LECTURE ET ECRITURE">LECTURE & ECRITURE</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </template>
+              <template #footer>
+              </template>
+            </modal>
+          </div>
         </div>
         <div v-else-if="activeNav=='parametres'" style="min-height: 100vh;">
-          parametres
+          <form>
+            <div class="col-12 pl-0">
+              <div class="form-group ">
+                <label class="control-label" for="inputPassnew">Titre</label>
+                <div class="input-group1">
+                  <input v-model="config_title" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+                </div>
+              </div>
+              <div class="form-group ">
+                <label class="control-label" for="inputPassnew">Description</label>
+                <div class="input-group1">
+                  <textarea class="form-control questionTextArea" name="inputPassnew"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </template>
     </nav-layout>
+
+    <!-- user deletion popup confirm-->
+    <modal waitingResult="waitingInviteResult" v-if="showDelCollabBox" @close="showDelCollabBox=false" @sendInvite="ConfirmDeleteCollab">
+      <template #header>
+        <div>Supprimer un collaborateur</div>
+      </template>
+      <template #body>
+        <form>
+          <div class="col-12 pl-0">
+            <div class="form-group ">
+              <label class="control-label" for="inputPassnew">Saisissez <span class="delHightligh">retirer {{ deleteUserName }}</span> pour confirmation.</label>
+              <br>
+              <br>
+              <br>
+              <div class="input-group1">
+                <input v-model="delete_user_confirm_text" id="inviteMail" class="form-control w-100" name="email" type="text" required>
+              </div>
+            </div>
+          </div>
+        </form>
+      </template>
+      <template #footer>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
 import NavLayout from "@/components/NavLayout"
 import PreLoader from "@/components/shared/PreLoader"
+import Modal from '@/components/shared/Modal'
+import { getAPI } from '@/api/axios-api.js'
+import CryptoJS from 'crypto-js'
 
 export default {
     name: 'ProjectView',
     components: {
       NavLayout,
-      PreLoader
+      PreLoader,
+      Modal
     },
     data () {
         return {
         activeNav: 'diagrammes',
         projectData: null,
+        showModalInvite: false,
+        alertMsg: "",
+        alertType: "",
+        waitingInviteResult: false,
+        userProfile: null,
+        roleAndPermission: [null, null],
+        invite_email: null,
+        invite_permission: null,
+        showDelCollabBox: false,
+        deleteUserName: null,
+        delete_user_confirm_text: null,
+        deleteProjectId: null,
+        deleteUserId: null,
       }
     },
     methods: {
+      encrypt (text) {
+        return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
+      },
+      decrypt (data) {
+        return CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8);
+      },
       switchNav (subMenu) {
         if(this.projectData!=null) {
           this.activeNav = subMenu
@@ -244,17 +367,139 @@ export default {
           e.target.style.cursor='pointer'
         }
       },
-      loadData(data) {
+      loadData (data) {
         setTimeout(() => {
-          this.projectData = data
-          console.log(data)
+          for(let i=0; i<data.length; i++) {
+            let id = this.decrypt(this.$route.params.id)
+            if(data[i].id == id) {
+              this.projectData = data[i]
+              break
+            }
+          }
+          console.log(this.projectData)
         }, 2000);
+      },
+      loadProfile (data) {
+        this.userProfile = data
+      },
+      getRole() {
+        if(this.projectData != null) {
+          for(let i =0 ; i<this.projectData.collaborators.length; i++) {
+            if(this.projectData.collaborators[i].id == this.userProfile.id) {
+              this.roleAndPermission[0] = this.projectData.collaborators[i].role
+              this.roleAndPermission[1] = this.projectData.collaborators[i].permission
+            }
+          }
+        } 
+      },
+      sendInvite () {
+        if((/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.invite_email)) && (this.invite_permission != "") && (this.invite_permission != null) && ((this.invite_permission=='LECTURE SEULE') || this.invite_permission=='LECTURE ET ECRITURE') && this.invite_permission!= "ADMIN") {
+          this.waitingInviteResult = true
+          getAPI.post('/collaborator/invite/'+this.projectData.id, {
+              collaborator_email: this.invite_email,
+              role: "INVITE",
+              permission: this.invite_permission,
+          })
+          .then(() => {
+            this.waitingInviteResult = false
+            this.alertMsg = "Super invitation envoyéavec succès."
+            this.alertType = "alert-yes"
+            setTimeout(() => {
+              this.showModalInvite = false            
+            }, 2000)
+            this.$router.go()
+          })
+          .catch((error) => {
+            this.waitingInviteResult = false
+            this.alertMsg = "Oups ! "+error.response.data.detail
+            this.alertType = "alert-no"
+          })
+        }
+        else {
+          this.alertMsg = "Oups ! veuillez remplir correctement tous les champs."
+          this.alertType = "alert-no"
+        }
+      },
+      deleteCollab (project_id, id_user, user_name) {
+        this.showDelCollabBox = true
+        this.deleteUserName = user_name
+        this.deleteProjectId = project_id
+        this.deleteUserId = id_user
+      },
+      ConfirmDeleteCollab() {
+        if(this.delete_user_confirm_text != "retirer "+ this.deleteUserName) {
+          this.alertMsg = "Oups ! phrase incorrecte"
+          this.alertType = "alert-no"
+        }
+        else{
+          getAPI.delete('/collaborator/'+this.deleteProjectId+'/'+this.deleteUserId, )
+          .then(() => {
+            this.waitingInviteResult = false
+            this.alertMsg = "Utilisateur supprimer avec succès"
+            this.alertType = "alert-yes"
+            setTimeout(() => {
+              this.showModalInvite = false            
+            }, 2000)
+            this.showDelCollabBox = true
+            this.deleteUserName = null
+            this.deleteProjectId = null
+            this.deleteUserId = null
+            this.showDelCollabBox = false
+            this.$router.go()
+          })
+          .catch((error) => {
+            this.waitingInviteResult = false
+            this.alertMsg = "Oups ! "+error.response.data.detail
+            this.alertType = "alert-no"
+          })
+        }
+      }
+    },
+    watch: {
+      userProfile: function() {
+        this.getRole()
+      },
+      projectData: function() {
+        this.getRole()
       }
     }
 }
 </script>
 
 <style scoped>
+.delHightligh{
+    background-color: #f95f5f;
+    padding: .2em;
+    border-radius: .4em;
+    color: white;
+}
+.sel{
+  padding: 0.7rem 0.75rem;
+}
+.input-group1{
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+.ft1{
+  font-size: .6em;
+}
+.ft2{
+  font-size: 1.2em;
+}
+.ft3{
+  font-size: .85em;
+}
+.border-open{
+  border: 1px solid #ddd;
+  border-top: none; 
+}
+.border-close{
+  border: 1px solid #ddd;
+  border-bottom: none; 
+}
 .id-100 {
   position: absolute;
   top: -65px;/*-100*/

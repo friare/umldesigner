@@ -30,16 +30,20 @@ getAPI.interceptors.response.use(
         return response;
     }, 
     function (error) {
-        let acceptLogin = 0;
-        while(!acceptLogin) {
-            acceptLogin = confirm(error.response.data.detail + ". Your session expire. Please Login to continu.")
+        if(error.response.data.detail == "Invalid credentials" || error.response.data.detail == "Could not validate credentials") {
+            let acceptLogin = 0;
+            while(!acceptLogin) {
+                acceptLogin = confirm(error.response.data.detail + ". Your session expire. Please Login to continu.")
+            }
+            sessionStorage.removeItem('token')
+            let a = document.createElement('a')
+            a.setAttribute('href', "/connexion")
+            a.click()
+            a.remove()
         }
-        sessionStorage.removeItem('token')
-        let a = document.createElement('a')
-        a.setAttribute('href', "/connexion")
-        a.click()
-        a.remove()
-        return Promise.reject(error);
+        else{
+            return Promise.reject(error);
+        }
     }
 );
 
