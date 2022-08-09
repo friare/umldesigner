@@ -7,8 +7,7 @@
             <button class="u-btn u-btn-secondary" @click="$router.go(-1)"><i class="fa fa-home"></i></button>
             <div class="btn-lot d-none d-md-flex">
               <button @click.stop="orderSync" class="u-btn no-border np">
-                <img v-if="waitingApiTextSync"  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
-                <i v-else class="fa fa-sync-alt"></i>
+                <i class="fa fa-sync-alt"></i>
               </button>
             </div>
           </div>
@@ -55,8 +54,7 @@
 
         <!-- DRAW EDITOR HERE  -->
         <!-- ----------------- -->
-        <g-text-edit v-if="waitingApiTextSync" @sync="syncDiagram"  plainText="" :action="syncOrder" placeholder="Patientez un instant."></g-text-edit>
-        <g-text-edit v-else @sync="syncDiagram" @startSync="waitingApiXmlSync=true" :plainText="plainText" :action="syncOrder" placeholder="Insérer du texte ici"></g-text-edit>
+        <g-text-edit @sync="syncDiagram" :action="syncOrder" placeholder="Insérer du texte ici"></g-text-edit>
         <!-- ----------------- -->
 
         <div class="resizer-zone resizer-right">
@@ -68,50 +66,43 @@
         </div>
       </div>
       <div class="diagram-zone resizable-right" @click.stop="closeToolTip">
-        <header id="horzMenu" class="justify-content-between d-none d-md-flex">
-          <div>
-            <button v-if="waitingApiXmlSync" @click.prevent="" class="u-btn no-border np">
-              <img  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
-            </button>
+        <header id="horzMenu" class="text-right d-none d-md-flex">
+          <div class="d-flex">
+            <div class="btn-lot d-fl">
+              <button class="u-btn u-btn-user no-border avatar-online">
+                <img class="u-icon" src="../../assets/image/avatars/avatar3.jpeg" alt="">
+              </button>
+              <button class="u-btn u-btn-user no-border avatar-online">
+                <img class="u-icon" src="../../assets/image/avatars/avatar4.jpeg" alt="">
+              </button>
+              <button class="u-btn u-btn-user no-border avatar-online">
+                <img class="u-icon" src="../../assets/image/avatars/avatar5.jpeg" alt="">
+              </button>
+            </div>
           </div>
-          <div class="text-right d-none d-md-flex">
-            <div class="d-flex">
-              <div class="btn-lot d-fl">
-                <button class="u-btn u-btn-user no-border avatar-online">
-                  <img class="u-icon" src="../../assets/image/avatars/avatar3.jpeg" alt="">
-                </button>
-                <button class="u-btn u-btn-user no-border avatar-online">
-                  <img class="u-icon" src="../../assets/image/avatars/avatar4.jpeg" alt="">
-                </button>
-                <button class="u-btn u-btn-user no-border avatar-online">
-                  <img class="u-icon" src="../../assets/image/avatars/avatar5.jpeg" alt="">
-                </button>
-              </div>
+          <div class="d-flex">
+            <div class="btn-lot">
+              <button @click.stop="saveUML" download="class_uda.jpg" class="u-btn u-btn-share no-border">
+                <img class="svg u-icon" src="../../assets/image/ico/download-btn.png"/>
+              </button>
+              <button @click.stop="shareBoxDesktop" class="u-btn u-btn-share no-border">
+                <img class="svg u-icon" src="../../assets/image/ico/share-64.png"/>
+              </button>
+              <button @click.stop="resizeDiagram" class="u-btn u-btn-share no-border">
+                <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
+                <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
+              </button>
             </div>
-            <div class="d-flex">
-              <div class="btn-lot">
-                <button @click.stop="saveUML" download="class_uda.jpg" class="u-btn u-btn-share no-border">
-                  <img class="svg u-icon" src="../../assets/image/ico/download-btn.png"/>
-                </button>
-                <button @click.stop="shareBoxDesktop" class="u-btn u-btn-share no-border">
-                  <img class="svg u-icon" src="../../assets/image/ico/share-64.png"/>
-                </button>
-                <button @click.stop="resizeDiagram" class="u-btn u-btn-share no-border">
-                  <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
-                  <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
-                </button>
-              </div>
-              <div class="btn-lot">
-                <button @click.stop="codeBoxDesktop" class="u-btn no-border"><i class="fa fa-code u-icon"></i></button>
-                <button @click.stop="folderBoxDesktop" class="u-btn no-border"><i class="fa fa-folder u-icon"></i></button>
-              </div>
-              <div class="btn-lot" style="background-color: darkorange;">
-                <button @click.stop="preniumBoxDesktop" class="u-btn no-border" style="background-color: darkorange; color: white;"><i class="fa fa- u-icon"></i>PREMIUM</button>
-              </div>
-              <!-- <a href="../../assets/login.html">
-                <button class="u-btn u-btn-primary u-btn-transparent">SE CONNECTER</button>
-              </a> -->
+            <div class="btn-lot">
+              <button @click.stop="codeBoxDesktop" class="u-btn no-border"><i class="fa fa-code u-icon"></i></button>
+              <button @click.stop="folderBoxDesktop" class="u-btn no-border"><i class="fa fa-folder u-icon"></i></button>
             </div>
+            <div class="btn-lot" style="background-color: darkorange;">
+              <button @click.stop="preniumBoxDesktop" class="u-btn no-border" style="background-color: darkorange; color: white;"><i class="fa fa- u-icon"></i>PREMIUM</button>
+            </div>
+            <!-- <a href="../../assets/login.html">
+              <button class="u-btn u-btn-primary u-btn-transparent">SE CONNECTER</button>
+            </a> -->
           </div>
         </header>
         <div class="vertical-menu">
@@ -160,8 +151,7 @@
         <!-- DRAW DIAGRAM HERE  -->
         <!-- ----------------- -->
         <div id="gb22k" class="content">
-           <iframe id="diagViewer" src="http://localhost:8080/diagram" height="100%" width="100%" title="description"></iframe> 
-          <!--<g-diagram diagram-type="classDiagram" :xml="generatedXML" :scale="zoomScale" :saveImg="download" :model-data="diagramData" :width="canvasWidth" :height="canvasHeight"></g-diagram>-->
+          <g-diagram diagram-type="classDiagram" :scale="zoomScale" :saveImg="download" :model-data="diagramData" :width="canvasWidth" :height="canvasHeight"></g-diagram>
         </div>
         <!-- ----------------- -->
       </div>
@@ -304,28 +294,6 @@
           </div>
         </template>
       </g-tool-tip>
-
-      <transition name="slide-fade" appear mode="out-in">
-        <alert v-show="alertMe" :status="gAlertType" :message="gAlertMessage"></alert>
-      </transition>
-
-      <!-- create project popup -->
-      <modal :waitingResult="false" v-if="hintBox" @close="hintBox=false" @sendInvite="hintBox=false">
-        <template #header>
-          <div>Hint !</div>
-        </template>
-        <template #body>
-          <form>
-            <div class="col-12 pl-0">
-              <div class="form-group ">
-                <label class="control-label" for="inputPassnew">Editer les règles de gestion dans la zone de texte à votre gauche. <br>La vue du diagramme est synchoniser et rafraîchir automatiquement lors de l'édition lorsque vous appuyer sur les touches "espace" ou "•"<br><br>Vous pouvez aussi rafraichir le diagramme en cliquant manuellement la touche <img width='30' src="@/assets/images/hint/sync.png" alt="hint btn"/> se trouvant dans le coin supérieur gauche du navigateur.</label>
-              </div>
-            </div>
-          </form>
-        </template>
-        <template #footer>
-        </template>
-      </modal>
     </div>
   </div>
 </template>
@@ -336,26 +304,22 @@
 /*import PreLoader from '@/components/PreLoader.vue'*/
 // import Diagram from '@/components/goDiagram.vue'
 //import ClassDiagram from '@/components/ClassDiagram.vue'
-import Alert from '@/components/shared/Alert.vue'
 import GTextEdit from "@/components/GTextEdit";
-// import GDiagram from "@/components/GDiagram";
+import GDiagram from "@/components/GDiagram";
 import GToolTip from "@/components/GToolTip";
-import { getAPI } from '@/api/axios-api.js'
-import Modal from '@/components/shared/Modal'
-
 
 export default {
   name: 'EditorView',
+
   components: {
     /*PreLoader*/
     // Diagram,
     //ClassDiagram,
     GTextEdit,
-    // GDiagram,
-    GToolTip,
-    Alert,
-    Modal
+    GDiagram,
+    GToolTip
   },
+
   data() {
     return {
       diagramData: {
@@ -426,33 +390,17 @@ export default {
       codeHTML: false,
       arrowPosition: 'center',
       zoomScale: 90,
-      syncOrder: '',
-      waitingApiTextSync: false,
-      waitingApiXmlSync: false,
-      plainText: "",
-      alertMe: false,
-      gAlertMessage: '',
-      gAlertType: '',
-      hintBox: false,
-      generatedXML: ""
+      syncOrder: ''
     }
   },
+
+  computed: {
+
+  },
+
   methods: {
-    displayError (error, type='alert-ok', time=4000) {
-      this.gAlertMessage = error
-      this.gAlertType = type
-      this.alertMe = true
-      setTimeout(() => {
-        this.alertMe = false
-      }, time);
-    },
-    syncDiagram (data) {
-      this.generatedXML = "<UMLClassDiagram name=\"Class diagram\"><UMLClass id=\"utilisateur\" x=\"0\" y=\"0\" width=\"180\" height=\"170\" backgroundColor=\"#ffffbb\" lineColor=\"#294253\" lineWidth=\"1\" tagValues=\"\" abstract=\"false\"><item id=\"name\" value=\"utilisateur\"/><superitem id=\"attributes\" visibleSubComponents=\"true\"><item value=\"id\"/><item value=\"email\"/><item value=\"mot_de_passe\"/><item value=\"nom\"/><item value=\"prénom\"/></superitem><superitem id=\"operations\" visibleSubComponents=\"true\"><item value=\"inscrire()\"/><item value=\"connecter()\"/><item value=\"déconnecter()\"/><item value=\"avoir()\"/><item value=\"créer()\"/></superitem></UMLClass><UMLClass id=\"alerte\" x=\"0\" y=\"0\" width=\"130\" height=\"100\" backgroundColor=\"#ffffbb\" lineColor=\"#294253\" lineWidth=\"1\" tagValues=\"\" abstract=\"false\"><item id=\"name\" value=\"alerte\"/><superitem id=\"attributes\" visibleSubComponents=\"true\"><item value=\"id\"/><item value=\"méssage\"/><item value=\"date\"/></superitem><superitem id=\"operations\" visibleSubComponents=\"true\"/></UMLClass><UMLClass id=\"projet\" x=\"30\" y=\"0\" width=\"170\" height=\"90\" backgroundColor=\"#ffffbb\" lineColor=\"#294253\" lineWidth=\"1\" tagValues=\"\" abstract=\"false\"><item id=\"name\" value=\"projet\"/><superitem id=\"attributes\" visibleSubComponents=\"true\"><item value=\"titre\"/><item value=\"description\"/></superitem><superitem id=\"operations\" visibleSubComponents=\"true\"/></UMLClass><UMLClass id=\"diagramme\" x=\"20\" y=\"200\" width=\"150\" height=\"120\" backgroundColor=\"#ffffbb\" lineColor=\"#294253\" lineWidth=\"1\" tagValues=\"\" abstract=\"false\"><item id=\"name\" value=\"diagramme\"/><superitem id=\"attributes\" visibleSubComponents=\"true\"><item value=\"id\"/><item value=\"type\"/><item value=\"nom\"/><item value=\"text\"/><item value=\"image_xml\"/></superitem><superitem id=\"operations\" visibleSubComponents=\"true\"/></UMLClass><UMLClass id=\"collaborateur\" x=\"420\" y=\"200\" width=\"190\" height=\"90\" backgroundColor=\"#ffffbb\" lineColor=\"#294253\" lineWidth=\"1\" tagValues=\"\" abstract=\"false\"><item id=\"name\" value=\"collaborateur\"/><superitem id=\"attributes\" visibleSubComponents=\"true\"><item value=\"id\"/><item value=\"role\"/></superitem><superitem id=\"operations\" visibleSubComponents=\"true\"/></UMLClass><UMLClass id=\"code\" x=\"220\" y=\"200\" width=\"130\" height=\"100\" backgroundColor=\"#ffffbb\" lineColor=\"#294253\" lineWidth=\"1\" tagValues=\"\" abstract=\"false\"><item id=\"name\" value=\"code\"/><superitem id=\"attributes\" visibleSubComponents=\"true\"><item value=\"id\"/><item value=\"langage\"/><item value=\"text\"/></superitem><superitem id=\"operations\" visibleSubComponents=\"true\"/></UMLClass><UMLAssociation id=\"utilisateuralerte\" side_A=\"utilisateur\" side_B=\"alerte\" direction=\"b\"><item id=\"name\" value=\"avoir\"/><item id=\"multiplicityA\" value=\"1,1\"/><item id=\"multiplicityB\" value=\"0,*\"/><item id=\"roleA\" value=\"\"/><item id=\"roleB\" value=\"\"/></UMLAssociation><UMLAssociation id=\"utilisateurprojet\" side_A=\"utilisateur\" side_B=\"projet\" direction=\"b\"><item id=\"name\" value=\"créer\"/><item id=\"multiplicityA\" value=\"1,1\"/><item id=\"multiplicityB\" value=\"0,*\"/><item id=\"roleA\" value=\"\"/><item id=\"roleB\" value=\"\"/></UMLAssociation><UMLAggregation id=\"projetdiagramme\" side_A=\"projet\" side_B=\"diagramme\"><item id=\"name\" value=\"contenir\"/></UMLAggregation><UMLAssociation id=\"projetcode\" side_A=\"projet\" side_B=\"code\" direction=\"a\"><item id=\"name\" value=\"associer\"/><item id=\"multiplicityA\" value=\"1,1\"/><item id=\"multiplicityB\" value=\"\"/><item id=\"roleA\" value=\"\"/><item id=\"roleB\" value=\"\"/></UMLAssociation><UMLAssociation id=\"projetcollaborateur\" side_A=\"projet\" side_B=\"collaborateur\" direction=\"a\"><item id=\"name\" value=\"associer\"/><item id=\"multiplicityA\" value=\"1,1\"/><item id=\"multiplicityB\" value=\"\"/><item id=\"roleA\" value=\"\"/><item id=\"roleB\" value=\"\"/></UMLAssociation></UMLClassDiagram>"
-      sessionStorage.setItem('xml', data)
-      this.waitingApiXmlSync = false
-      var iframe = document.getElementById('diagViewer');
-      iframe.contentWindow.location.reload(true);
-      // alert('Sync: ' + xml)
+    syncDiagram (xml) {
+      alert('Sync: ' + xml)
     },
     orderSync () {
       let d = new Date()
@@ -575,316 +523,285 @@ export default {
         document.getElementById('horzMenu').style.justifyContent='right'
         this.screenView = '70%'
       }
-    },
-    syncDiagramData(token) {
-      this.waitingApiTextSync = true
-      getAPI.get('/diagram/'+token, )
-        .then(response => {
-          if(response.status == 200) {
-            this.displayError('Great ! Diagramme chargé avec  succès.', 'alert-yes', 5000)
-            this.plainText = response.data.plain_text
-            setTimeout(() => {
-              this.waitingApiTextSync = false
-            }, 2000)
-            this.hintBox = true
-          }
-          else{
-            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
-            this.waitingApiTextSync = false
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            this.displayError(error.response.data.detail, 'alertthis.$route.params.hash-no', 4000)
-          } else if (error.request) {
-            this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
-          } else {
-            this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
-          }
-        })
     }
   },
-  async created() {
-    window.addEventListener('load', () => {
-      console.log(this.$route.params.hash)
-      this.syncDiagramData(this.$route.params.hash)
-    })
-  },
+
   mounted() {
+    // init canvas offset
     this.canvasWidth = document.getElementById('gb22k').offsetWidth-30
     this.canvasHeight = document.getElementById('gb22k').offsetHeight
   },
+
   beforeRouteUpdate(to, from) {
     console.log(from);
   }
 }
 </script>
-
 <style scoped>
-  .s_invite{
-    border-radius: 0px !important;
-  }
-  .zoomLabel{
-    font-size: .7em; user-select: none;
-  }
-  .content{
-    /*position: relative;*/
-    text-align: center;
-  }
-  #myDiagramDiv {
-    width: 100%;
-    height: 100%;
-  }
-  /* figma style */
-  .header_modal--modal--3V0h3 {
-    width: 100%;
-    max-height: 100%;
-    position: relative;
-    border-radius: 2px;
-  }
-  h1, h2, h3, h4, h5, h6, .p_title, a {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: inherit;
-    outline: none;
-    letter-spacing: inherit;
-    text-decoration: none;
-    cursor: inherit;
-    /*font-size: 0.8em;*/
-  }
-  .header_modal--header--c8kL6 {
-    font-weight: 600;
-    box-sizing: border-box;
-    height: 41px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 8px;
-    padding-right: 4px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: 1px solid #e6e6e6;
-    cursor: default;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  .border-thin{
-    border-top: 1px solid #e6e6e6;
-  }
-  .permissions_modal--fileTitle--1GMA_ {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-  .permissions_modal--resourceName--3NW-R {
-    max-width: 275px;
-    font-weight: 500;
-  }
-  .permissions_modal--truncateText--3BWPl {
-    display: inline-block;
-    vertical-align: top;
-    max-width: 90px;
-  }
-  .ellipsis--ellipsis--1RWY6 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .permissions_modal--resourceName--3NW-R {
-    max-width: 275px;
-    font-weight: 500;
-  }
-  .permissions_modal--truncateText--3BWPl {
-    display: inline-block;
-    vertical-align: top;
-    max-width: 90px;
-  }
-  .ellipsis--ellipsis--1RWY6 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .permissions_modal--contentContainer__OLD--2MUHp {
-    padding: 8px 16px 0;
-  }
-  .permissions_modal--inviteBar--dvsSo {
-    padding: 8px 0;
-  }
-  .token_form--row--3Vkiu {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr min-content;
-    box-sizing: border-box;
-  }
-  .token_form--autocompleteWrapper--3bTu2 {
-    flex-grow: 1;
-    position: relative;
-    margin-right: 8px;
-  }
-  .autocomplete_input--inputWrapper--1naDE {
-    background-color:  #fff;
-    display: flex;
-    align-items: center;
-    border: 1px solid #e5e5e5;
-    border-radius: 3px;
-    padding: 2.5px;
-    justify-content: space-between;
-  }
-  .basic_form--primaryBtn--3NqnQ:disabled {
-    color:  #fff;
-    background-color: rgba(0, 0, 0, .3);
-    border-color: transparent;
-  }
-  .basic_form--btn--3A-Ju:disabled {
-    background-color: transparent;
-    color: #b3b3b3;
-    border: 1px solid  rgba(0, 0, 0, .3);
-  }
-  .token_form--button--3fGsN {
-    width: 96px;
-  }
-  .permissions_modal--roleRows--3IhV0 {
-    max-height: 50vh;
-    overflow-x: hidden;
-    margin-bottom: 12px;
-  }
-  .overflow--overflowYAuto--2H5Wf {
-    overflow-y: auto;
-  }
-  .role_row--roleRow--1utt9 {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    font-size: 11px;
-    width: 100%;
-  }
-  .role_row--linkAccessIcon--2AfeY {
-    width: 32px;
-    height: 32px;
-    margin-right: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    fill: #000;
-    color: #000;
-  }
-  svg {
-    display: block;
-  }
-  .role_row--linkAccessIcon--2AfeY {
-    fill: #000;
-    color: #000;
-  }
-  .role_row--nameAndSelect--uiDVd {
-    height: 100%;
-    box-sizing: border-box;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    overflow-x: auto;
-  }
-  .role_row--permissionLabel--pUx2j {
-    display: flex;
-    align-items: center;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: middle;
-    max-width: 100%;
-  }
-  .role_row--roleRow--1utt9 {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    font-size: 11px;
-    width: 100%;
-  }
-  .role_row--avatarNoMargin--lAfW7 {
-    width: 24px;
-    height: 24px;
-    border-radius: 100%;
-    flex: 0 0 24px;
-    color: #fff;
-  }
-  .role_row--avatarMargin--1B16A {
-    margin-right: 12px;
-  }
-  .role_row--nameAndSelect--uiDVd {
-    height: 100%;
-    box-sizing: border-box;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    overflow-x: auto;
-  }
-  .role_row--name--2Pl36 {
-    flex: 1;
-    margin-right: 12px;
-    overflow-x: overlay;
-  }
-  .permissions_modal--dividedInputSection--32etK {
-    border-top: 1px solid #e5e5e5;
-  }
-  .permissions_modal--inputSection--310o_ {
-    padding: 0;
-  }
-  .permissions_modal--footerLinks--1dvpq {
-    padding: 16px;
-    display: flex;
-  }
-  .permissions_modal--footerLink--tBFNA {
-    display: flex;
-    align-items: center;
-  }
-  .blue_link--blueLink--22X56 {
-    color: #258ee8;
-    cursor: pointer;
-    -webkit-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
-  }
-  .permissions_modal--linkToNodeDisabled--1hJC3 {
-    pointer-events: none;
-  }
-  .permissions_modal--linkToNode--2kOyC {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 0;
-  }
-  .permissions_modal--copyIcon--zdrgs {
-    fill: currentColor;
-    margin-right: 5px;
-  }
-  .permissions_modal--copyIcon--zdrgs {
-    fill: currentColor;
-    margin-right: 5px;
-  }
-  #sel_opt {
-    background: white !important;
-  }
-  .s_btn, input, select{
-    outline: none !important;
-    outline: none !important;
-    background: none;
-    border: none;
-  }
-  .email_f{
-    border: 1px solid #e6e6e6;
-  }
-  .submit_f{
-    background-color: #263238 !important;
-    color: #fff;
-  }
-  .email_f input{
-    padding: 0.4em 0.6em;
-  }
+.s_invite{
+  border-radius: 0px !important;
+}
+.zoomLabel{
+  font-size: .7em; user-select: none;
+}
+.content{
+  /*position: relative;*/
+  text-align: center;
+}
+#myDiagramDiv {
+  width: 100%;
+  height: 100%;
+}
+/* figma style */
+.header_modal--modal--3V0h3 {
+  width: 100%;
+  max-height: 100%;
+  position: relative;
+  border-radius: 2px;
+}
+h1, h2, h3, h4, h5, h6, .p_title, a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: inherit;
+  outline: none;
+  letter-spacing: inherit;
+  text-decoration: none;
+  cursor: inherit;
+  /*font-size: 0.8em;*/
+}
+.header_modal--header--c8kL6 {
+  font-weight: 600;
+  box-sizing: border-box;
+  height: 41px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px solid #e6e6e6;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.border-thin{
+  border-top: 1px solid #e6e6e6;
+}
+.permissions_modal--fileTitle--1GMA_ {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.permissions_modal--resourceName--3NW-R {
+  max-width: 275px;
+  font-weight: 500;
+}
+.permissions_modal--truncateText--3BWPl {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 90px;
+}
+.ellipsis--ellipsis--1RWY6 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.permissions_modal--resourceName--3NW-R {
+  max-width: 275px;
+  font-weight: 500;
+}
+.permissions_modal--truncateText--3BWPl {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 90px;
+}
+.ellipsis--ellipsis--1RWY6 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.permissions_modal--contentContainer__OLD--2MUHp {
+  padding: 8px 16px 0;
+}
+.permissions_modal--inviteBar--dvsSo {
+  padding: 8px 0;
+}
+.token_form--row--3Vkiu {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr min-content;
+  box-sizing: border-box;
+}
+.token_form--autocompleteWrapper--3bTu2 {
+  flex-grow: 1;
+  position: relative;
+  margin-right: 8px;
+}
+.autocomplete_input--inputWrapper--1naDE {
+  background-color:  #fff;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  padding: 2.5px;
+  justify-content: space-between;
+}
+.basic_form--primaryBtn--3NqnQ:disabled {
+  color:  #fff;
+  background-color: rgba(0, 0, 0, .3);
+  border-color: transparent;
+}
+.basic_form--btn--3A-Ju:disabled {
+  background-color: transparent;
+  color: #b3b3b3;
+  border: 1px solid  rgba(0, 0, 0, .3);
+}
+.token_form--button--3fGsN {
+  width: 96px;
+}
+.permissions_modal--roleRows--3IhV0 {
+  max-height: 50vh;
+  overflow-x: hidden;
+  margin-bottom: 12px;
+}
+.overflow--overflowYAuto--2H5Wf {
+  overflow-y: auto;
+}
+.role_row--roleRow--1utt9 {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  font-size: 11px;
+  width: 100%;
+}
+.role_row--linkAccessIcon--2AfeY {
+  width: 32px;
+  height: 32px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fill: #000;
+  color: #000;
+}
+svg {
+  display: block;
+}
+.role_row--linkAccessIcon--2AfeY {
+  fill: #000;
+  color: #000;
+}
+.role_row--nameAndSelect--uiDVd {
+  height: 100%;
+  box-sizing: border-box;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: auto;
+}
+.role_row--permissionLabel--pUx2j {
+  display: flex;
+  align-items: center;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  max-width: 100%;
+}
+.role_row--roleRow--1utt9 {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  font-size: 11px;
+  width: 100%;
+}
+.role_row--avatarNoMargin--lAfW7 {
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  flex: 0 0 24px;
+  color: #fff;
+}
+.role_row--avatarMargin--1B16A {
+  margin-right: 12px;
+}
+.role_row--nameAndSelect--uiDVd {
+  height: 100%;
+  box-sizing: border-box;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: auto;
+}
+.role_row--name--2Pl36 {
+  flex: 1;
+  margin-right: 12px;
+  overflow-x: overlay;
+}
+.permissions_modal--dividedInputSection--32etK {
+  border-top: 1px solid #e5e5e5;
+}
+.permissions_modal--inputSection--310o_ {
+  padding: 0;
+}
+.permissions_modal--footerLinks--1dvpq {
+  padding: 16px;
+  display: flex;
+}
+.permissions_modal--footerLink--tBFNA {
+  display: flex;
+  align-items: center;
+}
+.blue_link--blueLink--22X56 {
+  color: #258ee8;
+  cursor: pointer;
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}
+.permissions_modal--linkToNodeDisabled--1hJC3 {
+  pointer-events: none;
+}
+.permissions_modal--linkToNode--2kOyC {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 0;
+}
+.permissions_modal--copyIcon--zdrgs {
+  fill: currentColor;
+  margin-right: 5px;
+}
+.permissions_modal--copyIcon--zdrgs {
+  fill: currentColor;
+  margin-right: 5px;
+}
+#sel_opt {
+  background: white !important;
+}
+.s_btn, input, select{
+  outline: none !important;
+  outline: none !important;
+  background: none;
+  border: none;
+}
+.email_f{
+  border: 1px solid #e6e6e6;
+}
+.submit_f{
+  background-color: #263238 !important;
+  color: #fff;
+}
+.email_f input{
+  padding: 0.4em 0.6em;
+}
 </style>

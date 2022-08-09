@@ -105,9 +105,15 @@ const routes = [
     beforeEnter: ifAuthentificated,
   },
   {
-    path: '/editeur/:name',
+    path: '/editeur/:name/:hash',
     name: 'Editeur',
     component: () => import('@/views/private/EditorView'), //EditorView
+    beforeEnter: ifAuthentificated,
+  },
+  {
+    path: '/diagram',
+    name: 'Diagram',
+    component: () => import('@/components/GDiagramSingle'), //EditorView
     beforeEnter: ifAuthentificated,
   },
   {
