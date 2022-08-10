@@ -28,7 +28,7 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default: 'Insérer du texte ici'
+      default: '...'
     },
     action: {
       type: String,

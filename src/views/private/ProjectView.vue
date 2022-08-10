@@ -375,7 +375,7 @@ export default {
       getRole() {
         if(this.projectData != null) {
           for(let i =0 ; i<this.projectData.collaborators.length; i++) {
-            if(this.projectData.collaborators[i].user_user_id == this.userProfile.id) {
+            if(this.projectData.collaborators[i].user_id == this.userProfile.id) {
               this.roleAndPermission[0] = this.projectData.collaborators[i].role
               this.roleAndPermission[1] = this.projectData.collaborators[i].permission
             }
