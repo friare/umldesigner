@@ -358,9 +358,6 @@ import GToolTip from "@/components/GToolTip";
 import { getAPI } from '@/api/axios-api.js'
 import Modal from '@/components/shared/Modal'
 
-import { getAPI } from '@/api/axios-api.js'
-import Modal from '@/components/shared/Modal'
-
 
 export default {
   name: 'EditorView',

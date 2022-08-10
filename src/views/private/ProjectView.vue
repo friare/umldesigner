@@ -176,7 +176,6 @@
                   <div class="d-flex flex-column" style="position:relative; left: .5em;">
                     <strong v-if="collab.project_id == 1 && collab.role != 'ADMIN' && userProfile.id != 1 && userProfile.id != 1">{{ collab.user_name.substring(0, 4) + '••••••' }}</strong>
                     <strong v-else-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name }}</strong>
-                    <strong v-else-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else-if="collab.project_id == 1 && collab.role == 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else>{{ collab.user_name }}</strong>
                     <span v-if="collab.role == 'ADMIN'" class="f6 color-fg-muted"> <sup class="small-note dev-small-note">Propriétaire</sup></span>
@@ -333,9 +332,6 @@ export default {
       }
     },
     methods: {
-      toSlug (value) {
-        return value.toLowerCase().replaceAll(' ', '-');
-      },
       toSlug (value) {
         return value.toLowerCase().replaceAll(' ', '-');
       },

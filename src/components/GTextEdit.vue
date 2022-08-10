@@ -20,7 +20,6 @@
 //   dictionaryPath: "/utils/typo-js/dictionaries"
 // });
 import { getAPI } from '@/api/axios-api.js'
-import { getAPI } from '@/api/axios-api.js'
 
 export default {
   name: "GTextEdit",
@@ -55,7 +54,6 @@ export default {
       prevKey: null,
       caretPos: null,
       waitingAPIResponse: false,
-      innerPlainText: this.plainText,
       innerPlainText: this.plainText
     }
   },
