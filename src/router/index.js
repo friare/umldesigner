@@ -7,7 +7,7 @@ import Demo from "@/views/public/Demo";
 // import TutorialView from "@/views/private/TutorialView";
 // import AlertView from "@/views/private/AlertView";
 // import ProfileView from "@/views/private/ProfileView";
-import SettingsView from "@/views/private/SettingsView";
+//import SettingsView from "@/views/private/SettingsView";
 // import ProjectView from "@/views/private/ProjectView";
 // import EditorView from "@/views/private/EditorView";
 
@@ -21,7 +21,7 @@ const ifAuthentificated = (to, from, next) => {
 
 const redirectIfAuthentificated = (to, from, next) => {
   if(sessionStorage.getItem('token') != null) {
-    next('acceuil')
+    next('/acceuil')
     return
   }
   next()
@@ -41,74 +41,84 @@ const routes = [
   {
     path: '/connexion',
     name: 'Login',
-    component: import('@/views/public/LoginView'), //LoginView
+    component: () => import('@/views/public/LoginView'), //LoginView
     beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/inscription',
     name: 'Register',
-    component: import('@/views/public/RegisterView'), //RegisterView
+    component: () => import('@/views/public/RegisterView'), //RegisterView
     beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/activation-de-compte/:token',
     name: 'ActivateAccount',
-    component: import('@/components/utils/ActivateAccount'),
+    component: () => import('@/components/utils/ActivateAccount'),
     beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/mot-de-passe-oublie', 
     name: 'ForgetPassword',
-    component: import('@/components/utils/ForgetPassword'),
+    component: () => import('@/components/utils/ForgetPassword'),
     beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/mot-de-passe-oublie/:token',
     name: 'ForgetPasswordForm',
-    component: import('@/components/utils/ForgetPasswordForm'),
+    component: () => import('@/components/utils/ForgetPasswordForm'),
     beforeEnter: redirectIfAuthentificated,
   },
   {
     path: '/acceuil',
     name: 'Default',
-    component: import('@/views/private/DefaultView'),
+    component: () => import('@/views/private/DefaultView'),
     beforeEnter: ifAuthentificated,
   },
   {
     path: '/tutoriels',
     name: 'Tutorials',
-    component: import('@/views/private/TutorialView'),
+    component: () => import('@/views/private/TutorialView'),
     beforeEnter: ifAuthentificated,
   },
   {
     path: '/alerts',
     name: 'Alert',
-    component: import('@/views/private/AlertView'),
+    component: () => import('@/views/private/AlertView'),
     beforeEnter: ifAuthentificated,
   },
   {
     path: '/profil/:user',
     name: 'Profile',
-    component: import('@/views/private/ProfileView'),
+    component: () => import('@/views/private/ProfileView'),
     beforeEnter: ifAuthentificated,
   },
   {
     path: '/parametres',
     name: 'Setting',
-    component: SettingsView,
+    component: () => import('@/views/private/SettingsView'),
     beforeEnter: ifAuthentificated,
   },
   {
     path: '/projet/:code/:id',
     name: 'projetView',
-    component: import('@/views/private/ProjectView'),
+    component: () => import('@/views/private/ProjectView'),
     beforeEnter: ifAuthentificated,
   },
   {
-    path: '/editeur/:name',
+    path: '/editeur/:name/:hash',
     name: 'Editeur',
     component: () => import('@/views/private/EditorView'), //EditorView
     beforeEnter: ifAuthentificated,
+  },
+  {
+    path: '/public/diagram/:hash',
+    name: 'EditeurPublic',
+    component: () => import('@/views/private/EditorPublicView')
+  },
+  {
+    path: '/diagram',
+    name: 'Diagram',
+    component: () => import('@/components/GDiagramSingle'), //EditorView
   },
   {
     path: '/leave-feedback',

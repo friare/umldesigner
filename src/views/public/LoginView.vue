@@ -23,7 +23,6 @@
       <!-- PAGE -->
       <div class="hero">
         <div class="">
-
           <div class="container-login100">
             <div class="wrap-login100 p-6">
               <form  @submit.prevent="signin" class="login100-form validate-form">

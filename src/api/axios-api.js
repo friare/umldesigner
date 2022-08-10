@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const BaseURL       = 'http://127.0.0.1:8000'
-const BaseURLSocket = 'http://127.0.0.1:8000/ws'
+const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "https://uml-extractor-api.azurewebsites.net"
+const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "https://uml-extractor-api.azurewebsites.net/ws"
 
 //Authorise
 const getAPI = axios.create({
@@ -49,7 +49,6 @@ getAPI.interceptors.response.use(
 
 //Guest
 const guestAPI = axios.create({
-    headers: "Access-Control-Allow-Origin",
     baseURL: BaseURL,
 })
 

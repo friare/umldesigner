@@ -2,7 +2,7 @@
 <div v-show="show" class="gToolTip">
   <!-- ------------------------- -->
   <div :class="(side == 'top') ? (arrowPosition == 'center') ? 'gToolTipText-box gToolTipText-top' : 'gToolTipText-box gToolTipText-top-right' : 'gToolTipText-box gToolTipText-right'">
-    <div class="header_modal--modal--3V0h3 modal--modalShadow--HbHkT" style="width: 276px;">
+    <div class="header_modal--modal--3V0h3 modal--modalShadow--HbHkT" style="width: 250px;">
       <div class="">
         <slot name="header"></slot>
         <slot name="body"></slot>

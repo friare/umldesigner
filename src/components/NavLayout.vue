@@ -58,11 +58,11 @@
                 <ul :style="(showProjectList) ? 'display: block' : 'display: none'" class="toogle-content project-dropdown-menu mb-0">
                   <li v-for="project,i in projectMe" v-bind:key="i" @click="loadProject(toSlug(project.title), project.id)" :class="(currentProject == toSlug(project.title)) ? 'selected' : ''">
                     <i class="fa fa-arrow-right"></i>
-                    {{ project.title }}
+                    {{ (project.title.length > 15) ? project.title.substring(0, 13)+' •••' : project.title }}
                   </li>
                   <li v-for="project,i in projectInvite" v-bind:key="i" @click="loadProject(toSlug(project.title), project.id)" :class="(currentProject == toSlug(project.title)) ? 'selected' : ''">
                     <i class="fa fa-arrow-right"></i>
-                    {{ project.title }}
+                    {{ (project.title.length > 15) ? project.title.substring(0, 13)+' •••' : project.title }}
                   </li>
                 </ul>
               </li>
@@ -76,7 +76,7 @@
                   <i class="fa fa-user"></i> &nbsp;Profil
                 </li>
               </router-link>
-              <router-link :to="{name: 'Setting'}">
+              <router-link v-show="false" :to="{name: 'Setting'}">
                 <li :class="(activeMenu == 'setting') ? 'active' : ''">
                   <i class="fa fa-cogs"></i> Paramètres
                 </li>
@@ -100,7 +100,7 @@
                 <sup class="small-note dev-small-note">DEVELOPPEUR</sup>
               </li>
             </a>
-            <a href="https://api.umldesigner.app/docs" target="_blank">
+            <a href="uml-extractor-api.azurewebsites.net" target="_blank">
               <li><i class="fa fa-book"></i> API</li>
             </a>
           </ul>
@@ -130,26 +130,37 @@
               </div>
 
               <div class="nav__menu flex">
+                <!-- 01 -->
                 <div class="dropdown">
-                  <button class="nav__menu__btn dropbtn">
+                  <button @click="showCreateProjectPopUp=true" class="nav__menu__btn dropbtn">
                     <i class="fa fa-plus"></i> &nbsp; projet&nbsp;
                   </button>
                 </div>
+
+                <!-- 02 -->
                 <div class="dropdown">
                   <button class="nav__menu__btn dropbtn">
                     Créer un Diagramme&nbsp;
                     <i class="float-end fa fa-caret-down ml2"> </i>
                   </button>
                   <div class="dropdown-content" >
-                    <a href="/editeur/umld-demo-project" >
-                      <i class="fa fa-project-diagram ml2"> </i> Classe
-                    </a>
-                    <a href="/editeur/umld-demo-project" >
-                      <i class="fa fa-project-diagram ml2"> </i> Cas d'utilisation
-                    </a>
-                    <a href="/editeur/umld-demo-project" >
-                      <i class="fa fa-project-diagram ml2"> </i> Séquence
-                    </a>
+                    <div v-if="this.$route.name == 'projetView'">
+                      <a @click.prevent="showCreateClassDiagForm=true" href="/editeur/new-class-diag" >
+                        <i class="fa fa-project-diagram ml2"> </i> Classe
+                      </a>
+                      <a @click.prevent="" disabled href="/editeur/new-use-case-diag" class="disabled">
+                        <i class="fa fa-project-diagram ml2"> </i> Cas d'utilisation
+                      </a>
+                      <a @click.prevent="" disabled href="/editeur/new-sequence-diag" class="disabled">
+                        <i class="fa fa-project-diagram ml2"> </i> Séquence
+                      </a>
+                      <a @click.prevent="" disabled href="/editeur/new-object-diag" class="disabled">
+                        <i class="fa fa-project-diagram ml2"> </i> Objet
+                      </a>
+                    </div>
+                    <div v-else class="text-center p-3">
+                      <a @click="toogleProjectList" style="background-color: #eae9f4; color: #1787fc;">Selectionner un projet</a> puis rééssayer.                
+                    </div>
                   </div>
                 </div>
               </div>
@@ -192,14 +203,64 @@
       </div>
     </div>
   </div>
+
   <transition name="slide-fade" appear mode="out-in">
     <alert v-show="alertMe" :status="gAlertType" :message="gAlertMessage"></alert>
   </transition>
-</template>
 
+  <!-- create project popup -->
+  <modal :waitingResult="false" v-if="showCreateProjectPopUp" @close="showCreateProjectPopUp=false" @sendInvite="fetchCreateProject">
+    <template #header>
+      <div>Nouveau projet !</div>
+    </template>
+    <template #body>
+      <form>
+        <div class="col-12 pl-0">
+          <div class="form-group ">
+            <label class="control-label" for="inputPassnew">Titre</label>
+            <div class="input-group1">
+              <input v-model="new_project_title" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="control-label" for="inputPassnew">Description</label>
+            <div class="input-group1">
+              <textarea v-model="new_project_description" class="form-control questionTextArea textAreaConf" name="inputPassnew"></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </template>
+    <template #footer>
+    </template>
+  </modal>
+
+  <!-- create project popup -->
+  <modal :waitingResult="false" v-if="showCreateClassDiagForm" @close="showCreateClassDiagForm=false" @sendInvite="confirmCreateClassDiag">
+    <template #header>
+      <div>Créer un diagramme de class !</div>
+    </template>
+    <template #body>
+      <form>
+        <div class="col-12 pl-0">
+          <div class="form-group ">
+            <label class="control-label" for="inputPassnew">Label</label>
+            <div class="input-group1">
+              <input v-model="new_diag_label" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+            </div>
+          </div>
+        </div>
+      </form>
+    </template>
+    <template #footer>
+    </template>
+  </modal>
+
+</template>
 <script>
 import Alert from '@/components/shared/Alert.vue'
 import { getAPI } from '@/api/axios-api.js'
+import Modal from '@/components/shared/Modal'
 import CryptoJS from 'crypto-js'
 
 export default {
@@ -240,11 +301,17 @@ export default {
       slugUserName: "",
       projectMe: [],
       projectInvite: [],
-      userNotifCount: 0
+      userNotifCount: 0,
+      showCreateProjectPopUp: false,
+      new_project_title: "",
+      new_project_description: "",
+      showCreateClassDiagForm: false,
+      new_diag_label: "new class diagram"
     }
   },
   components: {
-    Alert
+    Alert,
+    Modal
   },
   methods: {
     displayError (error, type='alert-ok', time=4000) {
@@ -310,6 +377,80 @@ export default {
     },
     decrypt (data) {
       return CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8);
+    },
+    fetchCreateProject() {
+      if(this.new_project_description.length != 0 && this.new_project_title.length != 0) {
+        getAPI.post('/project', {
+          title: this.new_project_title,
+          description: this.new_project_description
+        })
+        .then(response => {
+          if(response.status == 201) {
+            this.displayError('Great ! projet créer avec succès', 'alert-yes', 5000)
+            setTimeout(() => {
+              this.showCreateProjectPopUp = false
+            }, 4000)
+            setTimeout(() => {
+              this.$router.go()          
+            }, 3000)
+          }
+          else{
+            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+            this.waitingAPIResponse = false
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            this.displayError(error.response.data.detail, 'alert-no', 4000)
+          } else if (error.request) {
+            this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
+          } else {
+            this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
+          }
+        })
+      }
+      else{
+        this.displayError("Oups ! veuillez remplir tous leschamps correctement.", "alert-no")
+      }
+    },
+    confirmCreateClassDiag () {
+      if(this.new_diag_label.length  != 0) {
+        getAPI.post('/diagram/'+this.decrypt(this.$route.params.id)+'/CLASS', 
+        {
+          label: this.new_diag_label,
+          plain_text: "Un étudiant possède un id et un titre. Un cour possède un intitulé. Un étudiant peut s'inscrire a un cour."
+        })
+        .then(response => {
+          if(response.status == 201) {
+            this.displayError('Great ! Diagramme créer avec  succès.', 'alert-yes', 4000)
+            setTimeout(() => {
+              this.showCreateProjectPopUp = false
+            }, 4000)
+            setTimeout(() => {
+              let a = document.createElement('a')
+              a.setAttribute('href', "/editeur/"+this.toSlug(response.data.label)+"/"+response.data.public_acces_token)
+              a.click()
+              a.remove()
+            }, 3000)
+          }
+          else{
+            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+            this.waitingAPIResponse = false
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            this.displayError(error.response.data.detail, 'alert-no', 4000)
+          } else if (error.request) {
+            this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
+          } else {
+            this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
+          }
+        })
+      }
+      else{
+        this.displayError("Oups ! veuillez remplir tous leschamps correctement.", "alert-no")
+      }
     }
   },
   async mounted() {
@@ -357,6 +498,18 @@ export default {
 </script>
 
 <style scoped>
+  .disabled{
+    cursor: not-allowed;
+    background-color: #f4f4f4;
+  }
+  .disabled:hover{
+    color: #e82646;
+    background-color: #f4f4f4;
+  }
+  .textAreaConf{
+    height: 15em;
+    resize: none;
+  }
   .notif-span{
     position: relative;
   }

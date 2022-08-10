@@ -10,22 +10,22 @@
               </svg>
               <span class="d-none d-md-block">Aperçu</span>
             </a>
-            <a @mouseover="animNavTab" @click.prevent="switchNav('diagrammes')" href="/projets?tab=repositories" data-tab-item="diagrammes" :class="(activeNav == 'diagrammes') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_2">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('diagrammes')" href="/projets?tab=diagrammes" data-tab-item="diagrammes" :class="(activeNav == 'diagrammes') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_2">
               <i class="fa fa-project-diagram"></i>
               <span class="">Diagrammes</span>
               <span title="01" data-view-component="true" class="Counter">{{ (projectData != null) ? projectData.diagrams.length : '•••' }}</span>
             </a>
-            <a @mouseover="animNavTab" @click.prevent="switchNav('codeBox')" href="/projets?tab=projects" data-tab-item="codebox" :class="(activeNav == 'codeBox') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_3">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('codeBox')" href="/projets?tab=generateur-de-code" data-tab-item="codebox" :class="(activeNav == 'codeBox') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_3">
               <i class="fa fa-code"></i>
               <span class="d-none d-md-block">CodeBox</span>
               <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span>
             </a>
-            <a @mouseover="animNavTab" @click.prevent="switchNav('collaborateurs')" href="/projets?tab=packages" data-tab-item="collaborateurs" :class="(activeNav == 'collaborateurs') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_4">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('collaborateurs')" href="/projets?tab=collaborateurs" data-tab-item="collaborateurs" :class="(activeNav == 'collaborateurs') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_4">
               <i class="fa fa-users"></i>
               <span class="d-none d-md-block">Collaborateurs</span>
               <span title="0" data-view-component="true" class="Counter" hidden="hidden">{{ (projectData != null) ? projectData.collaborators.length : '•••' }}</span>
             </a>
-            <a @mouseover="animNavTab" @click.prevent="switchNav('parametres')" href="/projets?tab=stars" data-tab-item="parametres" :class="(activeNav == 'parametres') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_5">
+            <a @mouseover="animNavTab" @click.prevent="switchNav('parametres')" href="/projets?tab=parametres" data-tab-item="parametres" :class="(activeNav == 'parametres') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_5">
               <i class="fa fa-code-fork"></i>
               <span class="d-none d-md-block">Paramètres</span>
             </a>
@@ -38,29 +38,18 @@
         </div>
         <div v-else-if="activeNav=='overview'" style="min-height: 100vh;">
           <div class="d-flex flex-wrap row">
+            <!-- 01 -->
             <div class="col-12 col-md-8 mt-2">
-              <div class="card mb-2">
-                <div class="card-header">
-                  <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
-                    <p class="">Règles de gestion #1</p>
-                    <button class="btn no-mw"><i class="fa fa-edit"></i></button>
-                  </h5>
+              <div class="pt-5 d-flex justify-content-between align-items-center flex-column">
+                <img width="250" src="@/assets/image/brand/empty0.svg" alt="emty diagram image" class="mt-2"/>
+                <div>
+                  <br><br>
                 </div>
-
-                <div >
-                  <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="mb-0">
-                    <img class="w-100" src="../../assets/tutorials/diag.png"/>
-                  </h5>
-                </div>
+                <p>Aucune action récente. Pour le moment humez l'air.</p>
               </div>
             </div>
+
+            <!-- 02 -->
             <div class="col-12 col-md-4 mt-2">
               <div class="card">
                 <div class="card-header">
@@ -72,7 +61,9 @@
                 <div>
                   <div class="about-project card-body">
                     <h3>Description</h3>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    <div style="min-height: 90vh;">
+                      {{ this.projectData.description }}
+                    </div>
                     <br><br>
                     <h3>Contributeurs</h3>
 
@@ -87,89 +78,53 @@
             <!-- 01 -->
             <div class="col-12 col-md-8 mt-2">
               <div class="mt-2">
-                <div class="card mb-2 d-none">
-                  <div class="card-header">
-                    <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
-                      <p class="">Créateur de digramme</p>
-                      <button class="btn btn-darkula no-mw"><i class="fa fa-plus"></i> CREER UN DIAGRAMME</button>
-                    </h5>
-                  </div>
-                </div>
                 <br class="d-none">
-                <div class="p-relative card mb-2">
-                  <span id="01" class="id-100"></span>
-                  <div class="card-header">
-                    <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
-                      <p class="">Règles de gestion #1</p>
-                      <div>
-                        <button class="btn no-mw"><i class="fa fa-edit"></i></button>
-                        <button class="btn no-mw"><i class="fa fa-play"></i></button>
+
+                <div  v-for="diagram, i in projectData.diagrams" v-bind:key="i">
+                  <div class="p-relative card mb-2">
+                    <span :id="i+1" class="id-100"></span>
+                    <div class="card-header">
+                      <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
+                        <p class="">
+                          <strong>{{ diagram.label.substring(0, 35) }}</strong><br>
+                          <!--<br>Règles de gestion #{{ i+1 }} -->
+                          <span class="small-note dev-small-note" style="font-size: .65em;">{{ diagram.type }} DIAGRAM</span>
+                        </p>
+                        <div>
+                          <!--<button class="btn no-mw"><i class="fa fa-download"></i></button>-->
+                          <a :href="'/editeur/' + toSlug(diagram.label)+ '/' +diagram.public_acces_token" ><button class="btn no-mw"><i class="fa fa-edit"></i>&nbsp;OUVRIR DANS L'EDITEUR</button></a>
+                        </div>
+                      </h5>
+                    </div>
+                    <div>
+                      <div class="card-body">
+                        {{ diagram.plain_text }}
                       </div>
-                    </h5>
-                  </div>
-                  <div>
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
+                    <div v-if="!isProduction" class="p-2 pt-0 px-5 ml-1">
+                      <a style="color: #1787fc;" target="_blank" :href="'http://localhost:8080/public/diagram/'+diagram.public_acces_token">http://localhost:8080/publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
+                    </div>
+                    <div v-else  class="p-2 pt-0 px-5 ml-1">
+                      <a style="color: #1787fc;" target="_blank" :href="'https://umldesigner.app/public/diagram/'+diagram.public_acces_token">https://umldesigner.app/publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
                     </div>
                   </div>
-                </div>
-                <div class="card diagram-card">
-                  <div class="card-header">
-                    <h5 class="mb-0">
-                      <img class="w-100" src="../../assets/tutorials/diag.png"/>
-                    </h5>
-                  </div>
-                </div>
-                <br>
-                <div class="p-relative card mb-2">
-                  <span id="02" class="id-100"></span>
-                  <div class="card-header">
-                    <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
-                      <p class="">Règles de gestion #2</p>
-                      <div>
-                        <button class="btn no-mw"><i class="fa fa-edit"></i></button>
-                        <button class="btn no-mw"><i class="fa fa-play"></i></button>
-                      </div>
-                    </h5>
-                  </div>
-                  <div>
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                  <!--<div class="card diagram-card">
+                    <div class="card-header">
+                      <h5 class="mb-0">
+                        <img class="w-100" src="../../assets/tutorials/diag.png"/>
+                      </h5>
                     </div>
-                  </div>
+                  </div>-->
+                  <br>
                 </div>
-                <div class="card diagram-card">
-                  <div class="card-header">
-                    <h5 class="mb-0">
-                      <img class="w-100" src="../../assets/tutorials/diag.png"/>
-                    </h5>
-                  </div>
-                </div>
-                <br>
-                <div class="p-relative card mb-2">
-                  <span id="03" class="id-100"></span>
-                  <div class="card-header">
-                    <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
-                      <p class="">Règles de gestion #2</p>
-                      <div>
-                        <button class="btn no-mw"><i class="fa fa-edit"></i></button>
-                        <button class="btn no-mw"><i class="fa fa-play"></i></button>
-                      </div>
-                    </h5>
-                  </div>
+                <div v-if="projectData.diagrams.length == 0" class="pt-5 d-flex justify-content-between align-items-center flex-column">
+                  <img width="250" src="@/assets/image/brand/empty0.svg" alt="emty diagram image" class="mt-2"/>
                   <div>
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
+                    <br><br>
                   </div>
+                  <p>Aucun diagramme pour le moment.</p>
                 </div>
-                <div class="card diagram-card">
-                  <div class="card-header">
-                    <h5 class="mb-0">
-                      <img class="w-100" src="../../assets/tutorials/diag.png"/>
-                    </h5>
-                  </div>
-                </div>
+
               </div>
             </div>
 
@@ -178,18 +133,16 @@
               <div class="card sticky-helper">
                 <div class="card-header">
                   <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
-                    <p class="">Gestionnaire</p>
-                    <button class="btn btn-darkula no-mw"><i class="fa fa-plus"></i> CREER</button>
+                    <p class="">Liste des diagrammes</p>
+                    <!--<button class="btn btn-darkula no-mw"><i class="fa fa-plus"></i> CREER</button>-->
                   </h5>
                 </div>
 
                 <div style="min-height: 25em">
                   <div class="about-project card-body">
                     <h3>Diagrammes</h3>
-                    <ol>
-                      <li><a href="#01">class diagram</a></li>
-                      <li><a href="#02">sequence diagram</a></li>
-                      <li><a href="#03">class diagram 2</a></li>
+                    <ol v-for="diagram, i in projectData.diagrams" v-bind:key="i">
+                      <li><a href="#{{ i+1 }}">{{ (diagram.label.length > 35) ? diagram.label.substring(0, 35) + ' •••' : diagram.label }}</a></li>
                     </ol>
                     <br>
                     <h3>Options</h3>
@@ -220,7 +173,8 @@
                     <i style="font-size: 2em;" class="fa fa-user"></i>
                   </div>
                   <div class="d-flex flex-column" style="position:relative; left: .5em;">
-                    <strong v-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name.substring(0, 4) + '••••••' }}</strong>
+                    <strong v-if="collab.project_id == 1 && collab.role != 'ADMIN' && userProfile.id != 1">{{ collab.user_name.substring(0, 4) + '••••••' }}</strong>
+                    <strong v-else-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else-if="collab.project_id == 1 && collab.role == 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else>{{ collab.user_name }}</strong>
                     <span v-if="collab.role == 'ADMIN'" class="f6 color-fg-muted"> <sup class="small-note dev-small-note">Propriétaire</sup></span>
@@ -229,7 +183,7 @@
                 </div>
                 <div>
                   <a v-if="roleAndPermission[0] == 'ADMIN' && !collab.is_active" class="ft3">(EN ATTENT)</a>&nbsp;
-                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
+                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.user_id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
                 </div>
               </div>
               <!-- -- -->
@@ -312,7 +266,7 @@
     </nav-layout>
 
     <!-- user deletion popup confirm-->
-    <modal waitingResult="waitingInviteResult" v-if="showDelCollabBox" @close="showDelCollabBox=false" @sendInvite="ConfirmDeleteCollab">
+    <modal :waitingResult="false" v-if="showDelCollabBox" @close="showDelCollabBox=false" @sendInvite="ConfirmDeleteCollab">
       <template #header>
         <div>Supprimer un collaborateur</div>
       </template>
@@ -353,6 +307,7 @@ export default {
     },
     data () {
         return {
+        isProduction: process.env.NODE_ENV === 'production',
         activeNav: 'diagrammes',
         projectData: null,
         showModalInvite: false,
@@ -376,6 +331,9 @@ export default {
       }
     },
     methods: {
+      toSlug (value) {
+        return value.toLowerCase().replaceAll(' ', '-');
+      },
       encrypt (text) {
         return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
       },
@@ -416,7 +374,7 @@ export default {
       getRole() {
         if(this.projectData != null) {
           for(let i =0 ; i<this.projectData.collaborators.length; i++) {
-            if(this.projectData.collaborators[i].id == this.userProfile.id) {
+            if(this.projectData.collaborators[i].user_id == this.userProfile.id) {
               this.roleAndPermission[0] = this.projectData.collaborators[i].role
               this.roleAndPermission[1] = this.projectData.collaborators[i].permission
             }
@@ -435,16 +393,20 @@ export default {
               permission: this.invite_permission,
           })
           .then(() => {
-            this.waitingInviteResult = false
-            this.alertMsg = "Super invitation envoyéavec succès."
+            this.alertMsg = "Super invitation envoyée avec succès."
             this.alertType = "alert-yes"
             setTimeout(() => {
-              this.showModalInvite = false            
-            }, 2000)
-            this.$router.go()
+              this.showModalInvite = false     
+              this.waitingInviteResult = false
+            }, 4000)
+            setTimeout(() => {
+              this.$router.go()          
+            }, 3000)
           })
           .catch((error) => {
-            this.waitingInviteResult = false
+            setTimeout(() => {
+              this.waitingInviteResult = false
+            }, 2000)
             this.alertMsg = "Oups ! "+error.response.data.detail
             this.alertType = "alert-no"
           })
@@ -468,18 +430,19 @@ export default {
         else{
           getAPI.delete('/collaborator/'+this.deleteProjectId+'/'+this.deleteUserId, )
           .then(() => {
-            this.waitingInviteResult = false
             this.alertMsg = "Utilisateur supprimer avec succès"
             this.alertType = "alert-yes"
             setTimeout(() => {
               this.showModalInvite = false            
-            }, 2000)
+            }, 4000)
             this.showDelCollabBox = true
             this.deleteUserName = null
             this.deleteProjectId = null
             this.deleteUserId = null
             this.showDelCollabBox = false
-            this.$router.go()
+            setTimeout(() => {
+              this.$router.go()          
+            }, 3000)
           })
           .catch((error) => {
             this.waitingInviteResult = false
@@ -500,8 +463,10 @@ export default {
             this.alertType = "alert-yes"
             setTimeout(() => {
               this.waitingUpdateResult = false            
-            }, 2000)
-            this.$router.go()
+            }, 4000)
+            setTimeout(() => {
+              this.$router.go()          
+            }, 3000)
           })
           .catch((error) => {
             this.waitingUpdateResult = false
@@ -532,10 +497,14 @@ export default {
   resize: none;
 }
 .delHightligh{
-    background-color: #f95f5f;
-    padding: .2em;
-    border-radius: .4em;
-    color: white;
+  background-color: #f95f5f;
+  padding: .2em;
+  border-radius: .4em;
+  color: white;
+  -webkit-user-select: all;  /* Chrome all / Safari all */
+  -moz-user-select: all;     /* Firefox all */
+  -ms-user-select: all;      /* IE 10+ */
+  user-select: all;          /* Likely future */  
 }
 .sel{
   padding: 0.7rem 0.75rem;

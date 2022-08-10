@@ -2,7 +2,8 @@
   <div class="editorContainer">
     <!--editor-->
     <div id="textBox" class="editable" contenteditable="true"></div>
-    <textarea wrap="hard" id="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" name="" cols="30" rows="10" spellcheck="false">Un utilisateur a un id, un email, un mot_de_passe, un nom, un prénom. Un utilisateur peut s'inscrire, se connecter, et se déconnecter. Une alerte est constituée d'un id, d'un méssage et d'une date. Un utilisateur peut avoir plusieurs alertes et une alerte est destinée a un seul utilisateur. Un utilisateur peut créer plusieurs projets. Un projet contient plusieurs diagrammes. Un projet a un titre et une description. Un diagramme est caractérisé par un id, son type, son nom, son text et une image_xml. A chaque Projet est associé des code et des collaborateurs. Un collaborateur est caractérisé par un id et son un role. Un code contient un id, un langage et du text.</textarea>
+    <textarea v-if="!readonly" v-model="innerPlainText" wrap="hard" id="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" name="" cols="30" rows="10" spellcheck="false"></textarea>
+    <textarea @keypress="alert('You only have read acces on this project.')" v-else readonly v-model="innerPlainText" wrap="hard" id="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" name="" cols="30" rows="10" spellcheck="false"></textarea>
     <!--float div-->
     <div v-show="nextWord != null && startEdit" class="wordPlane" id="mainWordPlane">
       {{ this.nextWord }}
@@ -18,6 +19,7 @@
 // var langDict = new Typo("fr_FR", false, false, {
 //   dictionaryPath: "/utils/typo-js/dictionaries"
 // });
+import { getAPI } from '@/api/axios-api.js'
 
 export default {
   name: "GTextEdit",
@@ -31,6 +33,18 @@ export default {
     action: {
       type: String,
       default: ''
+    },
+    plainText: {
+      type: String,
+      required: true
+    },
+    getText: {
+      type: String,
+      default: ''
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -39,7 +53,8 @@ export default {
       nextWord: "yaourt",
       prevKey: null,
       caretPos: null,
-      waitingAPIResponse: false
+      waitingAPIResponse: false,
+      innerPlainText: this.plainText
     }
   },
   methods: {
@@ -49,21 +64,20 @@ export default {
       }
     },
     refreshDraw () {
-      // this.waitingAPIResponse = true
-      // guestSocketAPI.post('/token/', {text: document.getElementById("hiddenEditor").value})
-      //     .then(response => {
-      //       const xml = response.data
-      //       this.$emit('newXMLTree', xml)
-      //       setTimeout(() => {
-      //         this.waitingAPIResponse = false
-      //       }, 700);
-      //     })
-      //     .catch(() => {
-      //       // this.displayError('No active account found with the given credentials.', 'alert-no')
-      //       this.waitingAPIResponse = false
-      //     })
-      let xml = "XML DIAGRAM TEXT FORMAT"
-      this.$emit('sync', xml)
+      this.$emit('startSync')
+      getAPI.post('/uml/class-diagram-xml', {
+        text: this.innerPlainText.replace(/\n/g, "")
+      })
+      .then(response => {
+        const xml = response.data.xml
+        this.$emit('sync', xml)
+      })
+      // .catch(() => {
+      //   // this.displayError('No active account found with the given credentials.', 'alert-no')
+      //   this.waitingAPIResponse = false
+      // })
+      // let xml = "XML DIAGRAM TEXT FORMAT"
+      // this.$emit('sync', xml)
     },
     paralaxScoll () {
       let foregroundEditor = document.getElementById("hiddenEditor")
@@ -112,6 +126,9 @@ export default {
   watch: {
     action() {
       this.refreshDraw()
+    },
+    getText: function () {
+      this.$emit('saveDiagram', this.innerPlainText)
     }
   }
 }
@@ -154,11 +171,6 @@ export default {
     height: calc(100% - 70px);
     position: relative;
   }
-  /*.editorContainer{*/
-  /*    width: 540px;*/
-  /*    height: 92vh;*/
-  /*    position: relative;*/
-  /*}*/
   .editable {
     position: relative;
   }
@@ -183,30 +195,10 @@ export default {
     cursor: pointer !important;
     display: inline;
   }
-  /*#app{*/
-  /*  display: flex;*/
-  /*  justify-content: center;*/
-  /*  background-color: #1D263A;*/
-  /*  align-items: center;*/
-  /*  height: 100vh;*/
-  /*}*/
+
   * {
     user-select: auto !important;
   }
-
-  /*html {*/
-  /*  overflow: auto;*/
-  /*}*/
-  /*body {*/
-  /*  position: absolute;*/
-  /*  top: 20px;*/
-  /*  left: 20px;*/
-  /*  bottom: 20px;*/
-  /*  right: 20px;*/
-  /*  padding: 30px;*/
-  /*  overflow-y: scroll;*/
-  /*  overflow-x: hidden;*/
-  /*}*/
 
   /* Let's get this party started */
   text-area::-webkit-scrollbar {

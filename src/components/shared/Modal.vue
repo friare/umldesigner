@@ -21,7 +21,7 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <button v-if="waitingResult" class="btn btn-darkula modal-default-button" @click="$emit('sendInvite')" style="min-width: 10em;">
+              <button v-if="!innerWaitingResult" class="btn btn-darkula modal-default-button" @click="$emit('sendInvite')" style="min-width: 10em;">
                 VALIDER
               </button>
               <button v-else class="btn btn-darkula modal-default-button" style="min-width: 10em;">
@@ -42,6 +42,16 @@ export default {
     waitingResult: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      innerWaitingResult: false
+    }
+  },
+  watch: {
+    waitingResult: function () {
+      this.innerWaitingResult = this.waitingResult
     }
   }
 }

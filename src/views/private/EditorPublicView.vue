@@ -1,16 +1,10 @@
 <template>
   <div class='udesign'>
     <div class="app-container">
-      <div class="edit-zone resizable-left">
+      <div class="d-none d-md-flex edit-zone resizable-left">
         <header class="edit-header space-between darkula">
           <div class="d-flex">
-            <button class="u-btn u-btn-secondary" @click="goBackB"><i class="fa fa-home"></i></button>
-            <div class="btn-lot d-none d-md-flex">
-              <button @click.stop="orderSync" class="u-btn no-border np">
-                <img v-if="waitingApiTextSync"  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
-                <i v-else class="fa fa-sync-alt"></i>
-              </button>
-            </div>
+            <button class="u-btn u-btn-secondary" @click="goBackB"><i class="fa fa-home"></i>&nbsp;UMLDesigner</button>
           </div>
           <!-- -------------------------------- -->
           <div v-if="diagramData != null" class="select_mate d-none d-md-block" data-mate-select="active">
@@ -39,7 +33,6 @@
                 &nbsp;<span class="umlTypeName">SEQUENCE</span> 
               </div>
             <span class="icon_select_mate" >
-              <i style="cursor: pinter;" @click="setOrderGetText" class="fa fa-save"></i>
             </span>
             <div class="cont_list_select_mate">
               <ul class="cont_select_int">  </ul>
@@ -50,8 +43,8 @@
 
         <!-- DRAW EDITOR HERE  -->
         <!-- ----------------- -->
-        <g-text-edit v-if="waitingApiTextSync" @sync="syncDiagram" @saveDiagram="saveDiagram" :getText="orderGetText" plainText="" :action="syncOrder" placeholder="Patientez un instant."></g-text-edit>
-        <g-text-edit v-else @sync="syncDiagram" @saveDiagram="saveDiagram" :getText="orderGetText" @startSync="waitingApiXmlSync=true" :plainText="plainText" :action="syncOrder" placeholder="Insérer du texte ici"></g-text-edit>
+        <g-text-edit v-if="waitingApiTextSync" @sync="syncDiagram" readonly="true" @saveDiagram="saveDiagram" :getText="orderGetText" plainText="" :action="syncOrder" placeholder="Patientez un instant."></g-text-edit>
+        <g-text-edit v-else @sync="syncDiagram" readonly="true" @saveDiagram="saveDiagram" :getText="orderGetText" @startSync="waitingApiXmlSync=true" :plainText="plainText" :action="syncOrder" placeholder="Insérer du texte ici"></g-text-edit>
         <!-- ----------------- -->
 
         <div class="resizer-zone resizer-right">
@@ -65,84 +58,33 @@
       <div class="diagram-zone resizable-right" @click.stop="closeToolTip">
         <header id="horzMenu" class="justify-content-between d-none d-md-flex">
           <div>
-            <button v-if="waitingApiXmlSync" @click.prevent="" class="u-btn no-border np">
-              <img  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
-            </button>
-            <span v-if="saved" style="color: green;padding: 1em .4em 0 .4em;position: relative;top: .3em;">
-              ENREGISTRÉ
-            </span>
+            <div class="btn-lot mt-1">
+              <button @click.stop="resizeDiagram" class="u-btn u-btn-share no-border">
+                <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
+                <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
+              </button>
+            </div>
           </div>
           <div class="text-right d-none d-md-flex">
-            <!--<div class="d-flex">
-              <div class="btn-lot d-fl">
-                <button class="u-btn u-btn-user no-border avatar-online">
-                  <img class="u-icon" src="../../assets/image/avatars/avatar3.jpeg" alt="">
-                </button>
-                <button class="u-btn u-btn-user no-border avatar-online">
-                  <img class="u-icon" src="../../assets/image/avatars/avatar4.jpeg" alt="">
-                </button>
-                <button class="u-btn u-btn-user no-border avatar-online">
-                  <img class="u-icon" src="../../assets/image/avatars/avatar5.jpeg" alt="">
-                </button>
-              </div>
-            </div>-->
-            <div class="d-flex">
-              <div class="btn-lot">
-                <button @click.stop="saveUML" download="class_uda.jpg" class="u-btn u-btn-share no-border">
-                  <img class="svg u-icon" src="../../assets/image/ico/download-btn.png"/>
-                </button>
-                <button @click.stop="shareBoxDesktop" class="u-btn u-btn-share no-border">
-                  <img class="svg u-icon" src="../../assets/image/ico/share-64.png"/>
-                </button>
-                <button @click.stop="resizeDiagram" class="u-btn u-btn-share no-border">
-                  <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
-                  <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
-                </button>
-              </div>
-              <div class="btn-lot">
-                <button @click.stop="codeBoxDesktop" class="u-btn no-border"><i class="fa fa-code u-icon"></i></button>
-                <button @click.stop="folderBoxDesktop" class="u-btn no-border"><i class="fa fa-folder u-icon"></i></button>
-              </div>
-              <div class="btn-lot" style="background-color: darkorange; margin-right: .2em;">
-                <button @click.stop="preniumBoxDesktop" class="u-btn no-border" style="background-color: darkorange; color: white;"><i class="fa fa- u-icon"></i>PREMIUM</button>
-              </div>
-              <!-- <a href="../../assets/login.html">
-                <button class="u-btn u-btn-primary u-btn-transparent">SE CONNECTER</button>
-              </a> -->
-            </div>
+            <a href="/connexion">
+              <button class="u-btn u-btn-primary u-btn-transparent mt-1">SE CONNECTER</button>
+            </a>
+            &nbsp;&nbsp;
           </div>
         </header>
         <div class="vertical-menu">
           <div class="top-to-left-mobile ">
             <div class="btn-lot d-flex d-md-none">
-              <button class="u-btn no-border avatar-online">
-                <img class="u-icon" src="../../assets/image/avatars/avatar3.jpeg" alt="">
-              </button>
-              <button class="u-btn no-border avatar-online">
-                <img class="u-icon" src="../../assets/image/avatars/avatar4.jpeg" alt="">
-              </button>
-              <button class="u-btn no-border avatar-online">
-                <img class="u-icon" src="../../assets/image/avatars/avatar5.jpeg" alt="">
-              </button>
-            </div>
-            <div class="btn-lot d-flex d-md-none">
-              <button @click.stop="preniumBoxMobile" class="u-btn no-border"><i class="fa fa-award u-icon"></i></button>
-            </div>
-            <div class="btn-lot d-flex d-md-none">
-              <button @click.stop="saveUML" class="u-btn no-border">
-                <img class="svg u-icon" src="../../assets/image/ico/download-btn.png"/>
-              </button>
-              <button @click.stop="shareBoxMobile" class="u-btn no-border">
-                <img class="svg u-icon" src="../../assets/image/ico/share-64.png"/>
-              </button>
               <button @click.stop="resizeDiagram" class="u-btn no-border">
                 <img v-show="screenView == '70%'" class="svg u-icon" src="../../assets/image/ico/fit-to-screen.png"/>
                 <img v-show="screenView == '100%'" class="svg u-icon" src="../../assets/image/ico/normal-to-screen.png"/>
               </button>
             </div>
-            <div class="btn-lot d-flex d-md-none">
-              <button @click.stop="codeBoxMobile" class="u-btn no-border"><i class="fa fa-code u-icon"></i></button>
-              <button @click.stop="folderBoxMobile" class="u-btn no-border"><i class="fa fa-folder u-icon"></i></button>
+            <div class="btn-lot d-md-none">
+              <a href="/connexion">
+                <button class="u-btn u-btn-primary u-btn-transparent w-100"><i class="fa fa-user"></i>                                                                                                                                                                                 </button>
+              </a>
+              <!--<button @click.stop="codeBoxMobile" class="u-btn no-border"><i class="fa fa-code u-icon"></i></button>-->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
             </div>
           </div>
           <div>
@@ -175,7 +117,7 @@
           </div>
           <div v-if="folderHTML" class=" header_modal--header--c8kL6">
             <div class="px-3 permissions_modal--fileTitle--1GMA_">
-              <p class="p_title">Dans le même Projet</p>
+              <p class="p_title">Projet</p>
               <button class="s_btn mr-2" @click.stop="toolTipOpened=false">
                 <i class="fa fa-close"></i>
               </button>
@@ -200,9 +142,9 @@
         </template>
         <template #body>
           <div v-if="shareHTML">
-            <!--<div class="permissions_modal--contentContainer__OLD--2MUHp">
-              send to specific-->
-              <!--<div class="w-100 mb-1">
+            <div class="permissions_modal--contentContainer__OLD--2MUHp">
+              <!--send to specific-->
+              <div class="w-100 mb-1">
                 <form class="d-flex">
                   <div class="d-flex col-8 email_f px-0">
                     <input class="col-8" type="email" placeholder="Email"/>
@@ -214,9 +156,10 @@
                   </div>
                   <button class="s_btn col-4 submit_f s_invite" type="submit">INVITER</button>
                 </form>
-              </div>-->
+              </div>
 
-              <!--<div class="permissions_modal--roleRows--3IhV0 overflow--overflowYAuto--2H5Wf overflow--momentumScroll--2_z54">
+              <div class="permissions_modal--roleRows--3IhV0 overflow--overflowYAuto--2H5Wf overflow--momentumScroll--2_z54">
+                <!--user on project-->
                 <div class="role_row--roleRow--1utt9">
                   <img data-tooltip-type="text" data-tooltip="datnv.it3@gmail.com" src="https://s3-alpha.figma.com/profile/9c7e43b1-aa68-4e52-b14f-7210ea4897b5" class="role_row--avatar--1wPrK role_row--avatarNoMargin--lAfW7 role_row--avatarMargin--1B16A" alt="">
                   <div class="role_row--nameAndSelect--uiDVd">
@@ -226,8 +169,10 @@
                     <span>auteur</span>
                   </div>
                 </div>
+
+
               </div>
-            </div>-->
+            </div>
             <!--broadcast-->
             <div class="border-thin px-3">
               <div class="role_row--roleRow--1utt9">
@@ -241,8 +186,7 @@
                   <div>
                     <div class="role_row--permissionLabel--pUx2j ">Tout le monde peut voir</div>
                   </div>
-                  <input style="opacity: 0; position: absolute;" v-if="diagramData != null && !isProduction" type="text" id="publicLink" :value="'http://localhost:8080/public/diagram/'+diagramData.public_acces_token"/>
-                  <input style="opacity: 0; position: absolute;" v-if="diagramData != null && isProduction" type="text" id="publicLink" :value="'https://umldesigner.app/public/diagram/'+diagramData.public_acces_token"/>
+                  <input style="opacity: 0; position: absolute;" v-if="diagramData != null" type="text" id="publicLink" :value="'localhost:8080/public/diagram/'+diagramData.public_acces_token"/>
                   <div @click="copyLink" class="permissions_modal--footerLink--tBFNA blue_link--blueLink--22X56" id="ccopy">
                     <span class="svg-container permissions_modal--copyIcon--zdrgs">
                       <svg class="svg" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -255,30 +199,30 @@
             </div>
           </div>
           <div v-if="folderHTML">
-            <div v-if="allDiagrams != null" class="d-flex flex-column p-3">
-              <div v-for="diagram, i in allDiagrams" v-bind:key="i" class="d-flex justify-content-between align-items-center mb-2">
-                <span><i class="fa fa-file"></i>&nbsp; {{ (diagram.label.length > 15) ? diagram.label.substring(0, 15) + ' •••' : diagram.label }}</span>
-                <a :href="'/editeur/' + toSlug(diagram.label)+ '/' +diagram.public_acces_token"><button class="btn btn-darkula p-1 px-2">OUVRIR</button></a>
+            <div class="d-flex flex-column p-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span><i class="fa fa-file"></i>&nbsp; ifri_gestion_uc</span>
+                <button class="btn btn-darkula p-1 px-2">OUVRIR</button>
               </div>
             </div>
           </div>
           <div v-if="preniumHTML">
             <div class="d-flex flex-column p-3">
               <p>Pourquoi devenir premium?</p>
-              <div class="d-flex justify-content-between align-items-center mb-2 mt-2">
-                <span><i class="fa fa-award"></i>&nbsp; Soon •••</span>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span><i class="fa fa-award"></i>&nbsp; Téléchargement illimité</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <span><i class="fa fa-award"></i>&nbsp; Soon •••</span>
+                <span><i class="fa fa-award"></i>&nbsp; Collaborateurs illimité</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <span><i class="fa fa-award"></i>&nbsp; Soon •••</span>
+                <span><i class="fa fa-award"></i>&nbsp; Fromat .svg, .eps, .ai</span>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <span><i class="fa fa-award"></i>&nbsp; Soon •••</span>
+                <span><i class="fa fa-award"></i>&nbsp; Generateur de code source</span>
               </div>
               <div class="w-100 text-center mb-2 mt-3">
-                <button class="btn btn-danger p-1 px-2">ACTIVER (•••$)</button>
+                <button class="btn btn-danger p-1 px-2">ACTIVER (25$)</button>
               </div>
             </div>
           </div>
@@ -304,24 +248,6 @@
       <transition name="slide-fade" appear mode="out-in">
         <alert v-show="alertMe" :status="gAlertType" :message="gAlertMessage"></alert>
       </transition>
-
-      <!-- create project popup -->
-      <modal :waitingResult="false" v-if="hintBox" @close="hintBox=false" @sendInvite="hintBox=false">
-        <template #header>
-          <div>Hint !</div>
-        </template>
-        <template #body>
-          <form>
-            <div class="col-12 pl-0">
-              <div class="form-group ">
-                <label class="control-label" for="inputPassnew">Editer les règles de gestion dans la zone de texte à votre gauche. <br>La vue du diagramme est synchoniser et rafraîchir automatiquement lors de l'édition lorsque vous appuyer sur les touches "espace" ou "•"<br><br>Vous pouvez aussi rafraichir le diagramme en cliquant manuellement la touche <img width='30' src="@/assets/images/hint/sync.png" alt="hint btn"/> se trouvant dans le coin supérieur gauche du navigateur.</label>
-              </div>
-            </div>
-          </form>
-        </template>
-        <template #footer>
-        </template>
-      </modal>
     </div>
   </div>
 </template>
@@ -332,9 +258,7 @@
 import Alert from '@/components/shared/Alert.vue'
 import GTextEdit from "@/components/GTextEdit";
 import GToolTip from "@/components/GToolTip";
-import { getAPI } from '@/api/axios-api.js'
-import Modal from '@/components/shared/Modal'
-
+import { guestAPI } from '@/api/axios-api.js'
 
 export default {
   name: 'EditorView',
@@ -342,11 +266,9 @@ export default {
     GTextEdit,
     GToolTip,
     Alert,
-    Modal
   },
   data() {
     return {
-      isProduction: process.env.NODE_ENV === 'production',
       canvasWidth: 0,
       canvasHeight: 0,
       screenView: '70%',
@@ -372,14 +294,10 @@ export default {
       generatedXML: "",
       saved: false,
       diagramData: null,
-      orderGetText: null,
-      allDiagrams: null
+      orderGetText: null
     }
   },
   methods: {
-    toSlug (value) {
-      return value.toLowerCase().replaceAll(' ', '-');
-    },
     copyLink () {
       let Url = document.getElementById('publicLink')
       Url.select();
@@ -391,10 +309,7 @@ export default {
     },
     goBackB() {
       sessionStorage.setItem('xml', '');
-      let a = document.createElement('a')
-      a.setAttribute('href', '/acceuil')
-      a.click()
-      a.remove
+      this.$router.push('/')
     },
     displayError (error, type='alert-ok', time=4000) {
       this.gAlertMessage = error
@@ -404,34 +319,7 @@ export default {
         this.alertMe = false
       }, time);
     },
-    saveDiagram(data) {
-      getAPI.put('/diagram/'+this.diagramData.project_id+'/'+this.diagramData.id, 
-      {
-        label: this.diagramData.label,
-        plain_text: data,
-        xml_image: sessionStorage.getItem('xml')
-      })
-      .then(response => {
-        if(response.status == 200) {
-          this.saved = true
-          setTimeout(() => {
-            this.saved = false
-          }, 2000)
-        }
-        else{
-          this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
-          this.waitingApiTextSync = false
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          this.displayError(error.response.data.detail, 'alertthis.$route.params.hash-no', 4000)
-        } else if (error.request) {
-          this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
-        } else {
-          this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
-        }
-      })
+    saveDiagram() {
     },
     syncDiagram (data) {
       sessionStorage.setItem('xml', data)
@@ -561,19 +449,22 @@ export default {
     },
     resizeDiagram () {
       if (this.screenView == '70%') {
-        document.getElementsByClassName('edit-zone')[0].style.display = 'none'
+        //d-md-flex
+        document.getElementsByClassName('edit-zone')[0].classList.add('d-none') //.display = 'none'
+        document.getElementsByClassName('edit-zone')[0].classList.remove('d-flex') //.display = 'none'
         document.getElementById('horzMenu').style.justifyContent='space-between'
         this.screenView = '100%'
       }
       else {
-        document.getElementsByClassName('edit-zone')[0].style.display = 'flex'
+        document.getElementsByClassName('edit-zone')[0].classList.remove('d-none') //.display = 'none'
+        document.getElementsByClassName('edit-zone')[0].classList.add('d-flex') //.display = 'none'
         document.getElementById('horzMenu').style.justifyContent='right'
         this.screenView = '70%'
       }
     },
     syncDiagramData(token) {
       this.waitingApiTextSync = true
-      getAPI.get('/diagram/'+token, )
+      guestAPI.get('/diagram/'+token, )
         .then(response => {
           if(response.status == 200) {
             this.displayError('Great ! Diagramme chargé avec  succès.', 'alert-yes', 5000)
@@ -586,12 +477,6 @@ export default {
               iframe.contentWindow.location.reload(true);
             }, 2000)
             this.hintBox = true
-            // --------------------
-            getAPI.get('/diagram/all/'+this.diagramData.project_id, )
-            .then(response => {
-              this.allDiagrams = response.data
-            })
-            // --------------------
           }
           else{
             this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
@@ -622,7 +507,7 @@ export default {
   beforeRouteUpdate(to, from) {
     console.log(from);
   },
-    beforeMount() {
+  beforeMount() {
     sessionStorage.setItem('xml', null)
   },
 }
