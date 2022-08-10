@@ -39,6 +39,7 @@
         <div v-else-if="activeNav=='overview'" style="min-height: 100vh;">
           <div class="d-flex flex-wrap row">
             <!-- 01 -->
+            <!-- 01 -->
             <div class="col-12 col-md-8 mt-2">
               <div class="pt-5 d-flex justify-content-between align-items-center flex-column">
                 <img width="250" src="@/assets/image/brand/empty0.svg" alt="emty diagram image" class="mt-2"/>
@@ -173,7 +174,8 @@
                     <i style="font-size: 2em;" class="fa fa-user"></i>
                   </div>
                   <div class="d-flex flex-column" style="position:relative; left: .5em;">
-                    <strong v-if="collab.project_id == 1 && collab.role != 'ADMIN' && userProfile.id != 1">{{ collab.user_name.substring(0, 4) + '••••••' }}</strong>
+                    <strong v-if="collab.project_id == 1 && collab.role != 'ADMIN' && userProfile.id != 1 && userProfile.id != 1">{{ collab.user_name.substring(0, 4) + '••••••' }}</strong>
+                    <strong v-else-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else-if="collab.project_id == 1 && collab.role != 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else-if="collab.project_id == 1 && collab.role == 'ADMIN'">{{ collab.user_name }}</strong>
                     <strong v-else>{{ collab.user_name }}</strong>
@@ -183,7 +185,7 @@
                 </div>
                 <div>
                   <a v-if="roleAndPermission[0] == 'ADMIN' && !collab.is_active" class="ft3">(EN ATTENT)</a>&nbsp;
-                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.user_id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
+                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.user_user_id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
                 </div>
               </div>
               <!-- -- -->
@@ -334,6 +336,9 @@ export default {
       toSlug (value) {
         return value.toLowerCase().replaceAll(' ', '-');
       },
+      toSlug (value) {
+        return value.toLowerCase().replaceAll(' ', '-');
+      },
       encrypt (text) {
         return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
       },
@@ -374,7 +379,7 @@ export default {
       getRole() {
         if(this.projectData != null) {
           for(let i =0 ; i<this.projectData.collaborators.length; i++) {
-            if(this.projectData.collaborators[i].user_id == this.userProfile.id) {
+            if(this.projectData.collaborators[i].user_user_id == this.userProfile.id) {
               this.roleAndPermission[0] = this.projectData.collaborators[i].role
               this.roleAndPermission[1] = this.projectData.collaborators[i].permission
             }
@@ -405,7 +410,9 @@ export default {
           })
           .catch((error) => {
             setTimeout(() => {
+              setTimeout(() => {
               this.waitingInviteResult = false
+            }, 2000)
             }, 2000)
             this.alertMsg = "Oups ! "+error.response.data.detail
             this.alertType = "alert-no"
@@ -441,7 +448,9 @@ export default {
             this.deleteUserId = null
             this.showDelCollabBox = false
             setTimeout(() => {
-              this.$router.go()          
+              setTimeout(() => {
+              this.$router.go()                    
+            }, 3000)
             }, 3000)
           })
           .catch((error) => {

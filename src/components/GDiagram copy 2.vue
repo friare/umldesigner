@@ -119,7 +119,6 @@
         // console.log(this.extFileLoaded)
         // console.log(this.totalExtFile)
         this.initDraw()
-        this.refreshDraw()
     },
     watch: {
         xml: function() {

@@ -8,6 +8,7 @@
             <div class="btn-lot d-none d-md-flex">
               <button @click.stop="orderSync" class="u-btn no-border np">
                 <img v-if="waitingApiTextSync"  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
+                <i v-elsemg v-if="waitingApiTextSync"  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
                 <i v-else class="fa fa-sync-alt"></i>
               </button>
             </div>
@@ -322,6 +323,28 @@
         <template #footer>
         </template>
       </modal>
+
+      <transition name="slide-fade" appear mode="out-in">
+        <alert v-show="alertMe" :status="gAlertType" :message="gAlertMessage"></alert>
+      </transition>
+
+      <!-- create project popup -->
+      <modal :waitingResult="false" v-if="hintBox" @close="hintBox=false" @sendInvite="hintBox=false">
+        <template #header>
+          <div>Hint !</div>
+        </template>
+        <template #body>
+          <form>
+            <div class="col-12 pl-0">
+              <div class="form-group ">
+                <label class="control-label" for="inputPassnew">Editer les règles de gestion dans la zone de texte à votre gauche. <br>La vue du diagramme est synchoniser et rafraîchir automatiquement lors de l'édition lorsque vous appuyer sur les touches "espace" ou "•"<br><br>Vous pouvez aussi rafraichir le diagramme en cliquant manuellement la touche <img width='30' src="@/assets/images/hint/sync.png" alt="hint btn"/> se trouvant dans le coin supérieur gauche du navigateur.</label>
+              </div>
+            </div>
+          </form>
+        </template>
+        <template #footer>
+        </template>
+      </modal>
     </div>
   </div>
 </template>
@@ -332,6 +355,9 @@
 import Alert from '@/components/shared/Alert.vue'
 import GTextEdit from "@/components/GTextEdit";
 import GToolTip from "@/components/GToolTip";
+import { getAPI } from '@/api/axios-api.js'
+import Modal from '@/components/shared/Modal'
+
 import { getAPI } from '@/api/axios-api.js'
 import Modal from '@/components/shared/Modal'
 
@@ -627,6 +653,7 @@ export default {
   },
 }
 </script>
+
 
 <style scoped>
   .umlTypeName {
