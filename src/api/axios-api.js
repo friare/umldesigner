@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "https://uml-extractor-api.azurewebsites.net"
-const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "https://uml-extractor-api.azurewebsites.net/ws"
+const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "http://3.86.163.176"
+const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "http://3.86.163.176"
 
 //Authorise
 const getAPI = axios.create({
