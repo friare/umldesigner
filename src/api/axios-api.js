@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "http://3.86.163.176"
-const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "http://3.86.163.176"
+const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "http://54.211.134.117/"
+const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "http://54.211.134.117/ws"
 
 //Authorise
 const getAPI = axios.create({
