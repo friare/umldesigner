@@ -30,6 +30,7 @@ getAPI.interceptors.response.use(
         return response;
     }, 
     function (error) {
+        console.log(error)
         if(error.response.data.detail == "Invalid credentials" || error.response.data.detail == "Could not validate credentials") {
             let acceptLogin = 0;
             while(!acceptLogin) {

@@ -67,7 +67,7 @@
         let url = mainCanvas.toDataURL( 'image/png' )
 
         let link = document.createElement('a')
-        link.setAttribute('download', this.umlDiagram.getName().replaceAll(' ', '-') + '[udesign.me].png');
+        link.setAttribute('download', this.umlDiagram.getName().replaceAll(' ', '-') + '[umldesigner.app].png');
         link.setAttribute('href', url);
         link.click();
 
@@ -91,18 +91,18 @@
         }
     },
     beforeCreate () {
-      var scripts = [
-          "/utils/jsUML2/script/UDCore.js",
-          "/utils/jsUML2/script/UDModules.js"
-      ];
-      scripts.forEach(script => {
-          let tag = document.createElement("script");
-          document.head.appendChild(tag);
-          tag.addEventListener('load', () => {
-            this.extFileLoaded += 1;
-          });
-          tag.setAttribute("src", script);
-      });
+      // var scripts = [
+      //     "/utils/jsUML2/script/UDCore.js",
+      //     "/utils/jsUML2/script/UDModules.js"
+      // ];
+      // scripts.forEach(script => {
+      //     let tag = document.createElement("script");
+      //     document.head.appendChild(tag);
+      //     tag.addEventListener('load', () => {
+      //       this.extFileLoaded += 1;
+      //     });
+      //     tag.setAttribute("src", script);
+      // });
     },
   }
 </script>

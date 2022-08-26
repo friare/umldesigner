@@ -59,7 +59,7 @@
         </div>
         <div class="pb-2 app-data d-flex align-items-center justify-content-between darkula">
           <div><a class="github" href="https://github.com/Genereux-akotenou" target="_blank"><i class="fa2 fa-github u-icon"></i></a></div>
-          <div class="no-select">v1.0.0</div>
+          <div class="no-select">v1.1.0</div>
         </div>
       </div>
       <div class="diagram-zone resizable-right" @click.stop="closeToolTip">
@@ -306,7 +306,7 @@
       </transition>
 
       <!-- create project popup -->
-      <modal :waitingResult="false" v-if="hintBox && !hintReadByPast" @close="hintBox=false" @sendInvite="closeHint">
+      <modal :waitingResult="false" v-if="false && hintBox && !hintReadByPast" @close="hintBox=false" @sendInvite="closeHint">
         <template #header>
           <div>Hint !</div>
         </template>
@@ -334,7 +334,6 @@ import GTextEdit from "@/components/GTextEdit";
 import GToolTip from "@/components/GToolTip";
 import { getAPI } from '@/api/axios-api.js'
 import Modal from '@/components/shared/Modal'
-
 
 export default {
   name: 'EditorView',
@@ -439,6 +438,8 @@ export default {
       })
     },
     syncDiagram (data) {
+      // console.log(data)
+      // sessionStorage.setItem('xml', "<UMLClassDiagram name='Class diagram' backgroundNodes='#ffffbb'><UMLClass id='UMLClass_2' x='588' y='303' width='78' height='40' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues=''><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='ClassName'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='UMLClass_1' x='455' y='121' width='78' height='40' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues=''><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='ClassName'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='UMLClass_0' x='174' y='187' width='78' height='40' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues=''><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='ClassName'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLAssociation id='UMLAssociation_0' side_A='UMLClass_0' side_B='UMLClass_2'><point x='252' y='217.92753623188406'/><point x='588' y='312.07246376811594'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value=''/><item id='multiplicityB' value=''/></UMLAssociation><UMLAssociation id='UMLAssociation_1' side_A='UMLClass_1' side_B='UMLAssociation_0' style='dashed'><point x='482.06451612903226' y='161'/><point x='420' y='265'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value=''/><item id='multiplicityB' value=''/></UMLAssociation></UMLClassDiagram>")
       sessionStorage.setItem('xml', data)
       this.waitingApiXmlSync = false
       var iframe = document.getElementById('diagViewer');

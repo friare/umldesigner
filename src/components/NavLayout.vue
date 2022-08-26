@@ -120,7 +120,7 @@
           <!--section 1-->
           <header class="d-flex hero__bg2">
             <div class="nav__inner2">
-              <div class="input-group">
+              <div class="input-group" style="width: auto;">
                 <input type="text" placeholder="Rechercher ..." id="search-diagram" autocomplete="off" class="form-control shadow-none ng-untouched ng-pristine ng-valid">
                 <div class="input-group-append">
                   <span id="basic-addon1 btn-search1" class="input-group-text">
