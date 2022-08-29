@@ -209,7 +209,7 @@
   </transition>
 
   <!-- create project popup -->
-  <modal :waitingResult="false" v-if="showCreateProjectPopUp" @close="showCreateProjectPopUp=false" @sendInvite="fetchCreateProject">
+  <modal :waitingResult="s1" v-if="showCreateProjectPopUp" @close="showCreateProjectPopUp=false" @sendInvite="fetchCreateProject">
     <template #header>
       <div>Nouveau projet !</div>
     </template>
@@ -236,7 +236,7 @@
   </modal>
 
   <!-- create project popup -->
-  <modal :waitingResult="false" v-if="showCreateClassDiagForm" @close="showCreateClassDiagForm=false" @sendInvite="confirmCreateClassDiag">
+  <modal :waitingResult="s2" v-if="showCreateClassDiagForm" @close="showCreateClassDiagForm=false" @sendInvite="confirmCreateClassDiag">
     <template #header>
       <div>Créer un diagramme de class !</div>
     </template>
@@ -306,7 +306,9 @@ export default {
       new_project_title: "",
       new_project_description: "",
       showCreateClassDiagForm: false,
-      new_diag_label: "new class diagram"
+      new_diag_label: "new class diagram",
+      s1: false,
+      s2: false
     }
   },
   components: {
@@ -379,6 +381,7 @@ export default {
       return CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8);
     },
     fetchCreateProject() {
+      this.s1 = true
       if(this.new_project_description.length != 0 && this.new_project_title.length != 0) {
         getAPI.post('/project', {
           title: this.new_project_title,
@@ -391,12 +394,14 @@ export default {
               this.showCreateProjectPopUp = false
             }, 4000)
             setTimeout(() => {
-              this.$router.go()          
-            }, 3000)
+              this.$router.go()   
+              this.s1 = false
+            }, 1000)
           }
           else{
             this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
             this.waitingAPIResponse = false
+            this.s1 = false
           }
         })
         .catch((error) => {
@@ -415,10 +420,12 @@ export default {
     },
     confirmCreateClassDiag () {
       if(this.new_diag_label.length  != 0) {
+        this.s2 = true
         getAPI.post('/diagram/'+this.decrypt(this.$route.params.id)+'/CLASS', 
         {
           label: this.new_diag_label,
-          plain_text: "Un étudiant possède un id et un titre. Un cour possède un intitulé. Un étudiant peut s'inscrire a un cour."
+          plain_text: "Un étudiant possède un matricule, un nom et un prénom. Un étudiant est une personne. Un enseignant est un personne.  Un étudiant peut suivre plusieurs cour. Un cour est enseigné par au moins un enseignant. Un cour contient au moins un chapitre. Chaque chapitre est identifié par un libellé, un nom de code et une description.",
+          xml_image: "<UMLClassDiagram name='umldesigner.app'><UMLClass id='undefined:UMLClass_4' x='345' y='440' width='170' height='100' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='chapitre'/><superitem id='attributes' visibleSubComponents='true'><item value='libellé'/><item value='nom'/><item value='description'/></superitem><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_3' x='90' y='272' width='150' height='110' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='étudiant'/><superitem id='attributes' visibleSubComponents='true'><item value='matricule'/><item value='nom'/><item value='prénom'/></superitem><superitem id='operations' visibleSubComponents='true'><item value='suivre()'/></superitem></UMLClass><UMLClass id='undefined:UMLClass_2' x='635' y='185' width='160' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='enseignant'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_1' x='320' y='74' width='140' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='personne'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_0' x='380' y='289' width='100' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='cour'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLGeneralization id='undefined:UMLGeneralization_0' side_A='undefined:UMLClass_3' side_B='undefined:UMLClass_1'><point x='164.5' y='272'/><point x='163' y='107'/><point x='320' y='108.38325991189427'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/></UMLGeneralization><UMLGeneralization id='undefined:UMLGeneralization_1' side_A='undefined:UMLClass_2' side_B='undefined:UMLClass_1'><point x='635' y='192.6769230769231'/><point x='460' y='132.90769230769232'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/></UMLGeneralization><UMLAssociation id='undefined:UMLAssociation_2' side_A='undefined:UMLClass_3' side_B='undefined:UMLClass_0' direction='b'><point x='240' y='326.1509433962264'/><point x='380' y='324.5660377358491'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='suivre'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='0,*'/></UMLAssociation><UMLAssociation id='undefined:UMLAssociation_3' side_A='undefined:UMLClass_0' side_B='undefined:UMLClass_2' direction='a'><point x='480' y='305.7543859649123'/><point x='635' y='249.19298245614036'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='enseigner'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='1,*'/></UMLAssociation><UMLAggregation id='undefined:UMLAggregation_4' side_A='undefined:UMLClass_0' side_B='undefined:UMLClass_4'><point x='430' y='359'/><point x='430' y='440'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='contenir'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='1,*'/></UMLAggregation></UMLClassDiagram>"
         })
         .then(response => {
           if(response.status == 201) {
@@ -431,11 +438,13 @@ export default {
               a.setAttribute('href', "/editeur/"+this.toSlug(response.data.label)+"/"+response.data.public_acces_token)
               a.click()
               a.remove()
-            }, 3000)
+              this.s2 = false
+            }, 1000)
           }
           else{
             this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
             this.waitingAPIResponse = false
+            this.s2 = false
           }
         })
         .catch((error) => {

@@ -67,9 +67,10 @@
         let url = mainCanvas.toDataURL( 'image/png' )
 
         let link = document.createElement('a')
-        link.setAttribute('download', this.umlDiagram.getName().replaceAll(' ', '-') + '[umldesigner.app].png');
+        link.setAttribute('download', sessionStorage.downloadName + '(https://umldesigner.app).png');
         link.setAttribute('href', url);
         link.click();
+        sessionStorage.removeItem('downloadName')
 
         window.open( url, '_blank' );
       },

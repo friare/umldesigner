@@ -4,9 +4,9 @@
       <div class="edit-zone resizable-left">
         <header class="edit-header space-between darkula">
           <div class="d-flex">
-            <button class="u-btn u-btn-secondary" @click="goBackB"><i class="fa fa-home"></i></button>
+            <button class="u-btn u-btn-secondary" @click="wannaQuit=true"><i class="fa fa-arrow-left"></i></button>
             <div class="btn-lot d-none d-md-flex">
-              <button @click.stop="orderSync" class="u-btn no-border np">
+              <button @click.stop="orderSync" class="u-btn  np">
                 <img v-if="waitingApiTextSync"  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
                 <i v-else class="fa fa-sync-alt"></i>
               </button>
@@ -68,6 +68,12 @@
             <button v-if="waitingApiXmlSync" @click.prevent="" class="u-btn no-border np">
               <img  width="50" src="@/assets/image/preloader/load2.gif" alt="loader"/>
             </button>
+            <quotes v-else>
+              <button v-if="aiCorePiplineError" @click.prevent="" class="u-btn no-border np">
+                <span> ⚠️ </span>
+                &nbsp;&nbsp;ERRUR DE SYNTAXE
+              </button>
+            </quotes>
             <span v-if="saved" style="color: green;padding: 1em .4em 0 .4em;position: relative;top: .3em;">
               ENREGISTRÉ
             </span>
@@ -322,11 +328,27 @@
         <template #footer>
         </template>
       </modal>
+
+      <!-- save work -->
+      <modal leaveText="Enregistrer et Quitter" v-if="wannaQuit" @close="wannaQuit=false" @sendInvite="leaveEditor">
+        <template #header>
+          <div>Quitter ❓️</div>
+        </template>
+        <template #body>
+          <form>
+            <div class="col-12 pl-0">
+              <div class="form-group ">
+                <label class="control-label">Si vous quittez avant d'avoir enregistré, vos modifications seront perdues.</label>
+              </div>
+            </div>
+          </form>
+        </template>
+        <template #footer>
+        </template>
+      </modal>
     </div>
   </div>
 </template>
-
-
 
 <script>
 import Alert from '@/components/shared/Alert.vue'
@@ -373,10 +395,18 @@ export default {
       diagramData: null,
       orderGetText: null,
       allDiagrams: null,
-      hintReadByPast: sessionStorage.getItem('userAlreadyReadHint')
+      hintReadByPast: sessionStorage.getItem('userAlreadyReadHint'),
+      aiCorePiplineError: false,
+      wannaQuit: false
     }
   },
   methods: {
+    leaveEditor() {
+      this.orderGetText = this.getLastTime()
+      setTimeout(() => {
+        this.goBackB()
+      }, 500)
+    },
     closeHint() {
       this.hintBox=false
       sessionStorage.setItem('userAlreadyReadHint', true)
@@ -440,15 +470,19 @@ export default {
     syncDiagram (data) {
       // console.log(data)
       // sessionStorage.setItem('xml', "<UMLClassDiagram name='Class diagram' backgroundNodes='#ffffbb'><UMLClass id='UMLClass_2' x='588' y='303' width='78' height='40' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues=''><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='ClassName'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='UMLClass_1' x='455' y='121' width='78' height='40' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues=''><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='ClassName'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='UMLClass_0' x='174' y='187' width='78' height='40' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues=''><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='ClassName'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLAssociation id='UMLAssociation_0' side_A='UMLClass_0' side_B='UMLClass_2'><point x='252' y='217.92753623188406'/><point x='588' y='312.07246376811594'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value=''/><item id='multiplicityB' value=''/></UMLAssociation><UMLAssociation id='UMLAssociation_1' side_A='UMLClass_1' side_B='UMLAssociation_0' style='dashed'><point x='482.06451612903226' y='161'/><point x='420' y='265'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value=''/><item id='multiplicityB' value=''/></UMLAssociation></UMLClassDiagram>")
-      sessionStorage.setItem('xml', data)
-      this.waitingApiXmlSync = false
-      var iframe = document.getElementById('diagViewer');
-      iframe.contentWindow.location.reload(true);
-      // let save this state 
-      // -------------------
-      this.orderGetText = this.getLastTime()
-      // ----------------
-      // ----------------
+      if(data != false) {
+        sessionStorage.setItem('xml', data)
+        this.aiCorePiplineError = false
+        this.waitingApiXmlSync = false
+        var iframe = document.getElementById('diagViewer');
+        iframe.contentWindow.location.reload(true);
+        // let save this state 
+        this.orderGetText = this.getLastTime()
+      }
+      else{
+        this.waitingApiXmlSync = false
+        this.aiCorePiplineError = true
+      }
     },
     getLastTime() {
       let d = new Date()
@@ -465,6 +499,7 @@ export default {
     saveUML () {
       let iframe = document.getElementById('diagViewer')
       let element = iframe.contentWindow.document.getElementById('saveImg')
+      sessionStorage.setItem('downloadName', this.$route.params.name)
       element.click()
     },
     diagramZoomIn () {
@@ -621,6 +656,9 @@ export default {
     })
   },
   mounted() {
+    window.addEventListener("beforeunload", function () {
+      this.wannaQuit = true
+    });
     // this.canvasWidth = document.getElementById('gb22k').offsetWidth-30+300
     // this.canvasHeight = document.getElementById('gb22k').offsetHeight
     // sessionStorage.setItem('height', document.getElementById('gb22k').offsetHeight)

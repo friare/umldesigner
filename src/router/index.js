@@ -126,6 +126,26 @@ const routes = [
     component: () => import('@/views/public/FeedBackView')
   },
   {
+    path: '/invitation-et-inscription/accepter/:token1/:token2/:email',
+    name: 'RegisterInviteAccept',
+    component: () => import('@/views/public/RegisterView')
+  },
+  {
+    path: '/invitation-et-inscription/rejeter/:token1/:token2',
+    name: 'RegisterInviteReject',
+    component: () => import('@/views/public/RegisterView')
+  },
+  {
+    path: '/accepter-invitation/:token1',
+    name: 'InviteAccept',
+    component: () => import('@/views/public/RegisterView')
+  },
+  {
+    path: '/rejeter-invitation/:token1',
+    name: 'InviteReject',
+    component: () => import('@/views/public/RegisterView')
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('@/views/shared/404')

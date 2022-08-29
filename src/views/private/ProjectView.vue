@@ -83,7 +83,7 @@
 
                 <div  v-for="diagram, i in projectData.diagrams" v-bind:key="i">
                   <div class="p-relative card mb-2">
-                    <span :id="i+1" class="id-100"></span>
+                    <span :id="(i+1)" class="id-100"></span>
                     <div class="card-header">
                       <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
                         <p class="">
@@ -142,14 +142,18 @@
                 <div style="min-height: 25em">
                   <div class="about-project card-body">
                     <h3>Diagrammes</h3>
-                    <ol v-for="diagram, i in projectData.diagrams" v-bind:key="i">
-                      <li><a href="#{{ i+1 }}">{{ (diagram.label.length > 35) ? diagram.label.substring(0, 35) + ' •••' : diagram.label }}</a></li>
+                    <ol>
+                      <li v-for="diagram, i in projectData.diagrams" v-bind:key="i">
+                        <a :href="'#'+(i+1)">{{ (diagram.label.length > 35) ? diagram.label.substring(0, 35) + ' •••' : diagram.label }}</a>
+                      </li>
                     </ol>
                     <br>
                     <h3>Options</h3>
                     <ul style="list-style-type: none; padding: 0;">
-                      <li><button class="btn btn-darkula-soft w-100">OUVRIR L'EDITEUR LIVE</button></li>
-                      <li><button class="btn btn-darkula-soft w-100">TELECHARGER LES DIAGRAMMES</button></li>
+                      <li><button @click="switchNav('collaborateurs')" class="btn btn-darkula-soft w-100">AJOUTER UN COLLABORATEUR</button></li>
+                      <li><button @click="switchNav('parametres')" class="btn btn-darkula-soft w-100">NOTIFICATIONS DU PROJET</button></li>
+                      <li><button @click="$router.push({name: 'Alert'})" class="btn btn-darkula-soft w-100">PARAMÈTRES DU PROJET</button></li>
+                      <!--<li><button class="btn btn-darkula-soft w-100">TELECHARGER LES DIAGRAMMES</button></li>-->
                     </ul>
                   </div>
                 </div>
@@ -184,14 +188,14 @@
                 </div>
                 <div>
                   <a v-if="roleAndPermission[0] == 'ADMIN' && !collab.is_active" class="ft3">(EN ATTENT)</a>&nbsp;
-                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.user_user_id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
+                  <a v-if="roleAndPermission[0] == 'ADMIN' && collab.user_id != userProfile.id" href="" @click.prevent="deleteCollab(collab.project_id, collab.user_id, collab.user_name)" class="ft3"><i class="fa fa-trash>">SUPPRIMER</i></a>
                 </div>
               </div>
               <!-- -- -->
             </div>
 
             <!-- add popup -->
-            <modal waitingResult="waitingInviteResult" v-if="showModalInvite" @close="showModalInvite=false" @sendInvite="sendInvite">
+            <modal :waitingResult="waitingInviteResult" v-if="showModalInvite" @close="showModalInvite=false" @sendInvite="sendInvite">
               <template #header>
                 <div>Inviter un utilisateur.</div>
               </template>
@@ -267,7 +271,7 @@
     </nav-layout>
 
     <!-- user deletion popup confirm-->
-    <modal :waitingResult="false" v-if="showDelCollabBox" @close="showDelCollabBox=false" @sendInvite="ConfirmDeleteCollab">
+    <modal :waitingResult="waitingInviteResult" v-if="showDelCollabBox" @close="showDelCollabBox=false" @sendInvite="ConfirmDeleteCollab">
       <template #header>
         <div>Supprimer un collaborateur</div>
       </template>
@@ -398,11 +402,11 @@ export default {
             this.alertType = "alert-yes"
             setTimeout(() => {
               this.showModalInvite = false     
-              this.waitingInviteResult = false
             }, 4000)
             setTimeout(() => {
-              this.$router.go()          
-            }, 3000)
+              this.$router.go()  
+              this.waitingInviteResult = false
+            }, 2000)
           })
           .catch((error) => {
             setTimeout(() => {
@@ -431,22 +435,19 @@ export default {
           this.alertType = "alert-no"
         }
         else{
+          this.waitingInviteResult = true
           getAPI.delete('/collaborator/'+this.deleteProjectId+'/'+this.deleteUserId, )
           .then(() => {
             this.alertMsg = "Utilisateur supprimer avec succès"
             this.alertType = "alert-yes"
             setTimeout(() => {
-              this.showModalInvite = false            
-            }, 4000)
-            this.showDelCollabBox = true
-            this.deleteUserName = null
-            this.deleteProjectId = null
-            this.deleteUserId = null
-            this.showDelCollabBox = false
-            setTimeout(() => {
-              setTimeout(() => {
-              this.$router.go()                    
-            }, 3000)
+              this.deleteUserName = null
+              this.deleteProjectId = null
+              this.deleteUserId = null
+
+              this.$router.go()    
+              this.showDelCollabBox = false
+              this.waitingInviteResult = false
             }, 3000)
           })
           .catch((error) => {

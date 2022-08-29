@@ -22,7 +22,7 @@
           <div class="modal-footer">
             <slot name="footer">
               <button v-if="!innerWaitingResult" class="btn btn-darkula modal-default-button" @click="$emit('sendInvite')" style="min-width: 10em;">
-                VALIDER
+                {{ leaveText }}
               </button>
               <button v-else class="btn btn-darkula modal-default-button" style="min-width: 10em;">
                 <img  width="25" src="@/assets/image/preloader/load2.gif" alt="loader"/>
@@ -42,6 +42,10 @@ export default {
     waitingResult: {
       type: Boolean,
       default: false
+    },
+    leaveText: {
+      type: String,
+      default: 'VALIDER'
     }
   },
   data() {

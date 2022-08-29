@@ -1,7 +1,7 @@
 <template>
   <div class="editorContainer">
     <!--editor-->
-    <!--<div id="textBox" class="editable" contenteditable="true"></div>  -->
+    <div id="textBox" class="editable" contenteditable="true"></div>
     <!--<div v-if="!readonly" v-bind:innerHTML="innerPlainText" wrap="hard" id="hiddenEditor" class="hiddenEditor" @keyup="orderOnSentences" :placeholder="placeholder" contentEditable=true></div>
     <div v-else @keypress="alert('You only have read acces on this project.')" v-bind:innerHTML="innerPlainText" wrap="hard" id="hiddenEditor" class="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" contenteditable="false" sCanEdit="false"></div>-->
     <textarea v-if="!readonly" v-model="innerPlainText" wrap="hard" id="hiddenEditor" class="hiddenEditor" @keyup="orderOnSentences"  @scroll="paralaxScoll" :placeholder="placeholder" name="" cols="30" rows="10"></textarea>
@@ -185,10 +185,9 @@ export default {
         const xml = response.data.xml
         this.$emit('sync', xml)
       })
-      // .catch(() => {
-      //   // this.displayError('No active account found with the given credentials.', 'alert-no')
-      //   this.waitingAPIResponse = false
-      // })
+      .catch(() => {
+        this.$emit('sync', false)
+      })
       // let xml = "XML DIAGRAM TEXT FORMAT"
       // this.$emit('sync', xml)
     },
