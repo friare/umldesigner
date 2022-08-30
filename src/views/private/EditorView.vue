@@ -439,33 +439,60 @@ export default {
       }, time);
     },
     saveDiagram(data) {
-      getAPI.put('/diagram/'+this.diagramData.project_id+'/'+this.diagramData.id, 
-      {
-        label: this.diagramData.label,
-        plain_text: data,
-        xml_image: sessionStorage.getItem('xml')
-      })
-      .then(response => {
-        if(response.status == 200) {
-          this.saved = true
-          setTimeout(() => {
-            this.saved = false
-          }, 2000)
-        }
-        else{
-          this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+      if(this.$route.name != 'EditeurVersion') {
+        getAPI.put('/diagram/'+this.diagramData.project_id+'/'+this.diagramData.id, 
+        {
+          label: this.diagramData.label,
+          plain_text: data,
+          xml_image: sessionStorage.getItem('xml')
+        })
+        .then(response => {
+          if(response.status == 200) {
+            this.saved = true
+            setTimeout(() => {
+              this.saved = false
+            }, 2000)
+          }
+          else{
+            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+            this.waitingApiTextSync = false
+          }
+        })
+        .catch(() => {
           this.waitingApiTextSync = false
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          this.displayError(error.response.data.detail, 'alertthis.$route.params.hash-no', 4000)
-        } else if (error.request) {
-          this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
-        } else {
-          this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
-        }
-      })
+          this.displayError("Vous n'êtes pas l'auteur de ce diagrame. Vous  ne pouvez donc le modifier. Faite plutôt une copie de ce dernier. Votre chef projet poura fusionner les diagrammes.", 'alert-no', 9000)
+          // if (error.response) {
+          //   this.displayError(error.response.data.detail, 'alert-no', 4000)
+          // } else if (error.request) {
+          //   this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
+          // } else {
+          //   this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
+          // }
+        })
+      }
+      else{
+        getAPI.put('/version/update/'+this.diagramData.id, 
+        {
+          input_text: data,
+          xml_image: sessionStorage.getItem('xml')
+        })
+        .then(response => {
+          if(response.status == 200) {
+            this.saved = true
+            setTimeout(() => {
+              this.saved = false
+            }, 2000)
+          }
+          else{
+            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+            this.waitingApiTextSync = false
+          }
+        })
+        .catch(() => {
+          this.waitingApiTextSync = false
+          this.displayError("Vous n'êtes sans doute pas autorisé à modifier cette version de diagramme. Copier l'originalepour y faire vos actions. Merci.", 'alert-no', 9000)
+        })
+      }
     },
     syncDiagram (data) {
       // console.log(data)
@@ -614,40 +641,75 @@ export default {
     },
     syncDiagramData(token) {
       this.waitingApiTextSync = true
-      getAPI.get('/diagram/'+token, )
-        .then(response => {
-          if(response.status == 200) {
-            this.displayError('Great ! Diagramme chargé avec  succès.', 'alert-yes', 5000)
-            this.diagramData = response.data
-            this.plainText = response.data.plain_text
-            setTimeout(() => {
+      if(this.$route.name != 'EditeurVersion') {
+        getAPI.get('/diagram/'+token, )
+          .then(response => {
+            if(response.status == 200) {
+              this.displayError('Great ! Diagramme chargé avec  succès.', 'alert-yes', 5000)
+              this.diagramData = response.data
+              this.plainText = response.data.plain_text
+              setTimeout(() => {
+                this.waitingApiTextSync = false
+                sessionStorage.setItem('xml', this.diagramData.xml_image)
+                var iframe = document.getElementById('diagViewer');
+                iframe.contentWindow.location.reload(true);
+              }, 2000)
+              this.hintBox = true
+              // --------------------
+              getAPI.get('/diagram/all/'+this.diagramData.project_id, )
+              .then(response => {
+                this.allDiagrams = response.data
+              })
+              // --------------------
+            }
+            else{
+              this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
               this.waitingApiTextSync = false
-              sessionStorage.setItem('xml', this.diagramData.xml_image)
-              var iframe = document.getElementById('diagViewer');
-              iframe.contentWindow.location.reload(true);
-            }, 2000)
-            this.hintBox = true
-            // --------------------
-            getAPI.get('/diagram/all/'+this.diagramData.project_id, )
-            .then(response => {
-              this.allDiagrams = response.data
-            })
-            // --------------------
-          }
-          else{
-            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
-            this.waitingApiTextSync = false
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            this.displayError(error.response.data.detail, 'alertthis.$route.params.hash-no', 4000)
-          } else if (error.request) {
-            this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
-          } else {
-            this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
-          }
-        })
+            }
+          })
+          .catch((error) => {
+            if (error.response) {
+              this.displayError(error.response.data.detail, 'alertthis.$route.params.hash-no', 4000)
+            } else if (error.request) {
+              this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
+            } else {
+              this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
+            }
+          })
+      }
+      else{
+        getAPI.get(`/version/${token}`, )
+          .then(response => {
+            if(response.status == 200) {
+              this.displayError('Great ! Diagramme chargé avec  succès.', 'alert-yes', 5000)
+              this.diagramData = response.data
+              this.plainText = response.data.input_text
+              setTimeout(() => {
+                this.waitingApiTextSync = false
+                sessionStorage.setItem('xml', this.diagramData.xml_image)
+                var iframe = document.getElementById('diagViewer');
+                iframe.contentWindow.location.reload(true);
+              }, 2000)
+              this.hintBox = true
+              // --------------------
+              this.allDiagrams = []
+              // --------------------
+            }
+            else{
+              this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+              this.waitingApiTextSync = false
+            }
+          })
+          .catch((error) => {
+            if (error.response) {
+              this.displayError(error.response.data.detail, 'alertthis.$route.params.hash-no', 4000)
+            } else if (error.request) {
+              this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
+            } else {
+              this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
+            }
+          })
+      }
     }
   },
   async created() {

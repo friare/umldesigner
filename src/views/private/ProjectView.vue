@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-layout @pushProjectData="loadData" @pushProfileData="loadProfile" :alertMsg="alertMsg" :alertType="alertType" @alertShowed="alertMsg=''" active-menu="project" :project-code="this.$route.params.code" :open-project-list="true" :highlightMenu="true">
+    <nav-layout @pushProjectData="loadData" @pushProfileData="loadProfile" @canEdit="setEditableStatus" :alertMsg="alertMsg" :alertType="alertType" @alertShowed="alertMsg=''" active-menu="project" :project-code="this.$route.params.code" :open-project-list="true" :highlightMenu="true">
       <template #header>
         <div class="second-nav">
           <nav class="SecondNavItems-body width-full" aria-label="User profile">
@@ -92,8 +92,11 @@
                           <span class="small-note dev-small-note" style="font-size: .65em;">{{ diagram.type }} DIAGRAM</span>
                         </p>
                         <div>
-                          <!--<button class="btn no-mw"><i class="fa fa-download"></i></button>-->
-                          <a :href="'/editeur/' + toSlug(diagram.label)+ '/' +diagram.public_acces_token" ><button class="btn no-mw"><i class="fa fa-edit"></i>&nbsp;OUVRIR DANS L'EDITEUR</button></a>
+                          <button v-if="canEdit && !launchClone" @click="createVersion(diagram.id)" class="btn no-mw"><i class="fa fa-copy"></i> <span class="d-md-inline d-none">CLONER</span></button>
+                          <button v-if="canEdit && launchClone" class="btn no-mw" style="min-width: 8em;">
+                            <img  width="27" src="@/assets/image/preloader/load2.gif" alt="loader"/>
+                          </button>
+                          <a :href="'/editeur/' + toSlug(diagram.label)+ '/' +diagram.public_acces_token" ><button class="btn no-mw"><i class="fa fa-edit"></i>&nbsp;<span class="d-md-inline d-none">OUVRIR DANS L'EDITEUR</span></button></a>
                         </div>
                       </h5>
                     </div>
@@ -102,11 +105,13 @@
                         {{ diagram.plain_text }}
                       </div>
                     </div>
-                    <div v-if="!isProduction" class="p-2 pt-0 px-5 ml-1">
+                    <div v-if="!isProduction" class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: space-between; align-items:center;">
                       <a style="color: #1787fc;" target="_blank" :href="'http://localhost:8080/public/diagram/'+diagram.public_acces_token">http://localhost:8080/publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
+                      <span v-if="diagram.author_id == userProfile.id"><i style="color: green;" class="fa fa-unlock"></i></span>
                     </div>
-                    <div v-else  class="p-2 pt-0 px-5 ml-1">
+                    <div v-else  class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: space-between; align-items:center;">
                       <a style="color: #1787fc;" target="_blank" :href="'https://umldesigner.app/public/diagram/'+diagram.public_acces_token">https://umldesigner.app/publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
+                      <span v-if="diagram.author_id == userProfile.id"><i style="color: green;" class="fa fa-unlock"></i></span>
                     </div>
                   </div>
                   <!--<div class="card diagram-card">
@@ -116,6 +121,37 @@
                       </h5>
                     </div>
                   </div>-->
+                  <!-- --------------------------------------------------------- -->
+                  <div  v-for="version, j in diagram.versions" v-bind:key="j">
+                    <div style="display:flex;">
+                      <div style="display:flex; align-items:center; margin-right: .5em; margin-left: .5em;">
+                        <img width="15" src="@/assets/svg/time-line.png" alt="time-line.png"/>
+                      </div>
+                      <div class="p-relative card mb-2 ml-3 " style="border-left: 7px solid #dae9f4 !important;">
+                        <div class="card-header">
+                          <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
+                            <p class="">
+                              <strong>{{ version.label.substring(0, 35) }}</strong><br>
+                              <span class="small-note dev-small-note" style="background-color: #dae9f4; font-size: .65em;">{{ version.type }} DIAGRAM</span>
+                            </p>
+                            <div>
+                              <a :href="'/editeur/collaborateur/version/' + toSlug(version.label)+ '/' +version.public_link" ><button class="btn no-mw"><i class="fa fa-edit"></i>&nbsp;OUVRIR DANS L'EDITEUR</button></a>
+                            </div>
+                          </h5>
+                        </div>
+                        <div>
+                          <div class="card-body">
+                            {{ version.input_text }}
+                          </div>
+                        </div>
+                        <div class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: end; align-items:center;">
+                          <span v-if="version.id_colaborator == userProfile.id"><i style="color: green;" class="fa fa-clone"></i></span>
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                  <!-- --------------------------------------------------------- -->
                   <br>
                 </div>
                 <div v-if="projectData.diagrams.length == 0" class="pt-5 d-flex justify-content-between align-items-center flex-column">
@@ -150,9 +186,9 @@
                     <br>
                     <h3>Options</h3>
                     <ul style="list-style-type: none; padding: 0;">
-                      <li><button @click="switchNav('collaborateurs')" class="btn btn-darkula-soft w-100">AJOUTER UN COLLABORATEUR</button></li>
-                      <li><button @click="switchNav('parametres')" class="btn btn-darkula-soft w-100">NOTIFICATIONS DU PROJET</button></li>
-                      <li><button @click="$router.push({name: 'Alert'})" class="btn btn-darkula-soft w-100">PARAMÈTRES DU PROJET</button></li>
+                      <li><button @click="switchNav('collaborateurs')" class="btn btn-darkula-soft w-100" style="overflow: hidden;">AJOUTER UN COLLABORATEUR</button></li>
+                      <li><button @click="switchNav('parametres')" class="btn btn-darkula-soft w-100" style="overflow: hidden;">NOTIFICATIONS DU PROJET</button></li>
+                      <li><button @click="$router.push({name: 'Alert'})" class="btn btn-darkula-soft w-100" style="overflow: hidden;">PARAMÈTRES DU PROJET</button></li>
                       <!--<li><button class="btn btn-darkula-soft w-100">TELECHARGER LES DIAGRAMMES</button></li>-->
                     </ul>
                   </div>
@@ -332,10 +368,15 @@ export default {
         config_description: "",
         config_date: "",
         config_author: "",
-        waitingUpdateResult: false
+        waitingUpdateResult: false,
+        canEdit: false,
+        launchClone: false
       }
     },
     methods: {
+      setEditableStatus (data) {
+        this.canEdit = data
+      },
       toSlug (value) {
         return value.toLowerCase().replaceAll(' ', '-');
       },
@@ -370,7 +411,7 @@ export default {
               break
             }
           }
-          console.log(this.projectData)
+          // console.log(this.projectData)
         }, 2000);
       },
       loadProfile (data) {
@@ -484,6 +525,26 @@ export default {
           this.alertMsg = "Oups ! Veuillez remplir correctement le formulaire"
           this.alertType = "alert-no"
         }
+      },
+      createVersion(diagram_id) {
+        this.launchClone = true
+        getAPI.post('/version/fork', {
+          diagram_id: parseInt(diagram_id),
+        })
+        .then(() => {
+          this.alertMsg = "Diagramme copié avec succès"
+          this.alertType = "alert-yes"
+          setTimeout(() => {
+            this.launchClone = false
+            this.$router.go()          
+          }, 2000)
+        })
+        .catch((error) => {
+          this.waitingUpdateResult = false
+          this.launchClone = false
+          this.alertMsg = "Oups ! "+error.response.data.detail
+          this.alertType = "alert-no"
+        })
       }
     },
     watch: {

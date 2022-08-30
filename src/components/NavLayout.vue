@@ -140,11 +140,11 @@
                 <!-- 02 -->
                 <div class="dropdown">
                   <button class="nav__menu__btn dropbtn">
-                    Créer un Diagramme&nbsp;
+                    Créer <span class="d-md-inline d-none">un Diagramme</span>&nbsp;
                     <i class="float-end fa fa-caret-down ml2"> </i>
                   </button>
                   <div class="dropdown-content" >
-                    <div v-if="this.$route.name == 'projetView'">
+                    <div v-if="$route.name == 'projetView'">
                       <a @click.prevent="showCreateClassDiagForm=true" href="/editeur/new-class-diag" >
                         <i class="fa fa-project-diagram ml2"> </i> Classe
                       </a>
@@ -241,16 +241,24 @@
       <div>Créer un diagramme de class !</div>
     </template>
     <template #body>
-      <form>
-        <div class="col-12 pl-0">
-          <div class="form-group ">
-            <label class="control-label" for="inputPassnew">Label</label>
-            <div class="input-group1">
-              <input v-model="new_diag_label" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+      <div v-if="canEditVar != null">
+        <form v-if="inviteProject != null && canEditVar">
+          <div class="col-12 pl-0">
+            <div class="form-group ">
+              <label class="control-label" for="inputPassnew">Label</label>
+              <div class="input-group1">
+                <input v-model="new_diag_label" id="inviteMail" class="form-control w-100" name="email" type="email" required>
+              </div>
             </div>
           </div>
+        </form>
+        <div v-else style="text-align:center;">
+          <br><br><br>
+          <h1>⚠️</h1>
+          <p>Oups ! Vous n'avez pas le droit d'écriture sur ce projet.</p>
+          <br><br><br>
         </div>
-      </form>
+      </div>
     </template>
     <template #footer>
     </template>
@@ -308,7 +316,8 @@ export default {
       showCreateClassDiagForm: false,
       new_diag_label: "new class diagram",
       s1: false,
-      s2: false
+      s2: false,
+      canEditVar: null
     }
   },
   components: {
@@ -332,7 +341,12 @@ export default {
     },
     loadProject (projectName, id) {
       this.currentProject = projectName
-      this.$router.push({name: 'projetView', params: {code: projectName, id: this.encrypt(id)}})
+      let a = document.createElement('a')
+      sessionStorage.setItem('p_cc', id)
+      a.setAttribute('href', `/projet/${projectName}/${this.encrypt(id)}`)
+      a.click()
+      a.remove()
+      // this.$router.push({name: 'projetView', params: {code: projectName, id: this.encrypt(id)}})
     },
     goToPage (link) {
       this.$router.push({name: link})
@@ -348,6 +362,9 @@ export default {
         this.$emit('pushProjectData', this.projectMe.concat(this.projectInvite))
         this.$emit('pushAlertData', this.appData.alerts)
         this.$emit('pushProfileData', this.collectProfileData())
+        this.canEditVar = this.canEdit(this.projectMe.concat(this.projectInvite))
+        // alert(this.canEditVar)
+        this.$emit('canEdit', this.canEditVar)
       }
     },
     logout () {
@@ -381,8 +398,8 @@ export default {
       return CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8);
     },
     fetchCreateProject() {
-      this.s1 = true
       if(this.new_project_description.length != 0 && this.new_project_title.length != 0) {
+        this.s1 = true
         getAPI.post('/project', {
           title: this.new_project_title,
           description: this.new_project_description
@@ -405,6 +422,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.s1 = false
           if (error.response) {
             this.displayError(error.response.data.detail, 'alert-no', 4000)
           } else if (error.request) {
@@ -419,47 +437,68 @@ export default {
       }
     },
     confirmCreateClassDiag () {
-      if(this.new_diag_label.length  != 0) {
-        this.s2 = true
-        getAPI.post('/diagram/'+this.decrypt(this.$route.params.id)+'/CLASS', 
-        {
-          label: this.new_diag_label,
-          plain_text: "Un étudiant possède un matricule, un nom et un prénom. Un étudiant est une personne. Un enseignant est un personne.  Un étudiant peut suivre plusieurs cour. Un cour est enseigné par au moins un enseignant. Un cour contient au moins un chapitre. Chaque chapitre est identifié par un libellé, un nom de code et une description.",
-          xml_image: "<UMLClassDiagram name='umldesigner.app'><UMLClass id='undefined:UMLClass_4' x='345' y='440' width='170' height='100' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='chapitre'/><superitem id='attributes' visibleSubComponents='true'><item value='libellé'/><item value='nom'/><item value='description'/></superitem><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_3' x='90' y='272' width='150' height='110' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='étudiant'/><superitem id='attributes' visibleSubComponents='true'><item value='matricule'/><item value='nom'/><item value='prénom'/></superitem><superitem id='operations' visibleSubComponents='true'><item value='suivre()'/></superitem></UMLClass><UMLClass id='undefined:UMLClass_2' x='635' y='185' width='160' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='enseignant'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_1' x='320' y='74' width='140' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='personne'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_0' x='380' y='289' width='100' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='cour'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLGeneralization id='undefined:UMLGeneralization_0' side_A='undefined:UMLClass_3' side_B='undefined:UMLClass_1'><point x='164.5' y='272'/><point x='163' y='107'/><point x='320' y='108.38325991189427'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/></UMLGeneralization><UMLGeneralization id='undefined:UMLGeneralization_1' side_A='undefined:UMLClass_2' side_B='undefined:UMLClass_1'><point x='635' y='192.6769230769231'/><point x='460' y='132.90769230769232'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/></UMLGeneralization><UMLAssociation id='undefined:UMLAssociation_2' side_A='undefined:UMLClass_3' side_B='undefined:UMLClass_0' direction='b'><point x='240' y='326.1509433962264'/><point x='380' y='324.5660377358491'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='suivre'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='0,*'/></UMLAssociation><UMLAssociation id='undefined:UMLAssociation_3' side_A='undefined:UMLClass_0' side_B='undefined:UMLClass_2' direction='a'><point x='480' y='305.7543859649123'/><point x='635' y='249.19298245614036'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='enseigner'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='1,*'/></UMLAssociation><UMLAggregation id='undefined:UMLAggregation_4' side_A='undefined:UMLClass_0' side_B='undefined:UMLClass_4'><point x='430' y='359'/><point x='430' y='440'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='contenir'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='1,*'/></UMLAggregation></UMLClassDiagram>"
-        })
-        .then(response => {
-          if(response.status == 201) {
-            this.displayError('Great ! Diagramme créer avec  succès.', 'alert-yes', 4000)
-            setTimeout(() => {
-              this.showCreateProjectPopUp = false
-            }, 4000)
-            setTimeout(() => {
-              let a = document.createElement('a')
-              a.setAttribute('href', "/editeur/"+this.toSlug(response.data.label)+"/"+response.data.public_acces_token)
-              a.click()
-              a.remove()
+      if(this.canEditVar) {
+        if(this.new_diag_label.length  != 0) {
+          this.s2 = true
+          getAPI.post('/diagram/'+this.decrypt(this.$route.params.id)+'/CLASS', 
+          {
+            label: this.new_diag_label,
+            plain_text: "Un étudiant possède un matricule, un nom et un prénom. Un étudiant est une personne. Un enseignant est un personne.  Un étudiant peut suivre plusieurs cour. Un cour est enseigné par au moins un enseignant. Un cour contient au moins un chapitre. Chaque chapitre est identifié par un libellé, un nom de code et une description.",
+            xml_image: "<UMLClassDiagram name='umldesigner.app'><UMLClass id='undefined:UMLClass_4' x='345' y='440' width='170' height='100' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='chapitre'/><superitem id='attributes' visibleSubComponents='true'><item value='libellé'/><item value='nom'/><item value='description'/></superitem><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_3' x='90' y='272' width='150' height='110' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='étudiant'/><superitem id='attributes' visibleSubComponents='true'><item value='matricule'/><item value='nom'/><item value='prénom'/></superitem><superitem id='operations' visibleSubComponents='true'><item value='suivre()'/></superitem></UMLClass><UMLClass id='undefined:UMLClass_2' x='635' y='185' width='160' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='enseignant'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_1' x='320' y='74' width='140' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='personne'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLClass id='undefined:UMLClass_0' x='380' y='289' width='100' height='70' backgroundColor='#ffffbb' lineColor='#294253' lineWidth='1' tagValues='' abstract='false'><superitem id='stereotypes' visibleSubComponents='true'/><item id='name' value='cour'/><superitem id='attributes' visibleSubComponents='true'/><superitem id='operations' visibleSubComponents='true'/></UMLClass><UMLGeneralization id='undefined:UMLGeneralization_0' side_A='undefined:UMLClass_3' side_B='undefined:UMLClass_1'><point x='164.5' y='272'/><point x='163' y='107'/><point x='320' y='108.38325991189427'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/></UMLGeneralization><UMLGeneralization id='undefined:UMLGeneralization_1' side_A='undefined:UMLClass_2' side_B='undefined:UMLClass_1'><point x='635' y='192.6769230769231'/><point x='460' y='132.90769230769232'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value=''/></UMLGeneralization><UMLAssociation id='undefined:UMLAssociation_2' side_A='undefined:UMLClass_3' side_B='undefined:UMLClass_0' direction='b'><point x='240' y='326.1509433962264'/><point x='380' y='324.5660377358491'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='suivre'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='0,*'/></UMLAssociation><UMLAssociation id='undefined:UMLAssociation_3' side_A='undefined:UMLClass_0' side_B='undefined:UMLClass_2' direction='a'><point x='480' y='305.7543859649123'/><point x='635' y='249.19298245614036'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='enseigner'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='1,*'/></UMLAssociation><UMLAggregation id='undefined:UMLAggregation_4' side_A='undefined:UMLClass_0' side_B='undefined:UMLClass_4'><point x='430' y='359'/><point x='430' y='440'/><superitem id='stereotype' visibleSubComponents='true'/><item id='name' value='contenir'/><item id='roleA' value=''/><item id='roleB' value=''/><item id='multiplicityA' value='1,1'/><item id='multiplicityB' value='1,*'/></UMLAggregation></UMLClassDiagram>"
+          })
+          .then(response => {
+            if(response.status == 201) {
+              this.displayError('Great ! Diagramme créer avec  succès.', 'alert-yes', 4000)
+              setTimeout(() => {
+                this.showCreateProjectPopUp = false
+              }, 4000)
+              setTimeout(() => {
+                let a = document.createElement('a')
+                a.setAttribute('href', "/editeur/"+this.toSlug(response.data.label)+"/"+response.data.public_acces_token)
+                a.click()
+                a.remove()
+                this.s2 = false
+              }, 1000)
+            }
+            else{
+              this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
+              this.waitingAPIResponse = false
               this.s2 = false
-            }, 1000)
-          }
-          else{
-            this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')
-            this.waitingAPIResponse = false
+            }
+          })
+          .catch((error) => {
             this.s2 = false
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            this.displayError(error.response.data.detail, 'alert-no', 4000)
-          } else if (error.request) {
-            this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
-          } else {
-            this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
-          }
-        })
+            if (error.response) {
+              this.displayError(error.response.data.detail, 'alert-no', 4000)
+            } else if (error.request) {
+              this.displayError('The request was made but no response was received. Please check your network.', 'alert-no', 8000)
+            } else {
+              this.displayError('Oups ! something went wrong.', 'alert-no', 5000)
+            }
+          })
+        }
+        else{
+          this.displayError("Oups ! veuillez remplir tous leschamps correctement.", "alert-no")
+        }
       }
       else{
-        this.displayError("Oups ! veuillez remplir tous leschamps correctement.", "alert-no")
+        this.showCreateClassDiagForm = false
       }
+    },
+    canEdit(data) {
+      if(sessionStorage.p_cc != undefined) {
+        for(let j = 0; j<data.length; j++) {
+          if(data[j].id == parseInt(sessionStorage.p_cc)) {
+            for(let i=0; i<data[j].collaborators.length; i++) {
+              if(((data[j].collaborators[i].user_id == this.collectProfileData().id) && (data[j].collaborators[i].role == "ADMIN")) || ((data[j].collaborators[i].user_id == this.collectProfileData().id) && (data[j].collaborators[i].role == "INVITE") && (data[j].collaborators[i].permission == 'LECTURE ET ECRITURE')) ) {
+                return true
+              }
+            }
+            return false
+          }
+        }
+      }
+      return false      
     }
   },
   async mounted() {

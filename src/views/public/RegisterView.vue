@@ -198,7 +198,7 @@ export default {
               this.waitingAPIResponse = false
               setTimeout(() => {
                 this.$router.push({name: 'Login'})
-              }, 500)
+              }, 2000)
             }
             else{
               this.displayError('Oups ! quelque chose s\'est mal passé.', 'alert-no')

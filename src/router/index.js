@@ -111,6 +111,12 @@ const routes = [
     beforeEnter: ifAuthentificated,
   },
   {
+    path: '/editeur/collaborateur/version/:name/:hash/',
+    name: 'EditeurVersion',
+    component: () => import('@/views/private/EditorView'), //EditorView
+    beforeEnter: ifAuthentificated,
+  },
+  {
     path: '/public/diagram/:hash',
     name: 'EditeurPublic',
     component: () => import('@/views/private/EditorPublicView')
