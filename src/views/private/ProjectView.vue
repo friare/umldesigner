@@ -18,7 +18,7 @@
             <a @mouseover="animNavTab" @click.prevent="switchNav('codeBox')" href="/projets?tab=generateur-de-code" data-tab-item="codebox" :class="(activeNav == 'codeBox') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_3">
               <i class="fa fa-code"></i>
               <span class="d-none d-md-block">CodeBox</span>
-              <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span>
+              <!-- <span title="0" data-view-component="true" class="Counter" hidden="hidden">0</span> -->
             </a>
             <a @mouseover="animNavTab" @click.prevent="switchNav('collaborateurs')" href="/projets?tab=collaborateurs" data-tab-item="collaborateurs" :class="(activeNav == 'collaborateurs') ? 'SecondNavItems-item js-responsive-SecondNavItems-item selected' : 'SecondNavItems-item js-responsive-SecondNavItems-item'" id="gNavTabB_4">
               <i class="fa fa-users"></i>
@@ -198,7 +198,114 @@
           </div>
         </div>
         <div v-else-if="activeNav=='codeBox'" style="min-height: 100vh;">
-          codeBox
+          <div  v-for="diagram, i in projectData.diagrams" v-bind:key="i">
+            <div class="p-relative card mb-2">
+              <span :id="(i+1)" class="id-100"></span>
+              <div class="card-header">
+                <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
+                  <p class="">
+                    <strong>{{ diagram.label.substring(0, 35) }}</strong><br>
+                    <!--<br>Règles de gestion #{{ i+1 }} -->
+                    <span class="small-note dev-small-note" style="font-size: .65em;">{{ diagram.type }} DIAGRAM</span>
+                  </p>
+                  <div>
+                    <button @click="buildCode(i, 'python', diagram.xml_image)" class="btn no-mw"><i style="color: green;" class="fa fa-unlock"></i> <span class="d-md-inline d-none">PYTHON</span></button>
+                    <button @click="buildCode(i, 'java', diagram.xml_image)" class="btn no-mw"><i style="color: green;" class="fa fa-unlock"></i> <span class="d-md-inline d-none">JAVA</span></button>
+                    <button onclick="alert('soon v1.3')" class="btn no-mw"><i class="fa fa-lock"></i> <span class="d-md-inline d-none">LARAVEL MIGRATION</span></button>
+                  </div>
+                </h5>
+              </div>
+              <div>
+                <div class="card-body">
+                  {{ diagram.plain_text }}
+                </div>
+                <!-- -------------------- -->
+                <div v-if="ask_code==i" style="display: flex; justify-items:space-between;">
+        <div class="gc gCode-container" >
+            <p class="gc gCode-language">UML-TO-CODE</p>
+            <div class="gc gCode-wrapper">
+                <pre v-if="code_ready" v-highlightjs="code_source"><code class="gc gCode-cell">
+{{ code_source }}
+            </code></pre>
+                <pre v-else v-highlightjs><code class="gc gCode-cell">
+CODE BUILD IN PROGRESS ! WAIT...
+            </code></pre>
+                <pre v-if="code_error_occur" v-highlightjs><code class="gc gCode-cell">
+{{ error_code }}
+            </code></pre>
+                <button onclick="alert('😋️ vous kiffer? passez premium')" class="gc gCode-copy-button">Copier</button>
+            </div>
+            <span class="gc gCode-copy-success">Code copié</span>
+        </div>
+                </div>
+                <!-- -------------------- -->
+              </div>
+              <div class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: end; align-items:center;">
+                <span style="color: #9d9d9d"> Powerdered by</span> &nbsp;<span style="color: #e1b0b0;">guideonCode</span>
+              </div>
+            </div>
+            <!-- --------------------------------------------------------- -->
+            <div  v-for="version, j in diagram.versions" v-bind:key="j">
+              <div style="display:flex;">
+                <div style="display:flex; align-items:center; margin-right: .5em; margin-left: .5em;">
+                  <img width="15" src="@/assets/svg/time-line.png" alt="time-line.png"/>
+                </div>
+                <div class="p-relative card mb-2 ml-3 " style="border-left: 7px solid #dae9f4 !important;">
+                  <div class="card-header">
+                    <h5 class="w-100 align-items-center mb-0 d-flex justify-content-between align-items-center">
+                      <p class="">
+                        <strong>{{ version.label.substring(0, 35) }}</strong><br>
+                        <span class="small-note dev-small-note" style="background-color: #dae9f4; font-size: .65em;">{{ version.type }} DIAGRAM</span>
+                      </p>
+                      <div>
+                        <button @click="buildCode((i+'-'+j), 'python', diagram.xml_image)" class="btn no-mw"><i style="color: green;" class="fa fa-unlock"></i> <span class="d-md-inline d-none">PYTHON</span></button>
+                        <button @click="buildCode((i+'-'+j), 'java', diagram.xml_image)" class="btn no-mw"><i style="color: green;" class="fa fa-unlock"></i> <span class="d-md-inline d-none">JAVA</span></button>
+                        <button onclick="alert('soon v1.3')" class="btn no-mw"><i class="fa fa-lock"></i> <span class="d-md-inline d-none">LARAVEL MIGRATION</span></button>
+                      </div>
+                    </h5>
+                  </div>
+                  <div>
+                    <div class="card-body">
+                      {{ version.input_text }}
+                    </div>
+                    <!-- -------------------- -->
+                    <div v-if="ask_code==(i+'-'+j)" style="display: flex; justify-items:space-between;">
+            <div class="gc gCode-container" >
+                <p class="gc gCode-language">UML-TO-CODE</p>
+                <div class="gc gCode-wrapper">
+                    <pre v-if="code_ready" v-highlightjs><code class="gc gCode-cell">
+    {{ code_source }}
+                </code></pre>
+                    <pre v-else v-highlightjs><code class="gc gCode-cell">
+    CODE BUILD IN PROGRESS ! WAIT...
+                </code></pre>
+                    <pre v-if="code_error_occur" v-highlightjs><code class="gc gCode-cell">
+    {{ error_code }}
+                </code></pre>
+                    <button onclick="alert('😋️ vous kiffer? passez premium')" class="gc gCode-copy-button">Copier</button>
+                </div>
+                <span class="gc gCode-copy-success">Code copié</span>
+            </div>
+                    </div>
+                    <!-- -------------------- -->
+                  </div>
+                  <div class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: end; align-items:center;">
+                    <span style="color: #9d9d9d"> Powerdered by</span> &nbsp;<span style="color: #e1b0b0;">guideonCode</span>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </div>
+            <!-- --------------------------------------------------------- -->
+            <br>
+          </div>
+          <div v-if="projectData.diagrams.length == 0" class="pt-5 d-flex justify-content-between align-items-center flex-column">
+            <img width="250" src="@/assets/image/brand/empty0.svg" alt="emty diagram image" class="mt-2"/>
+            <div>
+              <br><br>
+            </div>
+            <p>Aucun diagramme pour le moment.</p>
+          </div>
         </div>
         <div v-else-if="activeNav=='collaborateurs'" style="min-height: 100vh;">
           <div>
@@ -344,7 +451,7 @@ export default {
     components: {
       NavLayout,
       PreLoader,
-      Modal
+      Modal,
     },
     data () {
         return {
@@ -370,7 +477,12 @@ export default {
         config_author: "",
         waitingUpdateResult: false,
         canEdit: false,
-        launchClone: false
+        launchClone: false,
+        code_source:"",
+        ask_code:null,
+        code_ready:false,
+        code_error_occur: false,
+        error_code:""
       }
     },
     methods: {
@@ -545,6 +657,26 @@ export default {
           this.alertMsg = "Oups ! "+error.response.data.detail
           this.alertType = "alert-no"
         })
+      },
+      buildCode(i, type, xml) {
+        this.code_source = ""
+        this.ask_code=i,
+        this.code_ready=false
+        this.code_error_occur=false
+
+        getAPI.post(`/uml-class/${type}`, {
+          xml_uml: xml,
+        })
+        .then((response) => {
+          this.alertMsg = "Code généré " + type + " avec succès"
+          this.alertType = "alert-yes"
+          this.code_source = response.data
+          this.code_ready=true
+        })
+        .catch((error) => {
+          this.code_error_occur=true
+          this.error_code=error.response.data.detail
+        })
       }
     },
     watch: {
@@ -555,6 +687,46 @@ export default {
         this.getRole()
       }
     },
+    mounted() {
+      const COPY_METHODE = 2;
+      const codeBlock = document.getElementsByClassName('gCode-cell');
+      const copyButton = document.getElementsByClassName('gCode-copy-button');
+      const copySuccess = document.getElementsByClassName('gCode-copy-success');
+
+      const copyTextHandler = (i_current) => {
+          alert('😋️ vous kiffer? passez premium')
+          // first version - document.execCommand('copy')
+          if(COPY_METHODE == 1) {
+              var tempEditor = document.createElement('textarea');
+              document.body.appendChild(tempEditor);
+              tempEditor.value = codeBlock[i_current].innerText;
+              tempEditor.select();
+              document.execCommand('copy');
+              document.body.removeChild(tempEditor);
+
+              copySuccess[i_current].classList.add('show-message');
+              setTimeout(() => {
+                  copySuccess[i_current].classList.remove('show-message');
+              }, 2700);
+          }
+          else if(COPY_METHODE == 2) { 
+              // second version - clipboard API
+              navigator.clipboard.writeText(codeBlock[i_current].innerText).then(() => {
+                  copySuccess[i_current].classList.add('show-message');
+                  setTimeout(() => {
+                      copySuccess[i_current].classList.remove('show-message');
+                  }, 2700);
+              }, () => {
+                  console.log('Error writing to the clipboard')
+              })
+          }
+      };
+
+      for (let i = 0; i <=copyButton.length-1; ++i) {
+        alert('o')
+          copyButton[i].addEventListener('click', function(){copyTextHandler(i)}, false);
+      }
+    }
 }
 </script>
 
