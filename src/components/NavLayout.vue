@@ -140,7 +140,7 @@
                 <!-- 02 -->
                 <div class="dropdown">
                   <button class="nav__menu__btn dropbtn">
-                    Créer <span class="d-md-inline d-none">un Diagramme</span>&nbsp;
+                    Créer&nbsp; <span class="d-md-inline d-none">un Diagramme</span>&nbsp;
                     <i class="float-end fa fa-caret-down ml2"> </i>
                   </button>
                   <div class="dropdown-content" >

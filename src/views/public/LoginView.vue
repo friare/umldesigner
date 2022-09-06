@@ -29,6 +29,7 @@
                 <span class="login100-form-title pb-5">
                     Connexion
                 </span>
+                <p><small style="color: red;">Ce programme, encore en phase de test, sera prochainement ouvert au grand public.</small></p>
                 <div class="panel panel-primary">
                   <div class="panel-body tabs-menu-body p-0 pt-5">
                     <div class="tab-content">
