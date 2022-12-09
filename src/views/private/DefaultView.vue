@@ -6,9 +6,7 @@
       </template>
       <template #body>
         <!-- Brand-area -->
-        
-
-        <div class="col-12 mt-2">
+        <div class="col-12 mt-2" style="min-height: 55vh;align-items: center;display: flex;justify-content: center;">
           <div class="pt-5 d-flex justify-content-between align-items-center flex-column">
             <img width="250" src="@/assets/image/brand/empty0.svg" alt="emty diagram image" class="mt-2"/>
             <div>
@@ -16,9 +14,12 @@
             </div>
           </div>
         </div>
+        
+        <!-- space -->
         <br><br>
         <br><br>
-
+        
+        <!-- alert -->
         <div class="block-darkula p-3" style="background-color: #56cbc5;">
          <div class="container">
            <div class="max-w-5xl mx-auto text-center pb-12 md:pb-20 mb-5">

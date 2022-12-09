@@ -57,7 +57,7 @@
                 Diagramme de Classe
                 <span class="hometool__soon hometool__soon--new">New</span>
               </h2>
-              <p class="hometool__text">Bigger than icons, more like illustrations</p>
+              <p class="hometool__text"><br><br></p>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
               <defs>
@@ -75,7 +75,7 @@
               <h2 class="hometool__title">Diagramme de case d'utilisation
                 <span class="hometool__soon">Soon</span>
               </h2>
-              <p class="hometool__text">Improve your site images &amp; social posts</p>
+              <p class="hometool__text"><br><br></p>
             </div>
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="86.02px" height="86.02px" viewBox="0 0 86.02 86.02" style="enable-background:new 0 0 86.02 86.02;" xml:space="preserve">
               <g>
@@ -108,7 +108,7 @@
               <h2 class="hometool__title">Diagramme de séquence
                 <span class="hometool__soon">Soon</span>
               </h2>
-              <p class="hometool__text">A beautiful way to increase engagement</p>
+              <p class="hometool__text"><br><br></p>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
               <defs>
@@ -124,7 +124,7 @@
               <h2 class="hometool__title">Diagramme d'état transition
                 <span class="hometool__soon">Soon</span>
               </h2>
-              <p class="hometool__text">Startup emails that work everywhere</p>
+              <p class="hometool__text"><br><br></p>
             </div>
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 445.555 445.555" style="enable-background:new 0 0 445.555 445.555;" xml:space="preserve">
               <defs>
@@ -174,7 +174,7 @@
               <h2 class="hometool__title">
                 Etape 2
               </h2>
-              <p class="hometool__text">Inviter vos collegues à collaborer pour la construction e vos diagrammes uml.</p>
+              <p class="hometool__text">Inviter vos collègues à collaborer pour la construction de vos diagrammes uml.</p>
             </div>
             <svg viewBox="0 0 80 80">
               <defs>
@@ -185,7 +185,7 @@
           <div class="hometool hometool--nohover" data-state="closed">
             <div class="hometool__content">
               <h2 class="hometool__title">Etape 3</h2>
-              <p class="hometool__text">Grace a Github co-pillote et d'autre outils dans la section "code" générer le code source associé à vos diagrammes.</p>
+              <p class="hometool__text">Grace a notre module uml-to-code dans la section "code" générer le code source associé à vos diagrammes.</p>
             </div>
             <svg viewBox="0 0 80 80">
               <defs>

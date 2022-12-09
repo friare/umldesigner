@@ -106,11 +106,11 @@
                       </div>
                     </div>
                     <div v-if="!isProduction" class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: space-between; align-items:center;">
-                      <a style="color: #1787fc;" target="_blank" :href="'http://localhost:8080/public/diagram/'+diagram.public_acces_token">http://localhost:8080/publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
+                      <a style="color: #1787fc;" target="_blank" :href="baseApp+'public/diagram/'+diagram.public_acces_token">{{baseApp}}publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
                       <span v-if="diagram.author_id == userProfile.id"><i style="color: green;" class="fa fa-unlock"></i></span>
                     </div>
                     <div v-else  class="p-2 pt-0 px-5 ml-1" style="display:flex; justify-content: space-between; align-items:center;">
-                      <a style="color: #1787fc;" target="_blank" :href="'https://umldesigner.app/public/diagram/'+diagram.public_acces_token">https://umldesigner.app/publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
+                      <a style="color: #1787fc;" target="_blank" :href="baseApp+'public/diagram/'+diagram.public_acces_token">{{baseApp}}publi<span style="color: black; position:relative; top: .25em;">•••</span></a>
                       <span v-if="diagram.author_id == userProfile.id"><i style="color: green;" class="fa fa-unlock"></i></span>
                     </div>
                   </div>
@@ -482,7 +482,8 @@ export default {
         ask_code:null,
         code_ready:false,
         code_error_occur: false,
-        error_code:""
+        error_code:"",
+        baseApp: document.location.toString().split('projet')[0]
       }
     },
     methods: {

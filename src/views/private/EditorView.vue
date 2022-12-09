@@ -247,8 +247,8 @@
                   <div>
                     <div class="role_row--permissionLabel--pUx2j ">Tout le monde peut voir</div>
                   </div>
-                  <input style="opacity: 0; position: absolute; z-index: -100;" v-if="diagramData != null && !isProduction" type="text" id="publicLink" :value="'http://localhost:8080/public/diagram/'+diagramData.public_acces_token"/>
-                  <input style="opacity: 0; position: absolute; z-index: -100;" v-if="diagramData != null && isProduction" type="text" id="publicLink" :value="'https://umldesigner.app/public/diagram/'+diagramData.public_acces_token"/>
+                  <input style="opacity: 0; position: absolute; z-index: -100;" v-if="diagramData != null && !isProduction" type="text" id="publicLink" :value="baseApp+'public/diagram/'+diagramData.public_acces_token"/>
+                  <input style="opacity: 0; position: absolute; z-index: -100;" v-if="diagramData != null && isProduction" type="text" id="publicLink" :value="baseApp+'public/diagram/'+diagramData.public_acces_token"/>
                   <div @click="copyLink" class="permissions_modal--footerLink--tBFNA blue_link--blueLink--22X56" id="ccopy">
                     <span class="svg-container permissions_modal--copyIcon--zdrgs">
                       <svg class="svg" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -397,7 +397,8 @@ export default {
       allDiagrams: null,
       hintReadByPast: sessionStorage.getItem('userAlreadyReadHint'),
       aiCorePiplineError: false,
-      wannaQuit: false
+      wannaQuit: false,
+      baseApp: document.location.toString().split('editeur')[0]
     }
   },
   methods: {
