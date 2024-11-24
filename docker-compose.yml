@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  vue-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8089:80"
+
+# docker-compose build
+# docker-compose up -d
