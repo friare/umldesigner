@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "http://54.211.134.117/"
-const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "http://54.211.134.117/ws"
+//const BaseURL       = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000" : "http://54.211.134.117/"
+//const BaseURLSocket = (process.env.NODE_ENV == 'development') ? "http://127.0.0.1:8000/ws" : "http://54.211.134.117/ws"
+const BaseURL       = "https://umldesigner-api.app.friare.org"
+const BaseURLSocket = "https://umldesigner-api.app.friare.org/ws"
 
 //Authorise
 const getAPI = axios.create({
